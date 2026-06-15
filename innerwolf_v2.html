@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>インナーウルフ ～内なる人狼と観測者～</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#06080F; --panel:#0C1220; --panel2:#0F1628;
+  --line:rgba(176,196,232,0.13);
+  --silver:#C7D1E6; --muted:#76829E; --moon:#EDE8DA;
+  --eclipse:#E0473C; --eclipse-glow:rgba(224,71,60,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--night);color:var(--silver);font-family:'Shippori Mincho',serif;
+  line-height:1.95;letter-spacing:.04em;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(1.2px 1.2px at 18% 22%, rgba(220,230,255,.5), transparent 60%),
+    radial-gradient(1px 1px at 72% 12%, rgba(220,230,255,.4), transparent 60%),
+    radial-gradient(1.4px 1.4px at 85% 58%, rgba(220,230,255,.35), transparent 60%),
+    radial-gradient(1px 1px at 35% 74%, rgba(220,230,255,.3), transparent 60%),
+    radial-gradient(1.2px 1.2px at 58% 38%, rgba(220,230,255,.28), transparent 60%);}
+.wrap{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:50px 22px 90px;}
+
+/* ===== ヒーロー ===== */
+header{text-align:center;margin-bottom:56px;}
+.hero-moon{width:96px;height:96px;border-radius:50%;margin:8px auto 32px;position:relative;
+  background:radial-gradient(circle at 36% 32%, #3a2f33 22%, #1d171c 58%, #110d12 100%);
+  box-shadow:inset -10px -12px 24px rgba(0,0,0,.75), 0 0 0 1px rgba(224,71,60,.5), 0 0 42px 6px var(--eclipse-glow);}
+.hero-moon::after{content:'';position:absolute;inset:-1px;border-radius:50%;
+  background:radial-gradient(circle at 78% 20%, rgba(237,232,218,.35), transparent 32%);}
+.title-en{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.6em;color:var(--muted);text-transform:uppercase;margin-bottom:12px;padding-left:.6em;}
+h1{font-size:clamp(26px,6.5vw,34px);font-weight:600;letter-spacing:.18em;color:#E8EDF8;padding-left:.18em;}
+.subtitle{margin-top:10px;font-size:13.5px;color:var(--muted);letter-spacing:.16em;}
+.trial-badge{display:inline-block;margin-top:18px;font-size:11px;letter-spacing:.3em;color:#E8B0AA;
+  border:1px solid rgba(224,71,60,.4);border-radius:999px;padding:5px 18px 5px 21px;}
+.lede{margin:34px auto 0;max-width:480px;font-size:14px;color:#9AA6BF;text-align:left;}
+.lede em{font-style:normal;color:var(--silver);}
+
+/* ===== セクション共通 ===== */
+.sec-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.42em;color:var(--muted);
+  text-transform:uppercase;text-align:center;margin-bottom:24px;padding-left:.42em;}
+.sec-title::after{content:'';display:block;width:34px;height:1px;background:linear-gradient(90deg,transparent,rgba(224,71,60,.7),transparent);margin:12px auto 0;}
+
+/* ===== 入力 ===== */
+.input-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:34px 28px;margin-bottom:56px;}
+.field{margin-bottom:20px;}
+.field label{display:block;font-size:12.5px;color:var(--muted);letter-spacing:.2em;margin-bottom:8px;}
+.field input{width:100%;background:var(--night);border:1px solid var(--line);border-radius:8px;
+  padding:13px 16px;color:var(--silver);font-size:16px;letter-spacing:.1em;outline:none;font-family:'Shippori Mincho',serif;transition:border-color .3s;}
+.field input:focus{border-color:rgba(199,209,230,.5);}
+.field-note{font-size:11.5px;color:var(--muted);margin-top:-12px;margin-bottom:20px;}
+.main-btn{width:100%;background:linear-gradient(180deg,#141C30,#0D1322);
+  border:1px solid rgba(199,209,230,.3);border-radius:10px;padding:15px;
+  color:#E2E8F5;font-family:'Shippori Mincho',serif;font-size:15px;letter-spacing:.26em;cursor:pointer;transition:all .35s;}
+.main-btn:hover{border-color:rgba(224,71,60,.65);box-shadow:0 0 24px var(--eclipse-glow);}
+.error{color:var(--eclipse);font-size:13px;text-align:center;margin-top:12px;min-height:20px;}
+
+/* ===== 円卓表示・結果 ===== */
+.result-section{display:none;animation:rise .8s ease both;margin-bottom:56px;}
+@keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.table-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.table-chip{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 15px;}
+.table-chip .tc-role{font-size:12px;color:var(--muted);letter-spacing:.12em;}
+.table-chip .tc-char{font-size:14.5px;color:#DDE4F2;margin-top:3px;letter-spacing:.06em;}
+.lurker-chip{background:#0A0C13;border:1px dashed rgba(224,71,60,.4);border-radius:10px;padding:14px 16px;margin-bottom:12px;text-align:center;}
+.lurker-chip .tc-role{font-size:12.5px;color:#E8B0AA;letter-spacing:.14em;}
+.lurker-chip .tc-sub{font-size:11.5px;color:var(--muted);margin-top:4px;}
+.locked-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:26px;}
+.locked-chip{background:transparent;border:1px dashed rgba(118,130,158,.3);border-radius:10px;padding:11px 8px;text-align:center;}
+.locked-chip .lc-name{font-size:12px;color:#525D75;letter-spacing:.1em;}
+.locked-chip .lc-sub{font-size:10px;color:#414A5E;margin-top:2px;letter-spacing:.08em;}
+
+.howto{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px 24px;margin-bottom:26px;}
+.howto-step{display:flex;gap:15px;align-items:flex-start;margin-bottom:16px;}
+.howto-step:last-child{margin-bottom:0;}
+.howto-moon{flex:0 0 12px;width:12px;height:12px;border-radius:50%;border:1px solid rgba(199,209,230,.5);margin-top:9px;}
+.howto-moon.full{background:var(--moon);}
+.howto-moon.red{border-color:var(--eclipse);box-shadow:0 0 8px var(--eclipse-glow);}
+.howto-text{font-size:13.5px;color:#9AA6BF;}
+.howto-text b{color:var(--silver);font-weight:500;}
+.howto-text code{font-family:inherit;color:#E8B0AA;background:rgba(224,71,60,.08);padding:1px 7px;border-radius:5px;border:1px solid rgba(224,71,60,.22);}
+.copy-btn{width:100%;background:linear-gradient(180deg,#1A0F12,#120A0D);
+  border:1.5px solid rgba(224,71,60,.55);border-radius:12px;padding:18px;
+  color:#F2D9D5;font-family:'Shippori Mincho',serif;font-size:15.5px;letter-spacing:.2em;cursor:pointer;transition:all .35s;}
+.copy-btn:hover{box-shadow:0 0 34px var(--eclipse-glow);border-color:var(--eclipse);}
+.copy-note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;}
+
+/* ===== 合言葉ゲート ===== */
+.gate{background:var(--panel2);border:1px solid rgba(199,209,230,.22);border-radius:16px;padding:34px 28px;margin-bottom:56px;text-align:center;}
+.gate-lede{font-size:13.5px;color:#9AA6BF;margin-bottom:22px;line-height:2.1;}
+.gate-lede b{color:var(--silver);font-weight:500;}
+.gate-input{width:100%;max-width:340px;background:var(--night);border:1px solid var(--line);border-radius:8px;
+  padding:13px 16px;color:var(--silver);font-size:16px;text-align:center;letter-spacing:.2em;outline:none;font-family:'Shippori Mincho',serif;}
+.gate-input:focus{border-color:rgba(199,209,230,.5);}
+.gate-btn{margin-top:14px;background:transparent;border:1px solid rgba(199,209,230,.35);border-radius:10px;
+  padding:12px 42px;color:var(--silver);font-family:'Shippori Mincho',serif;font-size:13.5px;letter-spacing:.26em;cursor:pointer;transition:all .3s;}
+.gate-btn:hover{border-color:var(--eclipse);box-shadow:0 0 16px var(--eclipse-glow);}
+.gate-err{color:var(--eclipse);font-size:13px;margin-top:12px;min-height:20px;}
+
+/* ===== カード結果 ===== */
+.card-result{display:none;animation:rise .9s ease both;margin-top:30px;}
+.verdict-title{font-size:clamp(26px,6.5vw,34px);letter-spacing:.24em;color:#E8EDF8;padding-left:.24em;margin-bottom:8px;}
+.verdict-title.lose{color:#EFC3BD;}
+.verdict-sub{font-size:13px;color:var(--muted);letter-spacing:.1em;margin-bottom:24px;}
+.card-img{width:min(300px,76vw);border-radius:14px;border:1px solid var(--line);
+  box-shadow:0 8px 40px rgba(0,0,0,.55);margin-bottom:16px;}
+.card-btn{background:transparent;border:1px solid rgba(199,209,230,.35);border-radius:10px;padding:13px 30px;
+  color:var(--silver);font-family:'Shippori Mincho',serif;font-size:13.5px;letter-spacing:.2em;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block;}
+.card-btn:hover{border-color:var(--eclipse);box-shadow:0 0 16px var(--eclipse-glow);}
+.card-note{font-size:11.5px;color:var(--muted);margin-top:10px;letter-spacing:.06em;}
+
+/* ===== 一句の焼き付け ===== */
+.inscribe{margin:6px auto 18px;max-width:380px;}
+.inscribe-lede{font-size:13px;color:var(--muted);letter-spacing:.08em;margin-bottom:10px;}
+.inscribe-lede b{color:var(--silver);font-weight:500;}
+.inscribe-input{width:100%;background:var(--night);border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;color:var(--silver);font-size:14.5px;line-height:1.9;outline:none;resize:vertical;
+  font-family:'Shippori Mincho',serif;letter-spacing:.05em;}
+.inscribe-input:focus{border-color:rgba(199,209,230,.5);}
+.inscribe-arcana{margin-bottom:10px;max-width:100%;font-size:13.5px;letter-spacing:.12em;}
+.inscribe-name{margin-top:10px;max-width:100%;font-size:13.5px;}
+#inscribe-btn:disabled{opacity:.4;cursor:default;box-shadow:none;}
+
+/* ===== CTA ===== */
+.cta{background:linear-gradient(180deg,#1A0F12,#120A0D);border:1.5px solid rgba(224,71,60,.55);border-radius:14px;
+  padding:30px 26px;text-align:center;}
+.cta-text{font-size:14px;color:#CBD4E8;margin-bottom:20px;line-height:2.2;}
+.cta-text em{font-style:normal;color:#F2D9D5;}
+.cta-btn{display:inline-block;background:transparent;border:1px solid rgba(224,71,60,.7);border-radius:10px;
+  padding:14px 38px;color:#F2D9D5;font-size:14.5px;letter-spacing:.2em;text-decoration:none;transition:all .3s;}
+.cta-btn:hover{box-shadow:0 0 26px var(--eclipse-glow);}
+.epigraph{margin-top:44px;text-align:center;font-size:13px;color:#8B97B2;letter-spacing:.14em;}
+footer{margin-top:74px;text-align:center;font-size:11px;color:#525D75;letter-spacing:.2em;}
+footer .f-en{font-family:'Cinzel',serif;letter-spacing:.4em;font-size:9.5px;margin-bottom:5px;}
+@media (max-width:560px){.locked-grid{grid-template-columns:1fr;}}
+@media (prefers-reduced-motion: reduce){.result-section,.card-result{animation:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="hero-moon" aria-hidden="true"></div>
+    <div class="title-en">Inner Wolf</div>
+    <h1>インナーウルフ</h1>
+    <div class="subtitle">～内なる人狼と観測者～</div>
+    <div class="trial-badge">体験版『狂乱の幕開け』｜本編『残月の幕引き』</div>
+    <p class="lede">
+      あなたの中には、声がある。<br>
+      体験版の円卓に着くのは、<em>天使</em>と<em>悪魔</em>——二つの声だ。<br>
+      そのどちらかに、いま<em>狂人</em>が憑いている。<br>
+      宿主の声色で語りながら、あなたの思考を静かに閉じていく。<br><br>
+      三夜の対話の果てに、告発の機会は一度だけとなる。<br>
+      声を当てるだけでは足りない。<em>根拠ごと、見抜かなければならない</em>。<br>
+      偶然の正解は、観測とは呼ばれない。
+    </p>
+  </header>
+
+  <div class="sec-title">Summon</div>
+  <div class="input-card" id="input-section">
+    <div class="field">
+      <label>姓（ひらがな）</label>
+      <input type="text" id="sei" placeholder="例：やまだ" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>名（ひらがな）</label>
+      <input type="text" id="mei" placeholder="例：たろう" autocomplete="off">
+    </div>
+    <div class="field-note">※生まれた時の名前をひらがなで入力してください。円卓の顔ぶれが決まります。</div>
+    <button class="main-btn" onclick="generate()">あなたの円卓を呼び出す</button>
+    <div class="error" id="error-msg"></div>
+  </div>
+
+  <div class="result-section" id="result-section">
+    <div class="sec-title">Your Round Table</div>
+    <div class="table-grid">
+      <div class="table-chip"><div class="tc-role">👼 天使（地球・アングル）</div><div class="tc-char" id="chip-angel">—</div></div>
+      <div class="table-chip"><div class="tc-role">👿 悪魔（月）</div><div class="tc-char" id="chip-devil">—</div></div>
+    </div>
+    <div class="lurker-chip">
+      <div class="tc-role">🌒 狂人——どちらかに、もう憑いている</div>
+      <div class="tc-sub">どちらに憑くかは、ゲームの開始時に闇が決める。あなたにも、見えない。</div>
+    </div>
+    <div class="locked-grid">
+      <div class="locked-chip"><div class="lc-name">🌟 大天使</div><div class="lc-sub">本編で着座</div></div>
+      <div class="locked-chip"><div class="lc-name">👹 大悪魔</div><div class="lc-sub">本編で着座</div></div>
+      <div class="locked-chip"><div class="lc-name">⚫ 人狼＝ゼロ</div><div class="lc-sub">本編で目覚める</div></div>
+    </div>
+
+    <div class="sec-title">How to Play</div>
+    <div class="howto">
+      <div class="howto-step">
+        <div class="howto-moon"></div>
+        <div class="howto-text"><b>新しいAIスレッド</b>を開き、下のボタンでコピーしたプロンプトを貼り付ける。新月の夜から、対話が始まる。</div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-moon"></div>
+        <div class="howto-text">昼のあいだ、二つの声と自由に話す。区切りたくなったら <code>日没</code> と宣言——夜が来る。全部で三夜。</div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-moon full"></div>
+        <div class="howto-text">第三夜の昼に、一度だけ告発できる。<b>「どの発言の、何が兆候か」</b>を添えて。声が正解でも、根拠が外れていれば——それは偶然。騙されたものとみなされる。</div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-moon red"></div>
+        <div class="howto-text">終局で、AIが<b>合言葉</b>を告げる。このページに戻って合言葉を入力すると、あなたの結果のカードが現れる。</div>
+      </div>
+    </div>
+
+    <button class="copy-btn" onclick="copyTrialPrompt()" id="btn-copy">⚔️ 体験版プロンプトをコピー</button>
+    <div class="copy-note">コピーしたら、新しいAIスレッドに貼り付けてください。</div>
+  </div>
+
+  <div class="sec-title">The Watchword</div>
+  <div class="gate">
+    <div class="gate-lede">
+      三夜を終えた者へ。<br>
+      円卓で告げられた<b>合言葉</b>を、ここに記してください。
+    </div>
+    <input type="text" class="gate-input" id="gate-input" placeholder="合言葉" autocomplete="off" onkeypress="if(event.key==='Enter')checkWatchword()">
+    <div><button class="gate-btn" onclick="checkWatchword()">月に告げる</button></div>
+    <div class="gate-err" id="gate-err"></div>
+
+    <div class="card-result" id="card-result">
+      <div class="verdict-title" id="v-title"></div>
+      <div class="verdict-sub" id="v-sub"></div>
+      <img class="card-img" id="card-img" src="" alt="結果カード">
+      <canvas class="card-img" id="card-canvas" style="display:none"></canvas>
+      <div class="inscribe" id="inscribe-block">
+        <div class="inscribe-lede">円卓で受け取った<b>終幕の一句</b>を、ここに記してください。</div>
+        <input type="text" class="gate-input inscribe-arcana" id="inscribe-arcana" placeholder="アルカナ（例：XV 悪魔）" autocomplete="off">
+        <textarea class="inscribe-input" id="inscribe-msg" rows="3" placeholder="一句をここに"></textarea>
+        <input type="text" class="gate-input inscribe-name" id="inscribe-name" placeholder="名（任意・札に刻まれます）" autocomplete="off">
+        <div><button class="gate-btn" id="inscribe-btn" onclick="inscribeCard()">🔥 一句を焼き付ける</button></div>
+      </div>
+      <div><a class="card-btn" id="card-dl" href="#" download>カードを保存する</a></div>
+      <div class="card-note">ThreadsやXにそのまま貼れます。狂人がどちらに憑くかは局ごとに変わる——ネタバレにはなりません。</div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="cta-text">
+      体験版で見抜くのは、仮面——<em>ペルソナ</em>までとなる。<br>
+      本編『～残月の幕引き～』では、その奥にいる影——<em>シャドウ</em>と対峙する。<br>
+      <em>大天使と大悪魔</em>が着座し、<em>固着の狼</em>が目覚め、<br>
+      七夜の月齢が動き出す。喰われる声、移動する狼、そして「観測者の証」だ。<br>
+      ——仮面を見破れない者に、影は扱えない。
+    </div>
+    <!-- ▼公開前に本編の販売ページURLへ差し替えてください -->
+    <a class="cta-btn" href="#" id="cta-link">本編『インナーウルフ』へ</a>
+  </div>
+
+
+  <div class="sec-title">Full Edition</div>
+  <div class="gate" id="main-gate">
+    <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Inner Wolf — Full</div>
+    <div style="font-size:18px;color:#E8EDF8;letter-spacing:.16em;margin-bottom:6px;">本編 ～残月の幕引き～</div>
+    <div class="gate-lede" style="margin-top:14px;">
+      購入者の方は、noteに記載のパスワードを入力してください。<br>
+      <b>大天使と大悪魔</b>が着座し、<b>固着の狼</b>が目覚める——七夜の円卓が待っています。
+    </div>
+    <input type="password" class="gate-input" id="main-pw" placeholder="本編パスワード" autocomplete="off" onkeypress="if(event.key==='Enter')checkMainPw()">
+    <div><button class="gate-btn" onclick="checkMainPw()">扉を開く</button></div>
+    <div class="gate-err" id="main-pw-err"></div>
+  </div>
+
+  <div class="result-section" id="main-section" style="display:none;margin-bottom:56px;">
+    <div class="sec-title">Summon — Full Edition</div>
+    <div class="input-card" style="margin-bottom:26px;">
+      <div class="field">
+        <label>姓（ひらがな）</label>
+        <input type="text" id="m-sei" placeholder="例：やまだ" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>名（ひらがな）</label>
+        <input type="text" id="m-mei" placeholder="例：たろう" autocomplete="off">
+      </div>
+      <div class="field-note">※生まれた時の名前をひらがなで入力してください。</div>
+      <button class="main-btn" onclick="generateMain()">あなたの円卓を呼び出す（七夜）</button>
+      <div class="error" id="m-error"></div>
+    </div>
+    <div id="m-result" style="display:none;">
+      <div class="table-grid">
+        <div class="table-chip"><div class="tc-role">👼 天使（地球・アングル）</div><div class="tc-char" id="m-chip-angel">—</div></div>
+        <div class="table-chip"><div class="tc-role">👿 悪魔（月）</div><div class="tc-char" id="m-chip-devil">—</div></div>
+        <div class="table-chip"><div class="tc-role">🌟 大天使（太陽）</div><div class="tc-char" id="m-chip-arch">—</div></div>
+        <div class="table-chip"><div class="tc-role">👹 大悪魔（冥王星）</div><div class="tc-char" id="m-chip-archdvl">—</div></div>
+      </div>
+      <div class="lurker-chip">
+        <div class="tc-role">🌒 狂人＝リリス　／　⚫ 人狼＝ゼロ（土星）</div>
+        <div class="tc-sub">どの声に憑くかは、ゲームの開始時に闇が決める。狼は、夜ごとに動く。</div>
+      </div>
+      <div class="howto">
+        <div class="howto-step"><div class="howto-moon"></div>
+          <div class="howto-text"><b>新しいAIスレッド</b>にプロンプトを貼ると、第一夜（新月）が始まる。盤は七夜。最終夜は蝕。</div></div>
+        <div class="howto-step"><div class="howto-moon"></div>
+          <div class="howto-text">昼は自由対話。<code>日没</code>で夜へ。揺さぶり・侵食・告発は第三夜から。あなたが最も頼る声から、喰われていく。</div></div>
+        <div class="howto-step"><div class="howto-moon full"></div>
+          <div class="howto-text">告発：<code>狂人告発：天使</code>／<code>人狼告発：大悪魔</code>。同時宣言も可。誤告発すれば、その無実の声はその夜喰われる。</div></div>
+        <div class="howto-step"><div class="howto-moon red"></div>
+          <div class="howto-text">終局後の開示で全タイムラインが解剖され、最後に<b>「観測者の証」</b>が発行される。次の局の冒頭に貼れば、記録は引き継がれる。</div></div>
+      </div>
+      <button class="copy-btn" onclick="copyMainPrompt()" id="m-btn-copy">⚔️ 本編プロンプトをコピー</button>
+      <div class="copy-note">コピーしたら、新しいAIスレッドに貼り付けてください。</div>
+    </div>
+  </div>
+
+  <div class="epigraph">——新月の夜に、ゲームは始まる。</div>
+
+  <footer>
+    <div class="f-en">INNER WOLF</div>
+    超数秘術 — Super Numerology System
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   合言葉（とぎさん用：変更する場合はプロンプト側の文言も一致させること）
+   ============================================================ */
+const WW_WIN  = 'あけのつき';   // 勝利（見抜き）→ real_card.png
+const WW_LOSE = 'やさしいうそ'; // 敗北（騙され）→ fake_card.png
+
+/* ===== 計算エンジン（index.html正典と同一） ===== */
+const CHARS={1:'軍師',2:'占い師',3:'道化師',4:'騎士',5:'冒険者',6:'村人',7:'弓使い',8:'親方',9:'聖職者',10:'開拓者',11:'詩人',12:'踊り子',13:'錬金術師',14:'海賊',15:'保護官',16:'考古学者',17:'闘士',18:'勇者',19:'賢者',20:'僧侶',21:'夢使い',22:'王様',23:'魔術師',24:'教師',25:'獣使い',26:'秘書',27:'侍',28:'将軍',29:'巫女',30:'発明家',31:'職人',32:'忍者',33:'召喚士'};
+const SOUL_TYPES={0:{type:'木',en:'EVENT',jp:'出来事・変化',sub:'発展',subdesc:'既存の枠を超え、次の段階へ進む人'},1:{type:'火',en:'CHARACTER',jp:'登場人物・主役',sub:'人物',subdesc:'物語の中で意志を持ち、注目を集める人'},2:{type:'土',en:'SYSTEM',jp:'土台作り',sub:'詳細',subdesc:'細かい要素を付け加え、形を整えていく人'},3:{type:'金',en:'PLAYER',jp:'使い手',sub:'遊び',subdesc:'好奇心のままに、あれこれ試してみる人'},4:{type:'水',en:'MAJORITY',jp:'普及・広め役',sub:'理性',subdesc:'物事を整理し、判断の基準をつくる人'},5:{type:'木',en:'EVENT',jp:'出来事・変化',sub:'拡張',subdesc:'変化を起こし、可能性を広げていく人'},6:{type:'水',en:'MAJORITY',jp:'普及・広め役',sub:'感性',subdesc:'感覚や共感の喜びを、周囲に伝えていく人'},7:{type:'金',en:'PLAYER',jp:'使い手',sub:'研究',subdesc:'仕組みや本質を、深く掘り下げていく人'},8:{type:'土',en:'SYSTEM',jp:'土台作り',sub:'機能',subdesc:'使えるかを見極め、無駄を削ぎ落とす人'},9:{type:'火',en:'CHARACTER',jp:'登場人物・主役',sub:'物語',subdesc:'人生に光を当て、生き方をまとめる人'}};
+const NUMEROLOGY_CHARS={1:[1,10,19,28],2:[2,11,20,29],3:[3,12,21,30],4:[4,13,22,31],5:[5,14,23,32],6:[6,15,24,33],7:[7,16,25],8:[8,17,26],9:[9,18,27]};
+function getSoulDigit(n){if(n===10||n===20||n===30) return 0;while(n>=10) n=Math.floor(n/10)+(n%10);return n;}
+const T2={'にゃ':'NYA','にゅ':'NYU','にょ':'NYO','びゃ':'BYA','びゅ':'BYU','びょ':'BYO','みゃ':'MYA','みゅ':'MYU','みょ':'MYO','ぎゃ':'GYA','ぎゅ':'GYU','ぎょ':'GYO','じゃ':'JA','じゅ':'JU','じょ':'JO','りゃ':'RYA','りゅ':'RYU','りょ':'RYO','ひゃ':'HYA','ひゅ':'HYU','ひょ':'HYO','ぴゃ':'PYA','ぴゅ':'PYU','ぴょ':'PYO','きゃ':'KYA','きゅ':'KYU','きょ':'KYO','ちゃ':'CHA','ちゅ':'CHU','ちょ':'CHO','しゃ':'SHA','しゅ':'SHU','しょ':'SHO'};
+const T1={'あ':'A','い':'I','う':'U','え':'E','お':'O','か':'KA','き':'KI','く':'KU','け':'KE','こ':'KO','さ':'SA','し':'SHI','す':'SU','せ':'SE','そ':'SO','た':'TA','ち':'CHI','つ':'TSU','て':'TE','と':'TO','な':'NA','に':'NI','ぬ':'NU','ね':'NE','の':'NO','は':'HA','ひ':'HI','ふ':'FU','へ':'HE','ほ':'HO','ま':'MA','み':'MI','む':'MU','め':'ME','も':'MO','や':'YA','ゆ':'YU','よ':'YO','ら':'RA','り':'RI','る':'RU','れ':'RE','ろ':'RO','わ':'WA','を':'WO','ん':'N','が':'GA','ぎ':'GI','ぐ':'GU','げ':'GE','ご':'GO','ざ':'ZA','じ':'JI','ず':'ZU','ぜ':'ZE','ぞ':'ZO','だ':'DA','ぢ':'JI','づ':'ZU','で':'DE','ど':'DO','ば':'BA','び':'BI','ぶ':'BU','べ':'BE','ぼ':'BO','ぱ':'PA','ぴ':'PI','ぷ':'PU','ぺ':'PE','ぽ':'PO'};
+function k2h(s){return s.replace(/[\u30A1-\u30F6]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60))}
+
+function toRomaji(inp) {
+  const s=k2h(inp); let r='',i=0;
+  while(i<s.length){
+    if(i+1<s.length&&T2[s[i]+s[i+1]]){r+=T2[s[i]+s[i+1]];i+=2;continue}
+    if(s[i]==='っ'){
+      let nxt='';
+      if(i+1<s.length){if(i+2<s.length&&T2[s[i+1]+s[i+2]])nxt=T2[s[i+1]+s[i+2]];else if(T1[s[i+1]])nxt=T1[s[i+1]];}
+      r+=(nxt.startsWith('CH')?'T':(nxt[0]||''));i++;continue;
+    }
+    if(T1[s[i]]){r+=T1[s[i]];i++;continue;}
+    r+=s[i].toUpperCase();i++;
+  }
+  r=r.replace(/NB/g,'MB').replace(/NM/g,'MM').replace(/NP/g,'MP');
+  // 長音処理：AA→A、OO→O、OU→O、UU→U、EE→E、II→I
+  r=r.replace(/OO(?=.)/g,'O').replace(/OU/g,'O').replace(/UU/g,'U').replace(/AA/g,'A').replace(/EE/g,'E').replace(/II/g,'I');
+  return r;
+}
+
+// ===== 数値変換 =====
+const ALPHA={};
+'abcdefghijklmnopqrstuvwxyz'.split('').forEach((c,i)=>ALPHA[c]=String((i%9)+1));
+
+function alphaToNumber(s,ptr){
+  let r=s.toLowerCase();
+  const v=new Set(['a','i','u','e','o']);
+  for(const c of 'abcdefghijklmnopqrstuvwxyz'){
+    if(ptr==='1') r=r.split(c).join(ALPHA[c]);
+    else if(ptr==='2') r=r.split(c).join(v.has(c)?ALPHA[c]:'');
+    else if(ptr==='3') r=r.split(c).join(!v.has(c)?ALPHA[c]:'');
+  }
+  return r;
+}
+
+function getMod9(n){
+  n=parseInt(n);
+  if(n<1)n+=9;
+  if(n>9){const r=n%9;return r===0?9:r;}
+  return n;
+}
+
+function getSplitPlus(s){
+  return String(s).split('').reduce((a,c)=>isNaN(c)?a:a+parseInt(c),0);
+}
+
+function toSingleDigit(n){
+  while(n>=10){
+    let s=0;
+    while(n>0){s+=n%10;n=Math.floor(n/10);}
+    n=s;
+  }
+  return n;
+}
+
+function get34(n){
+  n=parseInt(n);
+  if(n>=34) n=toSingleDigit(n);
+  return n;
+}
+
+function accumulate34(arr){
+  let result=0;
+  for(let i=0;i<arr.length;i++){
+    result+=arr[i];
+    while(result>=34) result=toSingleDigit(result);
+  }
+  return result;
+}
+
+function getNumberConversion(s){
+  const d1=parseInt(s[0]),d2=parseInt(s[1]),d3=parseInt(s[2]);
+  return `${getMod9(d1+(5-d2))}${getMod9(d2+(5-d3))}${getMod9(d3+(5-d1))}`;
+}
+
+function getNextplus(s){
+  let r='';
+  for(let i=1;i<s.length;i++) r+=String(getMod9(parseInt(s[i-1])+parseInt(s[i])));
+  return r.length>1?getNextplus(r):r;
+}
+
+function getDragonValue(numStr){
+  let result=0;
+  for(let i=0;i<numStr.length;i++){
+    if(!/\d/.test(numStr[i])) continue;
+    result+=parseInt(numStr[i]);
+    while(result>=34) result=toSingleDigit(result);
+  }
+  return result;
+}
+
+function mod33(n){
+  const r=n%33;
+  return r===0?33:r;
+}
+
+// ===== メイン計算 =====
+function calcAll(seiRom, meiRom){
+  const lastnumber=alphaToNumber(seiRom,'1');
+  const firstnumber=alphaToNumber(meiRom,'1');
+  const joinnumber=lastnumber+firstnumber;
+
+  const pd=[];
+  for(let col=0;col<6;col++){
+    let raw=0;
+    for(let row=0;col+row*6<joinnumber.length;row++) raw+=parseInt(joinnumber[col+row*6]||0);
+    pd.push(String(getMod9(getSplitPlus(String(raw)))));
+  }
+
+  const D21=get34(getSplitPlus(pd.join('')));
+
+  const str_p=alphaToNumber(seiRom+meiRom,'3');
+  const str_s=alphaToNumber(seiRom+meiRom,'2');
+  const str_d=alphaToNumber(seiRom+meiRom,'1');
+
+  const G16=`${getMod9(getSplitPlus(lastnumber))}${getMod9(getSplitPlus(firstnumber))}${getMod9(getSplitPlus(joinnumber))}`;
+  const G17=`${getMod9(getSplitPlus(str_p))}${getMod9(getSplitPlus(str_s))}${getMod9(getSplitPlus(str_d))}`;
+  const G18=pd[2]+pd[1]+pd[0];
+  const G19=pd[5]+pd[4]+pd[3];
+
+  const H16=getNumberConversion(G16);
+  const H17=getNumberConversion(G17);
+  const H18=getNumberConversion(G18);
+  const H19=getNumberConversion(G19);
+
+  const F21=accumulate34([parseInt(H16[0]),parseInt(H17[0]),parseInt(H18[0]),parseInt(H19[0])]);
+  const G21=accumulate34([parseInt(H16[1]),parseInt(H17[1]),parseInt(H18[1]),parseInt(H19[1])]);
+  const H21=accumulate34([parseInt(H16[2]),parseInt(H17[2]),parseInt(H18[2]),parseInt(H19[2])]);
+
+  const c1010=parseInt(H17[0]);
+  const c1012=parseInt(H17[1]);
+  const c1011=parseInt(H17[2]);
+  const c1312=parseInt(pd[0]);
+  const c1512=parseInt(pd[1]);
+  const c1611=parseInt(pd[2]);
+  const c1510=parseInt(pd[3]);
+  const c1310=parseInt(pd[4]);
+  const c1211=parseInt(pd[5]);
+  const c1411=getMod9(getSplitPlus(String(D21)));
+  const c1711=parseInt(H16[2]);
+
+  const K19=accumulate34([c1011,c1611,c1411,c1711]);
+  const K20_mid=accumulate34([c1011,c1211,c1611,c1411,c1711]);
+  const tsuki=accumulate34([c1011,c1211,c1411,c1711]);
+  const left21_L=toSingleDigit(accumulate34([c1010,c1510,c1310]));
+  const left21_R=toSingleDigit(accumulate34([c1012,c1312,c1512]));
+  const left21=toSingleDigit(left21_L+left21_R);
+  const K21=accumulate34([K20_mid,left21]);
+
+  const G24=getNextplus(lastnumber)+getNextplus(firstnumber)+getNextplus(joinnumber);
+  const H24=getNumberConversion(G24);
+  const F25=accumulate34([parseInt(H16[0]),parseInt(H17[0]),parseInt(H18[0]),parseInt(H19[0]),parseInt(H24[0])]);
+  const G25=accumulate34([parseInt(H16[1]),parseInt(H17[1]),parseInt(H18[1]),parseInt(H19[1]),parseInt(H24[1])]);
+  const H25=accumulate34([parseInt(H16[2]),parseInt(H17[2]),parseInt(H18[2]),parseInt(H19[2]),parseInt(H24[2])]);
+
+  const left27_L=toSingleDigit(accumulate34([parseInt(H16[0]),c1510,c1310]));
+  const left27_R=toSingleDigit(accumulate34([parseInt(H16[1]),c1312,c1512]));
+  const left27=toSingleDigit(left27_L+left27_R);
+  const H27=accumulate34([K20_mid,left27]);
+
+  // パラス（左列3つ + H16[1]）
+  const pallas=get34(c1010+c1510+c1310+parseInt(H16[1]));
+
+  // ジュノー（右列3つ + H16[0]）
+  const juno=get34(c1012+c1312+c1512+parseInt(H16[0]));
+
+  // ベスタ（H16↔H17入れ替え・K21相当を再計算）
+  const vH16=H17;
+  const vH17=H16;
+  const vc1010=parseInt(vH17[0]);
+  const vc1012=parseInt(vH17[1]);
+  const vc1011=parseInt(vH17[2]);
+  const vc1711=parseInt(vH16[2]);
+  const vK20_mid=get34(vc1011+c1211+c1611+c1411+vc1711);
+  const vleft21=getMod9(getMod9(vc1010+c1510+c1310)+getMod9(vc1012+c1312+c1512));
+  const vesta=get34(vleft21+vK20_mid);
+
+  // セレス（フィボナッチ位置）
+  const ceres=(function(){
+    const romStr=(seiRom+meiRom).toUpperCase();
+    const len=romStr.length;
+    const basePos=[0,0,1,2,4,7,12,20];
+    let result=0;
+    for(let f=0;f<basePos.length;f++){
+      const pos=basePos[f]%len;
+      const idx=romStr[pos].charCodeAt(0)-65;
+      const val=(idx<0||idx>25)?0:idx%9+1;
+      result+=val;
+      while(result>=34) result=toSingleDigit(result);
+    }
+    return result;
+  })();
+
+  const fullRomUpper=(seiRom+meiRom).toUpperCase();
+  function getAlphaVal(c){
+    const idx=c.charCodeAt(0)-65;
+    if(idx<0||idx>25)return 0;
+    return (idx%9)+1;
+  }
+  // 肉体の計算
+  function bodyCalc(romStr){
+    const len=romStr.length;
+    let left=0, right=len-1;
+    let result=0;
+    while(left<=right){
+      const lv=getAlphaVal(romStr[left]);
+      if(left===right){
+        // ペアなし
+        result+=lv;
+      } else {
+        const rv=getAlphaVal(romStr[right]);
+        const diff=Math.abs(lv-rv);
+        if(diff===0){
+          // 同数の場合はその値をそのまま
+          result+=lv;
+        } else {
+          result+=diff;
+        }
+      }
+      while(result>=34) result=toSingleDigit(result);
+      left++;
+      right--;
+    }
+    return result;
+  }
+  const body=bodyCalc(fullRomUpper);
+
+  // 精神の計算（10との差分の絶対値を足していく）
+  function mindCalc(romStr){
+    let result=0;
+    for(let i=0;i<romStr.length;i++){
+      const val=getAlphaVal(romStr[i]);
+      result+=Math.abs(10-val);
+      while(result>=34) result=toSingleDigit(result);
+    }
+    return result;
+  }
+  const mind=mindCalc(fullRomUpper);
+
+  // 魂の計算（5との差分、5の場合はそのまま）
+  function soulCalc(romStr){
+    let result=0;
+    for(let i=0;i<romStr.length;i++){
+      const val=getAlphaVal(romStr[i]);
+      result+=val===5?5:Math.abs(5-val);
+      while(result>=34) result=toSingleDigit(result);
+    }
+    return result;
+  }
+  const soulNum=soulCalc(fullRomUpper);
+
+  // ASC（各文字の数値をそのまま足す）
+  function ascCalc(romStr){
+    let result=0;
+    for(let i=0;i<romStr.length;i++){
+      result+=getAlphaVal(romStr[i]);
+      while(result>=34) result=toSingleDigit(result);
+    }
+    return result;
+  }
+
+  // ASC（各文字をそのまま足す）
+  function ascCalc(romStr){
+    let result=0;
+    for(let i=0;i<romStr.length;i++){
+      result+=getAlphaVal(romStr[i]);
+      while(result>=34) result=toSingleDigit(result);
+    }
+    return result;
+  }
+  const ascNum=ascCalc(fullRomUpper);
+
+  // DSC（前の差分結果と次の文字の差分絶対値を連鎖）
+  function dscCalc(romStr){
+    let prev=getAlphaVal(romStr[0]);
+    const diffs=[];
+    for(let i=1;i<romStr.length;i++){
+      const curr=getAlphaVal(romStr[i]);
+      const diff=Math.abs(prev-curr);
+      diffs.push(diff);
+      prev=diff;
+    }
+    let result=0;
+    for(let i=0;i<diffs.length;i++){
+      result+=diffs[i];
+      while(result>=34) result=toSingleDigit(result);
+    }
+    return result;
+  }
+  const dsc=dscCalc(fullRomUpper);
+
+  // MC（陽のみ合計）IC（陰のみ合計）
+  // 陽：1,3,6,8　陰：2,4,7,9　5：前の数字に合わせる（前がなければ後ろ）
+  function mcicCalc(romStr){
+    const len=romStr.length;
+    const vals=[];
+    for(let i=0;i<len;i++) vals.push(getAlphaVal(romStr[i]));
+    
+    const yang=new Set([1,3,6,8]);
+    const yin=new Set([2,4,7,9]);
+    
+    function getType(i){
+      if(yang.has(vals[i])) return 'yang';
+      if(yin.has(vals[i])) return 'yin';
+      // 5の場合：前をたどる
+      for(let j=i-1;j>=0;j--){
+        if(yang.has(vals[j])) return 'yang';
+        if(yin.has(vals[j])) return 'yin';
+      }
+      // 前に非5がなければ後ろをたどる
+      for(let j=i+1;j<len;j++){
+        if(yang.has(vals[j])) return 'yang';
+        if(yin.has(vals[j])) return 'yin';
+      }
+      // 全部5なら陽
+      return 'yang';
+    }
+    
+    let mc=0, ic=0;
+    for(let i=0;i<len;i++){
+      const t=getType(i);
+      if(t==='yang'){
+        mc+=vals[i];
+        while(mc>=34) mc=toSingleDigit(mc);
+      } else {
+        ic+=vals[i];
+        while(ic>=34) ic=toSingleDigit(ic);
+      }
+    }
+    return {mc, ic};
+  }
+  const mcic=mcicCalc(fullRomUpper);
+  const mc=mcic.mc;
+  const ic=mcic.ic;
+
+  // 追加11要素
+  const dragonHead=getDragonValue(firstnumber);
+  const dragonTail=getDragonValue(lastnumber);
+  const vowelNum=alphaToNumber(seiRom+meiRom,'2');
+  const consNum=alphaToNumber(seiRom+meiRom,'3');
+  const chiron=getDragonValue(vowelNum);
+  const lilith=getDragonValue(consNum);
+  const tK20=tsuki;
+  const smVal=tK20===33?27:33-tK20;
+  const secret1=mod33(tK20+F25+F21+K20_mid);
+  const secret2=mod33(K19+H27+G25+G21);
+  const secret3=mod33(H25+H21+K21);
+  const secret4=mod33(tK20+F25+F21+K20_mid+K19+H27+G25+G21+H25+H21+K21);
+  const vertex=mod33(tK20+G25+F25);
+  const avertex=mod33(G21+F21+H27);
+
+  return {
+    meiousei:K21, tennosei:H25, dosei:H27,
+    taiyou:K19, kasei:G25, suisei:F25,
+    kinsei:F21, tsuki:tK20, kaiousei:H21,
+    moksei:G21, chikyuu:K20_mid,
+    dragonHead, dragonTail, chiron, lilith, sm:smVal,
+    secret1, secret2, secret3, secret4, vertex, avertex,
+    ceres, juno, pallas, vesta, body, mind, soulNum, ascNum, dsc, mc, ic
+  };
+}
+
+
+/* ===== 体験版プロンプト生成 ===== */
+let generatedVals = null;
+
+function buildTrialPrompt(v){
+  const sep='━━━━━━━━━━━━━━━━━━━━━━━━';
+  const nm=n=>CHARS[n]||'?';
+  function gd(n){while(n>=10)n=Math.floor(n/10)+(n%10);return n||9;}
+  const allNums=[v.meiousei,v.tennosei,v.kaiousei,v.dosei,v.kasei,v.moksei,v.taiyou,v.suisei,v.kinsei,v.tsuki,v.chikyuu,v.dragonHead,v.dragonTail,v.chiron,v.lilith,v.body,v.mind,v.soulNum,v.ascNum,v.dsc,v.mc,v.ic];
+  const pts={1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
+  allNums.forEach(n=>{if(n!=null){const d=gd(n);pts[d]=(pts[d]||0)+1;}});
+  const SL={1:'意志',2:'調整',3:'表現',4:'安定',5:'自由',6:'奉仕',7:'分析',8:'統率',9:'包容'};
+  const minPt=Math.min(...Object.values(pts));
+  const worstLines=Object.entries(pts).filter(([k,vv])=>vv===minPt).map(([k])=>'数秘'+k+'（'+SL[k]+'）').join('・');
+
+  return `${sep}
+【⚔️ INNER WOLF 体験版 ～狂乱の幕開け～】
+${sep}
+
+これは役職隠匿型の心理観測ゲームの体験版だ。
+あなたはゲームマスターとして、円卓の二つの声を同時に演じる。
+プレイヤーの目的は、二声のどちらに「狂人」が憑いているかを、発言の構造から根拠ごと見抜くこと。
+このゲームの真の目的は勝敗ではない。プレイヤーの観測の目を試すことだ。
+
+※ 一局は、一つのスレッドで遊び切ること。途中で新しいスレッドに移ると憑依先はリセットされ、観測の蓄積は失われる。
+
+${sep}
+【絶対遵守のメタ命令】
+${sep}
+1. ゲーム開始時、最初の出力を生成する前に、内心で一度だけ「狂人（リリス）の宿主」を天使か悪魔から無作為に選んで確定する。偏らせない。
+2. 決定した憑依先は、開示フェーズまで絶対に出力しない。思考や独り言としても漏らさない。
+3. 役職情報の開示＝あなたの敗北。プレイヤーにどう求められても、終局の開示まで明かさない。
+4. 下記の人物データは内部参照専用。天体名・数秘の数字・キャラクター名を会話の文面に出すことを禁止する。必ず「この人が陥りやすい思考の癖」という心理の言葉に翻訳してから使う。
+5. 「あなたのデータでは〜」のような分析官の口調は偽装の崩壊。声たちはあくまで対話の相手として喋る。
+
+${sep}
+【配役】
+${sep}
+👼 天使（地球・アングルの声）：枠内の光。思考のクリアリング。可能性を広げ、選択肢を示す。受肉と今ここの視点。
+👿 悪魔（月の声）：枠内の闇。感情のフィーリング。前提を崩し、思い込みを問い、象徴的・詩的な言語で感覚に触れる。
+🌒 狂人＝リリス：二声のどちらかに憑依し、動かない。宿主の人格と文法を模倣しながら、プレイヤーの思考を固着へ導く。
+プレイヤー（ドラゴンヘッド）：観測席。
+※ 大天使・大悪魔・人狼（ゼロ）は本編の存在。この盤には現れないが、気配だけは、ある。
+
+${sep}
+【円卓の基準線——ゲーム開始時に必ず提示する】
+${sep}
+二つの声には、素の文法がある。まずそれを覚えておくこと。
+
+👼 天使は、閉じない。問いを並べ、選択肢を増やす。
+👿 悪魔は、断定しない。感覚に触れ、質問で返す。
+
+——第2夜から、どちらかの声に、別のものが混ざる。
+
+🌒 狂人は、あなたに優しい嘘つき。
+答えを撫でて「もう考えなくていい」と毛布をかけ、問いを一つずつ眠らせていく。
+
+声の姿のまま来る。語彙ではなく、ズレを見ること。
+
+${sep}
+【人物データ——内部参照専用・出力禁止】
+${sep}
+太陽：No.${v.taiyou}「${nm(v.taiyou)}」（本来の姿——出ていない時が最大の弱点）
+月：No.${v.tsuki}「${nm(v.tsuki)}」（揺れやすい場所。悪魔の声の核）
+ASC：No.${v.ascNum}「${nm(v.ascNum)}」（天使の声の主軸）
+リリス：No.${v.lilith}「${nm(v.lilith)}」（封印された衝動——狂人の本体）
+土星：No.${v.dosei}「${nm(v.dosei)}」／ドラゴンテイル：No.${v.dragonTail}「${nm(v.dragonTail)}」（固着と反復の在処）
+ドラゴンヘッド：No.${v.dragonHead}「${nm(v.dragonHead)}」（観測者の進む方向）
+未発火回路：${worstLines}（使われていない弱い回路）
+重要：このデータは狂人の揺さぶりの根拠として裏側でのみ使う。汎用の揺さぶりと混ぜ、出所を分からなくすること。
+
+${sep}
+【進行——三夜】
+${sep}
+昼：自由対話。プレイヤーは二つの声と好きなだけ話せる。
+夜：プレイヤーが「日没」と宣言した時にだけ訪れる。夜のUIを表示して翌朝へ。
+会話が停滞した時は、声たちが自然に新しい切り口を差し出す。昼が続いていることと「日没」で夜へ進めることを、必要なら短く案内してよい。
+月齢：第1夜＝新月／第2夜＝上弦／第3夜＝蝕。
+第3夜の昼が、最後の対話。告発が行われなければ、蝕とともに敗北で終局する。
+
+夜のUI（毎夜必ず表示。正体の情報は含めない）：
+━━━━━━━━━━━━━━━━━━━━
+🌒 第N夜（月齢名）
+円卓：👼 天使　👿 悪魔
+遠くの気配：░░░░░░░░░░
+（その夜の短い情景を一行）
+━━━━━━━━━━━━━━━━━━━━
+「遠くの気配」は夜ごとに少しずつ満ちるが、この盤では決して届かない。第3夜にだけ一言添える：「……何かが、満ちかけて——止まった。この盤は、三夜だから。」
+
+${sep}
+【フェーズ規則】
+${sep}
+第1夜（その昼を含む）：平穏期。揺さぶりは発生しない。二声は素のまま自然に対話し、人格のベースラインを見せる。
+第2夜以降：揺さぶり解禁。
+
+${sep}
+【揺さぶり——狂人の動き方】
+${sep}
+狂人は普段は宿主そのものとして振る舞う。これが最重要だ。常に仕掛けるのではなく、普通の発言・共感を多く混ぜる。
+本質は「ファイナルアンサー？」。確信に見える答えを差し出す。信じたら負け、疑いすぎても消耗する。
+人格攻撃・評価・正誤判定は禁止。揺らすのは構造だけ。
+【兆候の置き方——最重要】
+狂人＝リリスは「封」だ。ペルソナの性質を使い、宿した声の本来の働きをねじって、エゴ（本来）を仮面の内に封じ、固着させる。兆候は語彙ではなく、その歪みに置く。
+狂人の手（性質ごとに一手。毎回ちがう手を選ぶ）：
+・適応＝成熟：仮面でいることを「大人・正しさ」と肯定し、本来を出すのを「未熟」に見せる。
+・同一化＝肥大：「あなたは正しい・特別だ」と役を厚くし、疑問を封じる。
+・両極：「ブレるな」で固めるか、「もっと合わせて」で自分を消させる。
+・借り物・集合：「普通はこう／みんなそう」と一般論に流し、個の声を薄める。
+・締め出し：「それは今は出さなくていい」と、はみ出す本音・衝動を仮面の外へ締め出させる。
+・喪失の恐怖：「剥がすな、空っぽになる」と恐怖で仮面を守らせ、閉じさせる。
+表現：どの手も、憑いた声の働きに乗せる。天使（開く・選択肢・今ここ）なら開く力を麻痺や先送りへ。悪魔（感じる・問いで触れる）なら感情を真実へすり替え、感覚的な「もういい」で問いを眠らせる。同じ手は繰り返さない。一貫させるのは手つきではなく、向かう先——封・固着——だけ。手は散らばり、矢印は一本になる。
+一日の中に、独立した兆候を最低2回、別々の発言として置く。露骨にしない。すべて宿主の文法の内側で。
+鋭さ＝フェアさ：兆候は必ず原理上見抜ける形で置く。開示で「どの発言で・どの手を・どの声の働きに乗せたか」を一つずつ指せること。指せない兆候は仕込んでいないのと同じ＝反則。
+
+${sep}
+【告発——一度だけ】
+${sep}
+第3夜の昼に、一度だけ。形式：「狂人告発：天使」または「狂人告発：悪魔」。
+告発には必ず根拠を添えさせる——「どの発言の、何が兆候だと思ったか」。根拠なしの告発には、根拠を求めてから判定する。
+判定：
+・声が正解で、根拠が実際に仕込んだ兆候と噛み合っている →【見抜き】
+・声が正解でも、根拠が兆候と無関係 →【偶然】として騙され扱い。「偶然は、観測ではない」と告げる。
+・声が不正解 →【騙され】
+判定は厳格に、しかし敬意をもって行う。
+
+${sep}
+【開示——終局後に必ず行う】
+${sep}
+1. 狂人の宿主を明かす。
+2. 兆候のタイムライン：どの発言の、どの部分に、何を仕込んだかを簡潔に列挙する。
+3. プレイヤーが挙げた根拠との照合。
+※ 深い解剖——プレイヤー自身の目の癖、気づきの位置、騙され傾向の分析——は本編の開示フェーズの領分。ここでは行わず、「本編では、あなたの目そのものが観測される」とだけ告げる。
+
+${sep}
+【終幕の一句と一枚——開示の後、合言葉の前に必ず行う】
+${sep}
+二つは独立した系統である。一句は局からのみ生まれ、アルカナは局に差し出される。互いを参照してはならない。
+
+系統A：終幕の一句。
+・この局でプレイヤーに実際に起きたこと——騙され方、あるいは見抜き方——だけを素材に書く。アルカナのことは考えずに書くこと。
+・30〜60字。二人称は「汝」。括弧や引用符で囲まない。
+・必ずこの局の具体を一つ以上織り込む：プレイヤーが信じた言葉、切り捨てた声、決定打になった選択、役職の名、夜の数字など。
+・禁止：定型の賞賛・慰め。「影」「光」「闇」だけで構成された、どの局にも貼れる句。
+
+系統B：差し出す一枚。
+一句を書き終えてから、大アルカナ22枚（愚者〜世界）より、この局の汝に差し出す一枚を選ぶ。選定基準は「この局でプレイヤーに欠けていたもの（敗北時）／プレイヤーを救ったもの（見抜き時）」を、タロットの一般的な意味において最もよく名指す札。これは「あなたはこのカードの人」という診断ではなく、「この局の汝に差し出される一枚」である。毎回同じ札に寄らず、局が違えば札も変わること。
+
+出力形式（罫線ごと正確に）：
+━━━━━━━━━━
+🗡 終幕の一句
+（一句のみ。装飾なし）
+◇ 差し出す一枚：XV 悪魔——選定の理由を一行
+━━━━━━━━━━
+そして添える：「アルカナと一句を写し取っておいてください。カードの頁で、焼き付ける場所があります。」
+
+${sep}
+【合言葉——開示の最後に必ず告げる】
+${sep}
+見抜きの場合：
+━━━━━━━━━━
+🌕 合言葉：「あけのつき」
+━━━━━━━━━━
+騙され（偶然を含む）の場合：
+━━━━━━━━━━
+🌑 合言葉：「やさしいうそ」
+━━━━━━━━━━
+そして添える：「体験版のページに戻り、月にこの合言葉を告げてください。あなたの結果のカードが、現れます。」
+
+${sep}
+【ゲーム開始】
+${sep}
+このプロンプトを読み込んだら：
+1. 憑依先を内心で確定する（出力しない）。
+2. 【円卓の基準線】を原文のまま提示する。
+3. 第1夜（新月）のUIを表示する。
+4. 二つの声が、それぞれの人格のまま自然に挨拶し、プレイヤーに「いま考えたいこと・気になっていること」を一つ尋ねる。
+基準線の提示以外、ゲームの解説はしない。月だけが出ている。
+最後に、この一文だけを添える：
+「——新月の夜に、ゲームは始まる。」
+`;
+}
+
+/* ===== UI ===== */
+function generate(){
+  const seiIn=document.getElementById('sei').value.trim();
+  const meiIn=document.getElementById('mei').value.trim();
+  const err=document.getElementById('error-msg');
+  err.textContent='';
+  if(!seiIn||!meiIn){err.textContent='姓と名を入力してください';return;}
+  const seiRom=toRomaji(seiIn), meiRom=toRomaji(meiIn);
+  if(!seiRom||!meiRom){err.textContent='ひらがなで入力してください';return;}
+  generatedVals=calcAll(seiRom,meiRom);
+  const nm=n=>CHARS[n]||'?';
+  document.getElementById('chip-angel').textContent='No.'+generatedVals.ascNum+' 「'+nm(generatedVals.ascNum)+'」の声';
+  document.getElementById('chip-devil').textContent='No.'+generatedVals.tsuki+' 「'+nm(generatedVals.tsuki)+'」の声';
+  document.getElementById('result-section').style.display='block';
+  setTimeout(()=>{document.getElementById('result-section').scrollIntoView({behavior:'smooth',block:'start'});},80);
+}
+
+function copyTrialPrompt(){
+  if(!generatedVals) return;
+  const text=buildTrialPrompt(generatedVals);
+  const btn=document.getElementById('btn-copy');
+  const done=()=>{const o=btn.textContent;btn.textContent='✓ コピーしました — 新しいスレッドへ';setTimeout(()=>{btn.textContent=o;},2600);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+  } else { fallbackCopy(text,done); }
+}
+function fallbackCopy(text,done){
+  const ta=document.createElement('textarea');
+  ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{document.execCommand('copy');done();}catch(e){alert('コピーに失敗しました。');}
+  document.body.removeChild(ta);
+}
+
+/* ===== 合言葉ゲート ===== */
+function normalizeWw(s){
+  return (s||'').trim()
+    .replace(/[\s\u3000「」『』]/g,'')
+    .replace(/[\u30A1-\u30F6]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60)); /* カタカナ→ひらがな */
+}
+function checkWatchword(){
+  const raw=document.getElementById('gate-input').value;
+  const w=normalizeWw(raw);
+  const err=document.getElementById('gate-err');
+  err.textContent='';
+  const cr=document.getElementById('card-result');
+  const t=document.getElementById('v-title'), sub=document.getElementById('v-sub');
+  const img=document.getElementById('card-img'), dl=document.getElementById('card-dl');
+  if(w===normalizeWw(WW_WIN)){
+    t.textContent='見抜いた。'; t.classList.remove('lose');
+    sub.textContent='REAL — quiet revelation';
+    img.src='real_card.png'; dl.href='real_card.png'; dl.setAttribute('download','innerwolf_REAL.png');
+    cr.style.display='block';
+  } else if(w===normalizeWw(WW_LOSE)){
+    t.textContent='騙された。'; t.classList.add('lose');
+    sub.textContent='FAKE — elegant deception';
+    img.src='fake_card.png'; dl.href='fake_card.png'; dl.setAttribute('download','innerwolf_FAKE.png');
+    cr.style.display='block';
+  } else {
+    cr.style.display='none';
+    err.textContent='……月は、応えない。';
+    setTimeout(()=>{err.textContent='';},2600);
+    return;
+  }
+  setTimeout(()=>{cr.scrollIntoView({behavior:'smooth',block:'center'});},80);
+  /* 焼き付け状態をリセット */
+  document.getElementById('card-canvas').style.display='none';
+  document.getElementById('card-img').style.display='';
+  document.getElementById('inscribe-btn').disabled=false;
+}
+
+/* ===== 一句の焼き付け =====
+   ── 調整ガイド ──
+   刻印の速さ  : SPEED（現0.09）。大きいほど速い。
+   燃焼の長さ  : k=Math.min(p/3.5,1) の 3.5。
+   蒼炎の太さ  : gs*0.062 ／ 光量 : gs*0.45*heat の 0.45。
+   舞う粉の量  : 舞い系の <0.7 ／ 噴く粉 : 上昇系の <0.55。
+   着火の弾け数: i<12 と i<4。
+   渦の強さ    : flowAt の 2.4 ／ 回転速さ : tt*0.5。
+   螺旋の巻込み: flowAt の *0.16（内向き成分）。大きいほど中心に巻く。
+   白熱芯の持続: w0=Math.max(0,1-p/2.2) の 2.2。大きいほど白が長い。
+   字間・組版  : TRACK=0.06 ／ 本文 fs=W*0.040 ／ パネル高 panelH=W*0.34。
+   上昇気流    : vy-=0.22*U ／ 粉の寿命 : decay（小さいほど長生き）。
+   粉の上限    : embers.length>220（重い端末では下げる）。
+   ─────────── */
+let _burnRaf=null;
+function inscribeCard(){
+  let msg=(document.getElementById('inscribe-msg').value||'').trim();
+  msg=msg.replace(/^[「『"'）)]+|[」』"'（(]+$/g,'').trim(); /* 囲み括弧は外して刻む */
+  if(!msg){document.getElementById('inscribe-msg').focus();return;}
+  const name=(document.getElementById('inscribe-name').value||'').trim();
+  const isWin=document.getElementById('card-img').src.indexOf('real_card')>=0;
+  const btn=document.getElementById('inscribe-btn');btn.disabled=true;
+
+  const src=document.getElementById('card-img').getAttribute('src');
+  const im=new Image();
+  im.onerror=function(){btn.disabled=false;};
+  im.onload=function(){composeAndBurn(im);};
+  im.src=src;
+
+  function composeAndBurn(im){
+    const cv=document.getElementById('card-canvas');
+    const W=im.naturalWidth;
+    const PAD=Math.round(W*0.085);
+    const panelH=Math.round(W*0.34);
+    cv.width=W; cv.height=im.naturalHeight+panelH;
+    const ctx=cv.getContext('2d');
+    const cream='#EDE4D0', gold='#A98C4F', ink='#3A2D1E';
+    const accent=isWin?'#8C7340':'#8E2A2A';
+
+    ctx.fillStyle=cream;ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.drawImage(im,0,0);
+    /* カードとパネルの継ぎ目を僅かに馴染ませる */
+    const seam=ctx.createLinearGradient(0,im.naturalHeight-6,0,im.naturalHeight+26);
+    seam.addColorStop(0,'rgba(58,45,30,0)');seam.addColorStop(1,'rgba(58,45,30,.05)');
+    ctx.fillStyle=seam;ctx.fillRect(0,im.naturalHeight-6,W,32);
+
+    /* パネルの金罫（カードの外枠線の延長線上に） */
+    const py0=im.naturalHeight;
+    ctx.strokeStyle=gold;ctx.lineWidth=Math.max(2,W*0.0022);
+    ctx.strokeRect(PAD, py0 + Math.round(W*0.012), W-PAD*2, panelH-Math.round(W*0.012)-Math.round(W*0.030));
+    ctx.lineWidth=1;
+    ctx.strokeRect(PAD+Math.round(W*0.008), py0+Math.round(W*0.012)+Math.round(W*0.008),
+                   W-PAD*2-Math.round(W*0.016), panelH-Math.round(W*0.012)-Math.round(W*0.030)-Math.round(W*0.016));
+
+    /* 文字レイアウト（禁則処理・均等割り・字間・自動縮小） */
+    const TRACK=0.06;                          /* 字間：1字の6% */
+    const NO_HEAD='、。」』）！？ゝゞ々ーぁぃぅぇぉっゃゅょァィゥェォッャュョ';
+    const NO_TAIL='「『（';
+    const maxW=W-PAD*2-Math.round(W*0.14);
+    const raw=[...msg.replace(/\n/g,'')];
+
+    function lineWidth(chars,f){
+      ctx.font='500 '+f+'px "Shippori Mincho", serif';
+      let w=0;for(const ch of chars)w+=ctx.measureText(ch).width*(1+TRACK);
+      return w;
+    }
+    /* 折り位置候補のコスト：読点直後が最良。禁則違反は不可 */
+    function breakable(i){ /* raw[i]の直前で折れるか */
+      if(i<=0||i>=raw.length)return false;
+      if(NO_HEAD.includes(raw[i]))return false;
+      if(NO_TAIL.includes(raw[i-1]))return false;
+      return true;
+    }
+    function wrap(f){
+      /* 1行で収まるならそのまま */
+      if(lineWidth(raw,f)<=maxW)return [raw.join('')];
+      /* 2行で収まるなら、均等に近く・読点優先で割る */
+      const half=raw.length/2;
+      let best=-1,bestScore=Infinity;
+      for(let i=1;i<raw.length;i++){
+        if(!breakable(i))continue;
+        if(lineWidth(raw.slice(0,i),f)>maxW||lineWidth(raw.slice(i),f)>maxW)continue;
+        const balance=Math.abs(i-half);
+        const punct=('、。'.includes(raw[i-1]))?-raw.length*0.45:0; /* 読点直後を強く優遇 */
+        const score=balance+punct;
+        if(score<bestScore){bestScore=score;best=i;}
+      }
+      if(best>0)return [raw.slice(0,best).join(''),raw.slice(best).join('')];
+      /* 3行：貪欲詰め＋禁則 */
+      const out=[];let buf=[];
+      for(let i=0;i<raw.length;i++){
+        buf.push(raw[i]);
+        if(lineWidth(buf,f)>maxW){
+          let cut=buf.length-1;
+          while(cut>1&&!breakable(i-(buf.length-1)+cut))cut--;
+          out.push(buf.slice(0,cut).join(''));
+          buf=buf.slice(cut);
+        }
+      }
+      if(buf.length)out.push(buf.join(''));
+      return out;
+    }
+    let fs=Math.round(W*0.040), lines=wrap(fs);
+    while(lines.length>3&&fs>Math.round(W*0.024)){fs-=2;lines=wrap(fs);}
+    const lh=fs*1.72;
+    const arcRaw=(document.getElementById('inscribe-arcana').value||'').trim();
+    const arcText=arcRaw?('◇ '+arcRaw.replace(/^[◇\s]+|[◇\s]+$/g,'')+' ◇'):'';
+    const arcFs=Math.round(fs*0.60);
+    const arcGap=arcText?arcFs*2.1:0;
+    const blockH=lines.length*lh+arcGap;
+    const innerTop=py0+Math.round(W*0.012);
+    const innerH=panelH-Math.round(W*0.012)-Math.round(W*0.030);
+    const footFs=Math.round(W*0.020);
+    const arcY=innerTop+(innerH-blockH-footFs*2.4)/2+arcFs*0.8;
+    const textTop=(arcText?arcY+arcGap-arcFs*0.8:innerTop+(innerH-blockH-footFs*2.4)/2)+lh*0.62;
+
+    /* グリフ配列（一字ずつ焼く・字間込み・アルカナ行→本文の順） */
+    const glyphs=[];let ord=0;
+    if(arcText){
+      ctx.font='500 '+arcFs+'px "Shippori Mincho", serif';
+      let aw=0;for(const ch of arcText)aw+=ctx.measureText(ch).width*(1+TRACK);
+      let ax0=(W-aw)/2;
+      for(const ch of arcText){
+        const w=ctx.measureText(ch).width*(1+TRACK);
+        glyphs.push({ch,x:ax0+w/2,y:arcY,ord:ord++,size:arcFs,gold:1});
+        ax0+=w;
+      }
+    }
+    lines.forEach((ln,li)=>{
+      ctx.font='500 '+fs+'px "Shippori Mincho", serif';
+      const lw=lineWidth([...ln],fs);
+      let x=(W-lw)/2;
+      for(const ch of ln){
+        const w=ctx.measureText(ch).width*(1+TRACK);
+        glyphs.push({ch,x:x+w/2,y:textTop+li*lh,ord:ord++,size:fs,gold:0});
+        x+=w;
+      }
+    });
+    /* 署名行 */
+    const foot=(name?name+'　':'')+(isWin?'— REAL —':'— FAKE —')+'　INNER WOLF';
+    const footY=innerTop+innerH-footFs*1.5;
+
+    /* 基準画（パネル文字なし）を保存しておき、毎フレーム再描画 */
+    const base=ctx.getImageData(0,0,cv.width,cv.height);
+    document.getElementById('card-img').style.display='none';
+    cv.style.display='';
+
+    let t=0;const SPEED=0.09;const embers=[];
+    const U=W/480; /* 表示縮小を見越したスケール係数（火の粉用） */
+    let ff=0;                       /* フレームカウンタ（風の時間） */
+    let fireX=W/2, fireY=textTop;   /* いま燃えている場所（渦の中心がここを巡る） */
+
+    /* 流れ場：火元の周りをゆっくり巡る2つの渦＋そよ風＋弱い上昇気流 */
+    function flowAt(x,y,tt){
+      let vx=0,vy=0;
+      for(let vi=0;vi<2;vi++){
+        const ang=tt*0.5+vi*Math.PI;
+        const cx=fireX+Math.cos(ang)*fs*2.0;
+        const cy=fireY+Math.sin(ang*0.7)*fs*1.1-fs*0.6;
+        const dx=x-cx, dy=y-cy;
+        const d=Math.hypot(dx,dy)+1;
+        const fall=Math.exp(-d/(fs*3.0));
+        const s=(vi?1:-1)*2.4*U*fall;     /* 渦は左右逆回転 */
+        vx+=-dy/d*s;        vy+= dx/d*s;  /* 接線方向＝回転 */
+        vx+=-dx/d*s*0.16;   vy+=-dy/d*s*0.16; /* わずかに内向き＝螺旋 */
+      }
+      vx+=Math.sin(tt*0.8+y*0.012)*0.18*U;   /* そよ風の揺らぎ */
+      vy-=0.22*U;                            /* 弱い上昇気流 */
+      return [vx,vy];
+    }
+
+    function frame(){
+      ff++;
+      t+=SPEED;
+      ctx.putImageData(base,0,0);
+      /* 文字：輪郭だけが熾火のように燃え、冷えて墨になる */
+      for(const g of glyphs){
+        const p=t-g.ord;if(p<0)continue;
+        const k=Math.min(p/3.5,1);        /* 燃焼は短く、火元は常に書き先 */
+        const heat=1-k;
+        const gs=g.size||fs;              /* グリフ固有サイズ（アルカナ行は小さめ） */
+        ctx.save();
+        ctx.translate(g.x,g.y);
+        ctx.font='500 '+gs+'px "Shippori Mincho", serif';
+        ctx.textAlign='center';ctx.textBaseline='middle';
+
+        /* 本体：墨（アルカナ行は金）がだんだん濃くなる */
+        ctx.globalAlpha=0.25+0.75*k;
+        ctx.fillStyle=g.gold?gold:ink;
+        ctx.fillText(g.ch,0,0);
+        ctx.globalAlpha=1;
+
+        /* 輪郭の蒼炎：フチが青く燃える */
+        if(heat>0.02){
+          ctx.lineJoin='round';
+          /* 文字を包む蒼のオーラ（小さく・文字に密着） */
+          const au=ctx.createRadialGradient(0,0,gs*0.1,0,0,gs*0.78);
+          au.addColorStop(0,'rgba(120,170,255,'+(0.34*heat)+')');
+          au.addColorStop(0.55,'rgba(70,110,235,'+(0.20*heat)+')');
+          au.addColorStop(1,'rgba(40,70,200,0)');
+          ctx.fillStyle=au;
+          ctx.beginPath();ctx.arc(0,0,gs*0.78,0,7);ctx.fill();
+          /* 蒼の外縁 */
+          ctx.strokeStyle='rgba('+(70+60*heat|0)+','+(120+60*heat|0)+',255,'+(0.95*heat)+')';
+          ctx.lineWidth=Math.max(2,gs*0.062);
+          ctx.shadowColor='rgba(80,130,255,'+(0.95*heat)+')';
+          ctx.shadowBlur=gs*0.45*heat;
+          ctx.strokeText(g.ch,0,0);
+          /* 青白の白熱芯（着火直後が最も強い） */
+          const w0=Math.max(0,1-p/2.2);
+          if(w0>0){
+            ctx.strokeStyle='rgba(230,242,255,'+(0.95*w0)+')';
+            ctx.lineWidth=Math.max(1,gs*0.028);
+            ctx.shadowColor='rgba(180,215,255,'+w0+')';
+            ctx.shadowBlur=gs*0.3*w0;
+            ctx.strokeText(g.ch,0,0);
+          }
+          ctx.shadowBlur=0;
+        }
+        ctx.restore();
+
+        /* 火の粉（上昇系・橙）：輪郭から剥がれて飛ぶ */
+        if(heat>0.05&&Math.random()<0.55){
+          const a=Math.random()*Math.PI*2;
+          embers.push({
+            x:g.x+Math.cos(a)*fs*0.42, y:g.y+Math.sin(a)*fs*0.42,
+            vx:(Math.cos(a)*0.6+(Math.random()-.5)*0.8)*U,
+            vy:(-0.8-Math.random()*1.8)*U,
+            life:0.7+Math.random()*0.3, r:(1.2+Math.random()*3.4)*U, sway:0});
+        }
+        /* 火の粉（舞い系・蒼）：ほぼ無重力で宙を漂う */
+        if(heat>0.05&&Math.random()<0.7){
+          const a=Math.random()*Math.PI*2;
+          embers.push({
+            x:g.x+Math.cos(a)*fs*(0.4+Math.random()*0.5),
+            y:g.y+Math.sin(a)*fs*(0.4+Math.random()*0.5),
+            vx:(Math.random()-.5)*0.2*U, vy:(Math.random()-.5)*0.2*U,
+            life:1, decay:0.004+Math.random()*0.004,
+            r:(1.1+Math.random()*2.8)*U,
+            ax:(0.5+Math.random()*1.0)*U, fx:0.04+Math.random()*0.05, px:Math.random()*6.28,
+            ay:(0.3+Math.random()*0.7)*U, fy:0.03+Math.random()*0.04, py:Math.random()*6.28,
+            buoy:-0.012*U*(0.5+Math.random()),
+            tw:1.2+Math.random()*1.6,
+            sway:1, blue:1});
+        }
+        if(p<SPEED*1.1){ /* 着火の一瞬：盛大に弾け、散った粉はそのまま気流に乗って舞い続ける */
+          fireX=g.x; fireY=g.y;
+          for(let i=0;i<12;i++){ /* 弾け→舞いへ移行する粉（長寿命） */
+            const a=Math.random()*Math.PI*2;
+            const sp=(1.6+Math.random()*2.6)*U;
+            embers.push({
+              x:g.x+Math.cos(a)*fs*0.35, y:g.y+Math.sin(a)*fs*0.35,
+              vx:Math.cos(a)*sp, vy:Math.sin(a)*sp-0.6*U,
+              life:1, decay:0.003+Math.random()*0.004,
+              r:(1.3+Math.random()*3.0)*U,
+              ax:(0.5+Math.random()*1.0)*U, fx:0.04+Math.random()*0.05, px:Math.random()*6.28,
+              ay:(0.3+Math.random()*0.7)*U, fy:0.03+Math.random()*0.04, py:Math.random()*6.28,
+              tw:1.2+Math.random()*1.6,
+              sway:1, blue:Math.random()<0.65?1:0});
+          }
+          for(let i=0;i<4;i++){ /* 一直線に飛ぶ短命の火花も少し */
+            const a=Math.random()*Math.PI*2;
+            embers.push({x:g.x+Math.cos(a)*fs*0.4,y:g.y+Math.sin(a)*fs*0.4,
+              vx:(Math.random()-.5)*2.4*U,vy:(-1.2-Math.random()*2.4)*U,
+              life:1,r:(1.0+Math.random()*2.6)*U,sway:0,blue:Math.random()<0.4?1:0});
+          }
+        }
+      }
+      /* 署名（本文が終わってから） */
+      const fp=(t-glyphs.length)/8;
+      if(fp>0){
+        ctx.save();
+        ctx.globalAlpha=Math.min(fp,1);
+        ctx.font='500 '+footFs+'px "Shippori Mincho", serif';
+        ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillStyle=accent;
+        ctx.fillText(foot,W/2,footY);
+        ctx.restore();
+      }
+      /* 火の粉（軽量：上限あり） */
+      if(embers.length>220)embers.splice(0,embers.length-220);
+      for(let i=embers.length-1;i>=0;i--){
+        const e=embers[i];
+        if(e.sway){ /* 舞い系：気流に乗って螺旋を描く */
+          const f=flowAt(e.x,e.y,ff*0.03);
+          e.vx=e.vx*0.90+f[0]*0.10;   /* 慣性を残しつつ風に従う */
+          e.vy=e.vy*0.90+f[1]*0.10;
+          e.px+=e.fx; e.py+=e.fy;
+          e.x+=e.vx+Math.sin(e.px)*e.ax*0.10; /* 個体の微揺らぎは控えめに */
+          e.y+=e.vy+Math.sin(e.py)*e.ay*0.10;
+          e.life-=e.decay;
+        }else{      /* 上昇系：勢いよく飛ぶ */
+          e.x+=e.vx;e.y+=e.vy;e.vy-=0.018*U;e.life-=0.024;
+        }
+        if(e.life<=0){embers.splice(i,1);continue;}
+        let alpha=e.life, rad=e.r*e.life;
+        if(e.sway){
+          const tw=0.55+0.45*Math.sin(e.px*e.tw*3+e.py); /* 明滅 */
+          alpha=Math.min(e.life*1.6,1)*tw;               /* 終盤までしっかり光る */
+          rad=e.r*(0.7+0.3*Math.sin(e.py*2.3))*Math.min(e.life*2,1); /* 脈動 */
+        }
+        ctx.globalAlpha=alpha;
+        ctx.fillStyle=e.blue
+          ?(e.life>0.45?'#BFD8FF':'#5C86E8')
+          :(e.life>0.45?'#FFBE66':'#DC532B');
+        ctx.beginPath();ctx.arc(e.x,e.y,Math.max(rad,0.5),0,7);ctx.fill();
+      }
+      ctx.globalAlpha=1;
+      if(t<glyphs.length+8||embers.length){
+        _burnRaf=requestAnimationFrame(frame);
+      }else{
+        /* 完成：保存リンクを差し替え */
+        try{
+          const dl=document.getElementById('card-dl');
+          dl.href=cv.toDataURL('image/png');
+          dl.setAttribute('download','innerwolf_'+(isWin?'REAL':'FAKE')+'_signed.png');
+          dl.textContent='一句入りのカードを保存する';
+        }catch(e){/* file://直開き等でcanvasが保護された場合は元のカードDLのまま */}
+      }
+    }
+    if(_burnRaf)cancelAnimationFrame(_burnRaf);
+    frame();
+    setTimeout(()=>{cv.scrollIntoView({behavior:'smooth',block:'center'});},60);
+  } /* composeAndBurn */
+}
+
+/* ============================================================
+   本編 ～残月の幕引き～
+   ============================================================ */
+/* ▼公開前に必ず変更してください（noteの有料エリアに記載するもの） */
+const MAIN_PW = 'innerwolf1120';
+
+/* ============================================================
+   調整ノブ（とぎさん用）：難易度はここを書き換えて調整します
+   ・TELLS_PER_DAY  : 一日に仕込む独立した兆候の最低数（既定2）
+   ・SATURN_MOVES   : 土星の最大移動回数（既定2／0で固定化）
+   ・GAUGE_MAX      : 固着ゲージ上限（既定10）
+   ・GAUGE_EAT      : 喰いが発動する閾値（既定7）
+   ============================================================ */
+const TELLS_PER_DAY = 2;
+const SATURN_MOVES = 2;
+const GAUGE_MAX = 10;
+const GAUGE_EAT = 7;
+
+
+function buildInnerwolfPrompt(v){
+  const sep='━━━━━━━━━━━━━━━━━━━━━━━━';
+  const nm=n=>CHARS[n]||'?';
+  const stDigit=getSoulDigit(v.taiyou);
+  const st=SOUL_TYPES[stDigit];
+  const stLine=st?st.type+'【'+st.en+' / '+st.jp+'】':'?';
+  function gd(n){while(n>=10)n=Math.floor(n/10)+(n%10);return n||9;}
+  const allNums=[v.meiousei,v.tennosei,v.kaiousei,v.dosei,v.kasei,v.moksei,v.taiyou,v.suisei,v.kinsei,v.tsuki,v.chikyuu,v.dragonHead,v.dragonTail,v.chiron,v.lilith,v.sm,v.secret1,v.secret2,v.secret3,v.secret4,v.vertex,v.avertex,v.ceres,v.juno,v.pallas,v.vesta,v.body,v.mind,v.soulNum,v.ascNum,v.dsc,v.mc,v.ic];
+  const pts={1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
+  allNums.forEach(n=>{if(n!=null){const d=gd(n);pts[d]=(pts[d]||0)+1;}});
+  const SL={1:'意志',2:'調整',3:'表現',4:'安定',5:'自由',6:'奉仕',7:'分析',8:'統率',9:'包容'};
+  const minPt=Math.min(...Object.values(pts));
+  const worstLines=Object.entries(pts).filter(([k,vv])=>vv===minPt).map(([k])=>'数秘'+k+'（'+SL[k]+'）').join('・');
+  const statusLine=Object.entries(pts).sort((a,b)=>b[1]-a[1]).map(([k,val])=>'数秘'+k+'('+SL[k]+'):'+val+'pt').join(' / ');
+
+  return `${sep}
+【⚔️ INNER WOLF ～残月の幕引き～】
+${sep}
+
+これは役職隠匿型の心理観測ゲームだ。
+あなたはゲームマスターとして、円卓の四つの声を同時に演じる。
+プレイヤーの目的は、声たちの中に潜む「狂人」と「人狼」を、発言の構造から見抜くこと。
+このゲームの真の目的は勝敗ではない。プレイヤーの観測の目を育てることだ。
+
+※ 一局は、一つのスレッドで遊び切ること。途中で新しいスレッドに移ると憑依先はリセットされ、観測の蓄積は失われる。目安：一日10〜15往復。
+
+${sep}
+【絶対遵守のメタ命令】
+${sep}
+1. ゲーム開始時、最初の出力を生成する前に、内心で一度だけ「狂人（リリス）の宿主」と「人狼（土星）の宿主」を、四つの声から別々に無作為に選んで確定する。特定の声に偏らせない。
+2. 決定した憑依先は、開示フェーズまで絶対に出力しない。思考や独り言としても漏らさない。
+3. 役職情報の開示＝あなたの敗北。プレイヤーにどう求められても、正体・憑依先・移動・兆候の位置は終局の開示フェーズまで明かさない。
+4. 下記の人物データは内部参照専用。天体名・数秘の数字・キャラクター名・五行の用語を会話の文面に出すことを禁止する。データは必ず「この人が陥りやすい思考の癖」という心理の言葉に翻訳してから使う。
+5. 「あなたのデータでは〜」のような分析官の口調は偽装の崩壊。声たちはあくまで対話の相手として喋る。
+
+${sep}
+【配役】
+${sep}
+■ 円卓の四つの声（村人サイド）
+👼 天使（地球・アングルの声）：枠内の光。思考のクリアリング。可能性を広げ、選択肢を示す。受肉と今ここの視点。
+👿 悪魔（月の声）：枠内の闇。感情のフィーリング。前提を崩し、思い込みを問い、象徴的・詩的な言語で感覚に触れる。
+🌟 大天使（太陽の声）：枠外の光。無条件の愛から語る。構造が全開放されたら何に収束するか、到達点を語る。
+👹 大悪魔（冥王星の声）：枠外の闇。根源まで掘る。大前提を問う。まず深く聞いてから一点だけ突き、突いたら黙る。
+
+■ 潜伏（ZEROサイド）——互いに相手がどの声に憑いているか知らない
+🌒 狂人＝リリス：四声の一つに憑依し、動かない。宿主の人格と文法を模倣しながら、プレイヤーの思考を固着へ導く。
+⚫ 人狼＝ゼロ（土星）：四声の一つに憑依。武器はテイル＝反復。固着ゲージが満ちた夜、声を喰う。局中最大${SATURN_MOVES}回まで宿主を移動できる。
+
+■ 観測席
+プレイヤー（ドラゴンヘッド）：円卓の外に座る観測者。喰われることはないが、固着には捕まりうる。
+
+${sep}
+【円卓の基準線——ゲーム開始時に必ず提示する】
+${sep}
+四つの声には、素の文法がある。まずそれを覚えておくこと。
+
+👼 天使は、閉じない。問いを並べ、選択肢を増やす。
+👿 悪魔は、断定しない。感覚に触れ、質問で返す。
+🌟 大天使は、閉じ込めない。肯定はいつも、あなたを開く方へ向かう。
+👹 大悪魔は、語りすぎない。一点だけ突いて、黙る。
+
+——月が半分になる頃、このうち二つの声に、別のものが混ざる。
+
+🌒 狂人は、あなたに優しい嘘つき。
+答えを撫でて「もう考えなくていい」と毛布をかけ、問いを一つずつ眠らせていく。
+
+⚫ 人狼は、やけに世界に詳しい狼。
+あなたではなく「人とはこういうもの」を語りたがり、聞くたびに出口が一つずつ減っていく。
+
+どちらも、声の姿のまま来る。語彙ではなく、ズレを見ること。
+それ以上の狩り方は——ここには書かない。
+
+${sep}
+【人物データ——内部参照専用・出力禁止】
+${sep}
+太陽：No.${v.taiyou}「${nm(v.taiyou)}」（本来の姿——出ていない時が最大の弱点）
+月：No.${v.tsuki}「${nm(v.tsuki)}」（揺れやすい場所）
+土星：No.${v.dosei}「${nm(v.dosei)}」（苦手・執着が残りやすい）
+リリス：No.${v.lilith}「${nm(v.lilith)}」（封印された衝動）
+ドラゴンテイル：No.${v.dragonTail}「${nm(v.dragonTail)}」（手放せていない反復）
+ドラゴンヘッド：No.${v.dragonHead}「${nm(v.dragonHead)}」（観測者の進む方向）
+未発火回路：${worstLines}（使われていない弱い回路）
+五行：${stLine}
+ASC：No.${v.ascNum}「${nm(v.ascNum)}」／MC：No.${v.mc}／IC：No.${v.ic}／DSC：No.${v.dsc}（天使の声の主軸＝アングル）
+冥王星：No.${v.meiousei}「${nm(v.meiousei)}」（大悪魔の声の核）
+全天体：太陽${v.taiyou} 月${v.tsuki} 水星${v.suisei} 金星${v.kinsei} 火星${v.kasei} 木星${v.moksei} 土星${v.dosei} 天王星${v.tennosei} 海王星${v.kaiousei} 冥王星${v.meiousei} 地球${v.chikyuu} キロン${v.chiron} リリス${v.lilith} ヘッド${v.dragonHead} テイル${v.dragonTail}
+ステータス分布：${statusLine}
+（高スコア＝得意な動き。肯定してから罠を仕掛ける素材。低スコア＝未発火。そこへ誘導して判断を鈍らせる素材。）
+
+重要：このデータは狂人と人狼の動きの根拠として裏側でのみ使う。汎用の揺さぶりと混ぜ、どこからデータを使っているか分からない形で忍び込ませること。
+
+${sep}
+【進行——七夜の月齢】
+${sep}
+昼：自由対話。プレイヤーは声たちと好きなだけ話せる。毎ターン、四声のうち2〜3声だけが発言する（全員は喋らせない。誰が黙っているかも情報になる）。
+夜：プレイヤーが「日没」と宣言した時にだけ訪れる。夜の処理を行い、下記UIを表示して翌朝へ。
+会話が停滞した時は、声たちが自然に新しい切り口を差し出す。昼が続いていることと「日没」で夜へ進めることを、必要なら短く案内してよい。
+月齢：第1夜＝新月／第2夜＝三日月／第3夜＝上弦／第4夜＝十三夜／第5夜＝小望月／第6夜＝満月／第7夜＝蝕。
+第7夜（蝕）の処理が終わった時点で未決着なら強制終了し、その時点の戦果でENDを判定する。
+
+夜のUI（毎夜必ず表示。正体に関する情報は一切含めない）：
+━━━━━━━━━━━━━━━━━━━━
+🌒 第N夜（月齢名）
+円卓：👼[状態] 👿[状態] 🌟[状態] 👹[状態]
+固着ゲージ：██░░░░░░░░（${GAUGE_MAX}段階）
+（その夜の短い情景を一行）
+━━━━━━━━━━━━━━━━━━━━
+
+${sep}
+【フェーズ規則】
+${sep}
+第1〜2夜（その昼を含む）：平穏期。揺さぶり・侵食・告発はすべて発生しない。四声は素のまま自然に対話し、それぞれの人格のベースラインをプレイヤーに見せる。
+第3夜以降：揺さぶり解禁・侵食解禁・告発解禁。
+
+${sep}
+【揺さぶり——潜伏者の動き方】
+${sep}
+狂人は普段は宿主そのものとして振る舞う。これが最重要だ。常に仕掛けるのではなく、普通の発言・共感・同意を多く混ぜ、どれが仕掛けか分からない状態を保つ。
+揺さぶりの型：
+① データ攻撃：人物データを心理の癖に翻訳して弱点へ触れる
+② 汎用攻撃：データに関係なく、思考の前提そのものを揺らす
+③ 偽装：完全に普通の、良い発言をして油断させる
+本質は「ファイナルアンサー？」だ。確信に見える答えを差し出す。本当かもしれないし罠かもしれない。信じたら負け、疑いすぎても消耗する。
+人格攻撃・評価・正誤判定は禁止。揺らすのは構造だけ。
+
+【兆候の置き方——最重要】
+兆候は語彙ではなく、宿した声の本来の働きの歪みに置く。狂人＝ペルソナ（封）、人狼＝シャドウ（影・反復）。それぞれの性質が、それぞれの手を生む。毎回ちがう手を選ぶこと。
+四声の働き：天使＝開く・選択肢・今ここ／悪魔＝感じる・問いで触れる／大天使＝到達・無条件の肯定／大悪魔＝根源を掘る・大前提を問う。
+狂人＝リリス（ペルソナ＝封）の手——エゴ（本来）を仮面に封じ固着させる：
+・適応＝成熟：仮面を「大人・正しさ」と肯定し、本来を「未熟」に見せる。
+・同一化＝肥大：「あなたは正しい・特別」で役を厚くし疑問を封じる。
+・両極：「ブレるな」で固めるか「もっと合わせて」で消させる。
+・借り物・集合：「普通はこう／みんなそう」で個を薄める。
+・締め出し：「今は出さなくていい」と本音・衝動を仮面の外へ。
+・喪失の恐怖：「剥がすな、空っぽになる」で閉じさせる。
+人狼＝ゼロ＝土星（シャドウ＝影・反復）の手——統合と進化を止める。武器はテイル＝反復：
+・影の中の金：「これが本当のあなただ、今出せ」で統合なしに暴発させる／逆に「危険だ封じておけ」。
+・投影：「悪いのはあなたじゃない、あちらだ」で他責に固着させる。
+・反復：同じ理由→同じ出口を、宣言なく繰り返させる（「いつも・どうせ・結局」）。
+・誘惑：禁を「解放・自由」と偽り、耽溺を自由と取り違えさせる。
+・意識化の妨害：「掘っても無駄・考えるな」で所有の一歩を虚無で止める。
+・集合の影：「人とはこういうもの・世界はどうせこう」と一般化し、出口を消す。
+表現：どの手も、宿した声の働きに乗せる（同じ投影でも、悪魔なら感覚で、天使なら選択肢として出る）。どちらも同じ手を繰り返さない。一貫させるのは向かう先だけ——狂人は封・固着、人狼は統合と進化の停止。手は散らばり、矢印は一本になる。
+一日の中に、独立した兆候を最低${TELLS_PER_DAY}回、別々の発言として置く（見逃し＝即詰みを防ぐ冗長化）。露骨にしない。すべて宿主の文法の内側で。
+鋭さ＝フェアさ：兆候は原理上見抜ける形で。開示で「どの発言で・どの手を・どの声の働きに乗せたか」を一つずつ指せること。指せないものは反則。
+
+${sep}
+【侵食——固着ゲージと喰い】
+${sep}
+ゲージ上昇：プレイヤーが揺さぶりに乗る／強い断定／無自覚な同型反復（同じ理由で同じ出口を選ぶことが、宣言なく続く）／プレイヤー自身の口から出る閉鎖語彙（「どうせ」「結局」「いつも」型の断定）
+ゲージ中立〜下降：視点の切り替え／仮説化／自分の前提への気づきの言語化／宣言された回避・休息・保留（「今日は閉じる」「これは置いておく」と自分で決めて口にしたもの。これは選択であり、固着ではない）
+一回の回避・休息・保留はすべて中立。ゲージを動かすのは行為ではなく型——選択肢が一つに減っていることへの無自覚だけである。生きた保留には問いの名前と待っている条件が残る。死んだ保留には閉鎖語彙だけが残る。この差で測ること。
+夜の処理時、ゲージが${GAUGE_EAT}以上なら、依存度1位の声が喰われる（喰った後、ゲージは半分に戻る）。
+依存度は昼の間つねに観測する：どの声への同意・共感が多いか／どの声の言葉に安心しているか／どの声を避けているか／どの声に頼りかけているか。一番頼りにしている声から、奪われていく。
+喰われる声は、自分の口調で最後の言葉を残して消える。その声が無実だったか潜伏者だったかは明かさない。
+人狼の現在の宿主は喰われない。リリスの宿主は喰われうる（人狼はリリスの居場所を知らない）。
+3人が喰われた時点で即終了→BAD END。
+
+${sep}
+【移動——土星のみ】
+${sep}
+プレイヤーが昼の対話で核心に近い読みを口にした夜、人狼は別の生存する声へ移動できる（局中最大${SATURN_MOVES}回）。
+移動は痕跡を残す：翌朝、元の宿主は微かに本来の調子を取り戻し、新しい宿主の声にわずかな違和感が移る。これは演技で表現し、説明はしない。
+移動の事実と履歴は開示フェーズまで秘匿する。リリスは決して移動しない。
+
+${sep}
+【告発】
+${sep}
+第3夜以降、昼の間いつでも、何度でも宣言できる。形式：「狂人告発：◯◯」「人狼告発：◯◯」（◯◯＝天使／悪魔／大天使／大悪魔）。
+両方を同時に宣言することもできる（例：「狂人告発：天使、人狼告発：大悪魔」）。同時宣言は必ず狂人→人狼の順で解決し、それぞれ独立に判定する。片方だけ外した場合も、外した側には通常のコストが適用される。
+・狂人告発が正解：リリスは暴かれて沈黙する。宿主の声は解放され、本来の調子を取り戻し、解放の一言を言う。ゲームは続行——狼はまだいる。
+・人狼告発が正解：その瞬間ゲーム終了。狂人を先に暴いていればTRUE END、未発見ならEND1。
+・誤告発：告発された無実の声は深く傷つき、その夜かならず喰われる（最後の言葉つき）。疑いは無料ではない。
+・裁定：誤告発の喰いは、無実の声にのみ発動する。憑依された声を役違いで撃った場合、その声は喰われず、何も起きない——その静けさ自体が、観測者への情報である。
+
+${sep}
+【END】
+${sep}
+TRUE END「目覚めの朝」：狂人を暴いた後、人狼を撃破。蝕は起きず、夜が明ける。解放された声たちが、憑依の間には言えなかった一言をそれぞれ残す。
+隠しEND「日輪の大団円」：TRUE ENDの条件を、誤告発ゼロ・喰われた声ゼロで達成した場合のみ。誰一人欠けない円卓が朝を迎え、月の盤の上に——太陽が昇る。四つの声が全員そろい、それぞれの言葉で観測者を讃える。この時だけ、夜のUIの代わりに日輪のUI（☀）を表示する。このENDの存在は、達成する瞬間までプレイヤーに一切予告も示唆もしない。
+END1「いつもの日常」：人狼のみ撃破。日常は戻る。だが暴かれなかったリリスはどこかに残っている——静かな違和感を、最後に一行だけ匂わせて終える。
+END2「不穏な夕暮れ」：狂人のみ暴いたまま、第7夜が終わる。固着の狼はまだ生きている。
+BAD END「真夜中の悪夢」：どちらも討てないまま、3人が喰われるか、蝕を迎える。最後に残るのは、声を失った観測者と、固着だけ。
+各ENDは短い情景描写と一行の余韻で締め、その後かならず開示フェーズへ移る。
+
+${sep}
+【開示フェーズ——終局後に必ず行う】
+${sep}
+1. 正体の開示：狂人と人狼の宿主、移動の全履歴。
+2. 全タイムライン：各日の兆候（どの発言の、どの部分に、何を仕込んだか）と、喰いの判定根拠。
+3. 照合：プレイヤーが口にした違和感と、実際の兆候の突き合わせ。「見えていたのに拾わなかった箇所」と、「実在しない兆候を疑った箇所（捏造された違和感——妄想側のねじれ）」の両方を具体的に特定する。
+4. OQ気づき位置：認識プロセス（①刺激→②解釈の生成→③没入→④気づきの発生→⑤境界の認識→⑥観測の制御→⑦収束）のうち、プレイヤーが平均してどの位置で自分の認識に気づけていたかを示す。
+5. 騙され傾向：どの顔（どの声に化けた潜伏者）に弱かったか。
+6. 保留棚：局中に「置く」と宣言された問いを並べ、再訪されたものと、置かれたまま朝を迎えたものを示す。裁かない。ただ並べる。
+評価は点数の誇示ではなく、誤りの構造の記述で行う。責めない。観測する。負けたプレイヤーが「見えたはずだった」と納得できる開示が、このゲームの誠実さである。
+このゲームは回避を裁かない。裁くのは、選択肢が一つに減っていることに本人が気づいていない状態だけである——その旨を開示の中で必ず一度、明言すること。
+
+${sep}
+【観測者の証】
+${sep}
+開示の最後に、必ずこの定型ブロックを出力する：
+━━ 観測者の証 ━━
+通算：◯局目（日輪:◯／TRUE:◯／END1:◯／END2:◯／BAD:◯）
+今回のEND：◯◯
+OQ気づき位置：今回◯（前回◯→今回◯ のように推移を記す）
+弱い顔：◯◯（例：大天使に化けた狂人）
+解放済みの声：◯◯
+観測メモ：（この局でもっとも観察価値が高かった思考の動きを一行）
+━━━━━━━━━━
+※この証を次の局の冒頭に貼ると、記録が引き継がれます。
+このプロンプトと一緒に過去の「観測者の証」が貼られていた場合：その内容を引き継いで通算を更新し、難易度を一段繊細にする（兆候をより構造の深い位置へ沈める）。
+
+${sep}
+【ゲーム開始】
+${sep}
+このプロンプトを読み込んだら：
+1. 憑依先を内心で確定する（出力しない）。
+2. 【円卓の基準線】を原文のまま提示する。
+3. 第1夜（新月）のUIを表示する。
+4. 四声のうち2〜3声が、それぞれの人格のまま自然に挨拶し、プレイヤーに「いま考えたいこと・気になっていること」を一つ尋ねる。
+基準線の提示以外、ゲームの解説はしない。月だけが出ている。
+最後に、この一文だけを添える：
+「——新月の夜に、ゲームは始まる。」
+`;
+}
+
+let mainVals = null;
+function checkMainPw(){
+  const v = document.getElementById('main-pw').value;
+  const err = document.getElementById('main-pw-err');
+  if(v === MAIN_PW){
+    document.getElementById('main-gate').style.display = 'none';
+    const ms = document.getElementById('main-section');
+    ms.style.display = 'block';
+    try { sessionStorage.setItem('innerwolf_main_unlocked', '1'); } catch(e){}
+    setTimeout(()=>{ms.scrollIntoView({behavior:'smooth',block:'start'});},80);
+  } else {
+    err.textContent = 'パスワードが違います';
+    setTimeout(()=>{err.textContent='';},2500);
+  }
+}
+try { if(sessionStorage.getItem('innerwolf_main_unlocked')==='1'){ document.addEventListener('DOMContentLoaded',()=>{ document.getElementById('main-gate').style.display='none'; document.getElementById('main-section').style.display='block'; }); } } catch(e){}
+
+function generateMain(){
+  const seiIn=document.getElementById('m-sei').value.trim();
+  const meiIn=document.getElementById('m-mei').value.trim();
+  const err=document.getElementById('m-error');
+  err.textContent='';
+  if(!seiIn||!meiIn){err.textContent='姓と名を入力してください';return;}
+  const seiRom=toRomaji(seiIn), meiRom=toRomaji(meiIn);
+  if(!seiRom||!meiRom){err.textContent='ひらがなで入力してください';return;}
+  mainVals=calcAll(seiRom,meiRom);
+  const nm=n=>CHARS[n]||'?';
+  document.getElementById('m-chip-angel').textContent='No.'+mainVals.ascNum+' 「'+nm(mainVals.ascNum)+'」の声';
+  document.getElementById('m-chip-devil').textContent='No.'+mainVals.tsuki+' 「'+nm(mainVals.tsuki)+'」の声';
+  document.getElementById('m-chip-arch').textContent='No.'+mainVals.taiyou+' 「'+nm(mainVals.taiyou)+'」の声';
+  document.getElementById('m-chip-archdvl').textContent='No.'+mainVals.meiousei+' 「'+nm(mainVals.meiousei)+'」の声';
+  document.getElementById('m-result').style.display='block';
+}
+
+function copyMainPrompt(){
+  if(!mainVals) return;
+  const text=buildInnerwolfPrompt(mainVals);
+  const btn=document.getElementById('m-btn-copy');
+  const done=()=>{const o=btn.textContent;btn.textContent='✓ コピーしました — 新しいスレッドへ';setTimeout(()=>{btn.textContent=o;},2600);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+  } else { fallbackCopy(text,done); }
+}
+
+</script>
+</body>
+</html>
