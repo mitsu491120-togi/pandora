@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超数秘術 — サービス案内</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;
+  --surface:#111118;
+  --surface2:#1a1a24;
+  --border:rgba(180,160,255,0.15);
+  --accent:#a78bfa;
+  --accent2:#e879f9;
+  --gold:#f5c842;
+  --text:#e8e4f0;
+  --text2:#9991b0;
+  --glow:rgba(167,139,250,0.15);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Noto Serif JP',serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%,rgba(255,255,255,.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 35% 8%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 60% 15%,rgba(255,255,255,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 80% 5%,rgba(255,255,255,.25) 0%,transparent 100%),
+    radial-gradient(1px 1px at 92% 30%,rgba(255,255,255,.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 10% 45%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 50% 40%,rgba(255,255,255,.2) 0%,transparent 100%),
+    radial-gradient(1px 1px at 75% 55%,rgba(255,255,255,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 25% 65%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 88% 70%,rgba(255,255,255,.25) 0%,transparent 100%),
+    radial-gradient(1px 1px at 40% 80%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 65% 88%,rgba(255,255,255,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 5% 90%,rgba(255,255,255,.2) 0%,transparent 100%),
+    radial-gradient(1px 1px at 55% 95%,rgba(255,255,255,.3) 0%,transparent 100%);
+  pointer-events:none;z-index:0;
+}
+
+.container{max-width:720px;margin:0 auto;padding:48px 24px 80px;position:relative;z-index:1;}
+
+header{text-align:center;padding:48px 0 56px;}
+.title-en{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.5em;color:var(--accent);text-transform:uppercase;margin-bottom:14px;opacity:.7;}
+h1{font-family:'Cinzel',serif;font-size:clamp(26px,5vw,40px);font-weight:600;background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.12em;margin-bottom:16px;}
+.header-desc{font-size:14px;color:#c4bdd8;line-height:2;letter-spacing:.06em;max-width:480px;margin:0 auto 10px;}
+.header-sub{font-size:12px;color:var(--text2);line-height:1.9;letter-spacing:.05em;}
+.divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:24px auto;}
+
+.section-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.4em;color:var(--text2);text-transform:uppercase;text-align:center;margin:48px 0 24px;opacity:.7;}
+
+.card{border-radius:16px;padding:28px 28px 24px;margin-bottom:16px;position:relative;overflow:hidden;transition:transform .2s;}
+.card:hover{transform:translateY(-2px);}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
+
+.card-ocha{background:linear-gradient(135deg,rgba(232,121,249,0.07),rgba(167,139,250,0.05));border:1px solid rgba(232,121,249,0.25);}
+.card-ocha::before{background:linear-gradient(90deg,transparent,rgba(232,121,249,0.5),transparent);}
+.card-light{background:linear-gradient(135deg,rgba(100,180,255,0.07),rgba(167,139,250,0.05));border:1px solid rgba(100,180,255,0.25);}
+.card-light::before{background:linear-gradient(90deg,transparent,rgba(100,180,255,0.5),transparent);}
+.card-full{background:linear-gradient(135deg,rgba(245,200,66,0.07),rgba(232,121,249,0.05));border:1px solid rgba(245,200,66,0.3);}
+.card-full::before{background:linear-gradient(90deg,transparent,rgba(245,200,66,0.5),transparent);}
+.card-tool{background:linear-gradient(135deg,rgba(167,139,250,0.1),rgba(232,121,249,0.07));border:1px solid rgba(167,139,250,0.35);box-shadow:0 0 40px rgba(167,139,250,0.08);}
+.card-tool::before{background:linear-gradient(90deg,transparent,rgba(167,139,250,0.6),transparent);}
+.card-training{background:linear-gradient(135deg,rgba(100,200,150,0.08),rgba(167,139,250,0.05));border:1px solid rgba(100,200,150,0.3);}
+.card-training::before{background:linear-gradient(90deg,transparent,rgba(100,200,150,0.5),transparent);}
+
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px;}
+.card-icon{font-size:20px;margin-bottom:6px;}
+.card-name{font-family:'Cinzel',serif;font-size:20px;font-weight:600;letter-spacing:.12em;margin-bottom:4px;}
+.card-time{font-size:11px;color:var(--text2);letter-spacing:.1em;}
+.card-price-wrap{text-align:right;flex-shrink:0;}
+.card-price{font-family:'Cinzel',serif;font-size:28px;font-weight:700;line-height:1;margin-bottom:4px;}
+.card-price-sub{font-size:11px;color:var(--text2);letter-spacing:.05em;}
+
+.card-desc{font-size:13px;color:#c4bdd8;line-height:1.9;letter-spacing:.04em;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.06);}
+
+.stars-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.star-tag{font-size:11px;padding:3px 10px;border-radius:12px;letter-spacing:.05em;}
+
+.points{}
+.point{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#d8d0ee;padding:5px 0;line-height:1.7;}
+.point-dot{flex-shrink:0;margin-top:6px;font-size:8px;}
+
+.note-soft{margin-top:14px;padding:10px 14px;border-radius:8px;font-size:12px;color:#9991b0;line-height:1.8;}
+
+.footer-note{text-align:center;margin-top:48px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.06);}
+.footer-note p{font-size:12px;color:var(--text2);line-height:2;letter-spacing:.06em;}
+.footer-brand{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.3em;color:var(--accent);opacity:.5;margin-top:24px;}
+
+.c-pink{color:#e879f9;}.c-blue{color:#64b4ff;}.c-gold{color:var(--gold);}.c-accent{color:var(--accent);}.c-green{color:#7abf8e;}
+
+@media(max-width:560px){.card-top{flex-direction:column;gap:8px;}.card-price-wrap{text-align:left;}.card{padding:22px 20px 20px;}}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="title-en">Super Numerology System</div>
+    <h1>サービス案内</h1>
+    <div class="header-desc">
+      名前に、すべてが宿っている。<br>
+      生まれた時につけられた名前から、あなたの本来・才能・魂のかたちを読み解きます。
+    </div>
+    <div class="divider"></div>
+    <div class="header-sub">
+      生年月日は使いません。名前の音の中に、すでにすべてが刻まれているからです。
+    </div>
+  </header>
+
+  <div class="section-label">✦ Session Menu ✦</div>
+
+  <!-- 味見 -->
+  <div class="card card-ocha">
+    <div class="card-top">
+      <div>
+        <div class="card-icon">🌙</div>
+        <div class="card-name c-pink">味見</div>
+        <div class="card-time">約60分</div>
+      </div>
+      <div class="card-price-wrap">
+        <div class="card-price c-pink">¥3,000</div>
+        <div class="card-price-sub">まず、話してみる</div>
+      </div>
+    </div>
+    <div class="card-desc">
+      超数秘術の世界観に、まず触れてみる時間です。あなたの太陽（本来の核）と月（内側の感覚）を軽く味見しながら、「これは何か」を体験する入口。読み込むのではなく、感じてみる場。ピンと来たら、前半・後半へ。
+    </div>
+    <div class="stars-wrap">
+      <span class="star-tag" style="background:rgba(232,121,249,0.1);border:1px solid rgba(232,121,249,0.25);color:#e879f9;">☀ 太陽</span>
+      <span class="star-tag" style="background:rgba(232,121,249,0.1);border:1px solid rgba(232,121,249,0.25);color:#e879f9;">☽ 月</span>
+      <span class="star-tag" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--text2);">の味見</span>
+    </div>
+    <div class="points">
+      <div class="point"><span class="point-dot c-pink">✦</span>初めての方の入口。まず体験してみたい方に</div>
+      <div class="point"><span class="point-dot c-pink">✦</span>太陽・月から、あなたのキャラクターの輪郭にふれる</div>
+    </div>
+  </div>
+
+  <!-- 前半 -->
+  <div class="card card-light">
+    <div class="card-top">
+      <div>
+        <div class="card-icon">✨</div>
+        <div class="card-name c-blue">前半 — 現実</div>
+        <div class="card-time">約60分</div>
+      </div>
+      <div class="card-price-wrap">
+        <div class="card-price c-blue">¥15,000</div>
+        <div class="card-price-sub">地に足のついた自分</div>
+      </div>
+    </div>
+    <div class="card-desc">
+      日常のあなたを形づくる6つの星を読み解きます。どう動き、どう考え、何に喜び、どこへ向かうのか。なぜそう振る舞うのか、何が得意で何が苦手か——現実レベルの自分の設計が、くっきり見えてきます。
+    </div>
+    <div class="stars-wrap">
+      <span class="star-tag" style="background:rgba(100,180,255,0.1);border:1px solid rgba(100,180,255,0.25);color:#64b4ff;">☀ 太陽</span>
+      <span class="star-tag" style="background:rgba(100,180,255,0.1);border:1px solid rgba(100,180,255,0.25);color:#64b4ff;">☽ 月</span>
+      <span class="star-tag" style="background:rgba(100,180,255,0.1);border:1px solid rgba(100,180,255,0.25);color:#64b4ff;">☿ 水星</span>
+      <span class="star-tag" style="background:rgba(100,180,255,0.1);border:1px solid rgba(100,180,255,0.25);color:#64b4ff;">♀ 金星</span>
+      <span class="star-tag" style="background:rgba(100,180,255,0.1);border:1px solid rgba(100,180,255,0.25);color:#64b4ff;">♂ 火星</span>
+      <span class="star-tag" style="background:rgba(100,180,255,0.1);border:1px solid rgba(100,180,255,0.25);color:#64b4ff;">⊕ 地球</span>
+    </div>
+    <div class="points">
+      <div class="point"><span class="point-dot c-blue">✦</span>魂の核・本質的なキャラクター（太陽）</div>
+      <div class="point"><span class="point-dot c-blue">✦</span>感情・本能・内側の動き（月）</div>
+      <div class="point"><span class="point-dot c-blue">✦</span>思考・コミュニケーションの癖（水星）</div>
+      <div class="point"><span class="point-dot c-blue">✦</span>愛着・喜び・美意識（金星）</div>
+      <div class="point"><span class="point-dot c-blue">✦</span>行動・情熱・エネルギーの向き（火星）</div>
+      <div class="point"><span class="point-dot c-blue">✦</span>使命・役割・仕事のスタイル（地球）</div>
+    </div>
+  </div>
+
+  <!-- 後半 -->
+  <div class="card card-full">
+    <div class="card-top">
+      <div>
+        <div class="card-icon">🌌</div>
+        <div class="card-name c-gold">後半 — 深層</div>
+        <div class="card-time">約120分</div>
+      </div>
+      <div class="card-price-wrap">
+        <div class="card-price c-gold">¥40,000</div>
+        <div class="card-price-sub">魂の深層まで</div>
+      </div>
+    </div>
+    <div class="card-desc">
+      前半の上に、魂の深い層を重ねます。社会との接点、試練と本物の強さ、変容と手放しのテーマ。さらに太陽・地球を深いオクターブで読み直し、生命の樹の全11星を一枚の人生の地図として統合します。なぜこの人生を歩んでいるのか、が立ち上がる時間です。
+    </div>
+    <div class="stars-wrap">
+      <span class="star-tag" style="background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.3);color:var(--gold);">♃ 木星</span>
+      <span class="star-tag" style="background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.3);color:var(--gold);">♄ 土星</span>
+      <span class="star-tag" style="background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.3);color:var(--gold);">♅ 天王星</span>
+      <span class="star-tag" style="background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.3);color:var(--gold);">♆ 海王星</span>
+      <span class="star-tag" style="background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.3);color:var(--gold);">♇ 冥王星</span>
+      <span class="star-tag" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--text2);">＋軸を深く読み直し</span>
+    </div>
+    <div class="points">
+      <div class="point"><span class="point-dot c-gold">✦</span>拡大・豊かさ・社会での広がり（木星）</div>
+      <div class="point"><span class="point-dot c-gold">✦</span>制限・試練・本物の強さの在り処（土星）</div>
+      <div class="point"><span class="point-dot c-gold">✦</span>突き抜けた才能・時代との接点（天王星）</div>
+      <div class="point"><span class="point-dot c-gold">✦</span>集合との繋がり・時代に果たす役割（海王星）</div>
+      <div class="point"><span class="point-dot c-gold">✦</span>変容・死と再生・執着と手放し（冥王星）</div>
+      <div class="point"><span class="point-dot c-gold">✦</span>全11星を統合し、人生の旅の地図として読む</div>
+    </div>
+    <div class="note-soft" style="background:rgba(245,200,66,0.05);border:1px solid rgba(245,200,66,0.15);">
+      ※ 前半を受けた方向けの、深層セッションです。
+    </div>
+  </div>
+
+  <!-- 通し -->
+  <div class="card card-tool">
+    <div class="card-top">
+      <div>
+        <div class="card-icon">🌠</div>
+        <div class="card-name c-accent">通し — 現実から深層まで</div>
+        <div class="card-time">約180分</div>
+      </div>
+      <div class="card-price-wrap">
+        <div class="card-price c-accent">¥50,000</div>
+        <div class="card-price-sub">前半＋後半</div>
+      </div>
+    </div>
+    <div class="card-desc">
+      前半（地に足）と後半（魂の深層）を、通しで読み解きます。生命の樹の全11星を一度に巡り、現実の構造から人生全体の地図までを一気通貫で描く、いちばん深く、いちばん遠くまでのセッションです。
+    </div>
+    <div class="points">
+      <div class="point"><span class="point-dot c-accent">✦</span>前半（現実の6星）＋後半（深層の全11星統合）を通しで</div>
+      <div class="point"><span class="point-dot c-accent">✦</span>分けて受けるより、一度に流れで深く入りたい方に</div>
+    </div>
+  </div>
+
+  <!-- 養成 -->
+  <div class="section-label">✦ Training ✦</div>
+
+  <div class="card card-training">
+    <div class="card-top">
+      <div>
+        <div class="card-icon">⭐</div>
+        <div class="card-name c-green">養成コース</div>
+        <div class="card-time">半年間サポート</div>
+      </div>
+      <div class="card-price-wrap">
+        <div class="card-price c-green">¥150,000</div>
+        <div class="card-price-sub">ツール込み</div>
+      </div>
+    </div>
+    <div class="card-desc">
+      超数秘術を、自分の手で読めるようになる半年間です。システムの体系・星の読み方・日常への落とし込みまで、ひとつずつ丁寧に。理解して、自分や身近な人を日常的に読めるレベルまで身につけます。
+    </div>
+    <div class="points">
+      <div class="point"><span class="point-dot c-green">✦</span>専用ツール込み（別途購入不要）</div>
+      <div class="point"><span class="point-dot c-green">✦</span>33キャラクター × 生命の樹の体系を深く学ぶ</div>
+      <div class="point"><span class="point-dot c-green">✦</span>自分・家族・身近な人を、日常的に読み解けるように</div>
+      <div class="point"><span class="point-dot c-green">✦</span>半年間サポート・月1回サポートセッション（計6回）</div>
+      <div class="point"><span class="point-dot c-green">✦</span>使いこなせるようになるまで、丁寧にサポート</div>
+    </div>
+  </div>
+
+  <!-- チームビルディング（準備中） -->
+  <div class="section-label">✦ Team Building ✦</div>
+  <div class="card" style="background:var(--surface);border:1px solid var(--border);text-align:center;">
+    <div class="card-name" style="color:#ff8c00;font-size:16px;margin-bottom:8px;">🤝 チームビルディング</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.9;">
+      チーム全員の数字から、相性・五行バランス・強みと課題を読み解くメニューを準備中です。<br>
+      ご要望があれば、個別にご相談ください。
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <p>初めての方は「味見」からのご参加がおすすめです</p>
+    <p style="margin-top:8px;">ご予約・お問い合わせは LINE・DM にてお気軽にどうぞ</p>
+    <div class="divider"></div>
+    <div class="footer-brand">Super Numerology System</div>
+  </div>
+
+  <footer style="margin-top:80px;padding:32px 0 48px;border-top:1px solid rgba(255,255,255,0.05);text-align:center;">
+    <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.4em;color:#9991b0;opacity:.4;margin-bottom:20px;text-transform:uppercase;">Super Numerology System</div>
+    <div style="margin-bottom:32px;">
+      <a href="index.html" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;color:#fff;font-family:'Noto Serif JP',serif;font-size:14px;letter-spacing:.15em;text-decoration:none;">まず診断してみる →</a>
+    </div>
+    <nav style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;">
+      <a href="index.html" style="font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:.1em;color:#9991b0;text-decoration:none;opacity:.5;">超数秘術</a>
+      <span style="color:rgba(255,255,255,0.1);">／</span>
+      <a href="price_list.html" style="font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:.1em;color:#e8e4f0;text-decoration:none;opacity:1;">サービス案内</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>
