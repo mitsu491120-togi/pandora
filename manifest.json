@@ -1,0 +1,20 @@
+{
+  "name": "PANDORA",
+  "short_name": "PANDORA",
+  "description": "名前と生年月日から、あなたのRPGキャラ構造を可視化",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#02040a",
+  "theme_color": "#02040a",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

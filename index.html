@@ -4,455 +4,264 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PANDORA</title>
-<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;700&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#02040a">
+<meta name="description" content="名前と生年月日から、あなたのRPGキャラ構造（キャラクター・タイプ・ステータス・ロール・柱・界・フィールド）を可視化する超数秘術＋ネイタル・ドミナント解析。">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Orbitron:wght@500;700;900&family=Shippori+Mincho+B1:wght@400;500;700;800&display=swap" rel="stylesheet">
+<script>!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"function"==typeof define&&define.amd?define(["exports"],e):e((t="undefined"!=typeof globalThis?globalThis:t||self).htmlToImage={})}(this,(function(t){"use strict";function e(t,e,n,r){return new(n||(n=Promise))((function(i,o){function u(t){try{a(r.next(t))}catch(t){o(t)}}function c(t){try{a(r.throw(t))}catch(t){o(t)}}function a(t){var e;t.done?i(t.value):(e=t.value,e instanceof n?e:new n((function(t){t(e)}))).then(u,c)}a((r=r.apply(t,e||[])).next())}))}function n(t,e){var n,r,i,o,u={label:0,sent:function(){if(1&i[0])throw i[1];return i[1]},trys:[],ops:[]};return o={next:c(0),throw:c(1),return:c(2)},"function"==typeof Symbol&&(o[Symbol.iterator]=function(){return this}),o;function c(c){return function(a){return function(c){if(n)throw new TypeError("Generator is already executing.");for(;o&&(o=0,c[0]&&(u=0)),u;)try{if(n=1,r&&(i=2&c[0]?r.return:c[0]?r.throw||((i=r.return)&&i.call(r),0):r.next)&&!(i=i.call(r,c[1])).done)return i;switch(r=0,i&&(c=[2&c[0],i.value]),c[0]){case 0:case 1:i=c;break;case 4:return u.label++,{value:c[1],done:!1};case 5:u.label++,r=c[1],c=[0];continue;case 7:c=u.ops.pop(),u.trys.pop();continue;default:if(!(i=u.trys,(i=i.length>0&&i[i.length-1])||6!==c[0]&&2!==c[0])){u=0;continue}if(3===c[0]&&(!i||c[1]>i[0]&&c[1]<i[3])){u.label=c[1];break}if(6===c[0]&&u.label<i[1]){u.label=i[1],i=c;break}if(i&&u.label<i[2]){u.label=i[2],u.ops.push(c);break}i[2]&&u.ops.pop(),u.trys.pop();continue}c=e.call(t,u)}catch(t){c=[6,t],r=0}finally{n=i=0}if(5&c[0])throw c[1];return{value:c[0]?c[1]:void 0,done:!0}}([c,a])}}}var r,i=(r=0,function(){return r+=1,"u".concat("0000".concat((Math.random()*Math.pow(36,4)<<0).toString(36)).slice(-4)).concat(r)});function o(t){for(var e=[],n=0,r=t.length;n<r;n++)e.push(t[n]);return e}var u=null;function c(t){return void 0===t&&(t={}),u||(u=t.includeStyleProperties?t.includeStyleProperties:o(window.getComputedStyle(document.documentElement)))}function a(t,e){var n=(t.ownerDocument.defaultView||window).getComputedStyle(t).getPropertyValue(e);return n?parseFloat(n.replace("px","")):0}function s(t,e){void 0===e&&(e={});var n,r,i,o=e.width||(r=a(n=t,"border-left-width"),i=a(n,"border-right-width"),n.clientWidth+r+i),u=e.height||function(t){var e=a(t,"border-top-width"),n=a(t,"border-bottom-width");return t.clientHeight+e+n}(t);return{width:o,height:u}}var l=16384;function f(t,e){return void 0===e&&(e={}),t.toBlob?new Promise((function(n){t.toBlob(n,e.type?e.type:"image/png",e.quality?e.quality:1)})):new Promise((function(n){for(var r=window.atob(t.toDataURL(e.type?e.type:void 0,e.quality?e.quality:void 0).split(",")[1]),i=r.length,o=new Uint8Array(i),u=0;u<i;u+=1)o[u]=r.charCodeAt(u);n(new Blob([o],{type:e.type?e.type:"image/png"}))}))}function h(t){return new Promise((function(e,n){var r=new Image;r.onload=function(){r.decode().then((function(){requestAnimationFrame((function(){return e(r)}))}))},r.onerror=n,r.crossOrigin="anonymous",r.decoding="async",r.src=t}))}function d(t){return e(this,void 0,void 0,(function(){return n(this,(function(e){return[2,Promise.resolve().then((function(){return(new XMLSerializer).serializeToString(t)})).then(encodeURIComponent).then((function(t){return"data:image/svg+xml;charset=utf-8,".concat(t)}))]}))}))}function v(t,r,i){return e(this,void 0,void 0,(function(){var e,o,u;return n(this,(function(n){return e="http://www.w3.org/2000/svg",o=document.createElementNS(e,"svg"),u=document.createElementNS(e,"foreignObject"),o.setAttribute("width","".concat(r)),o.setAttribute("height","".concat(i)),o.setAttribute("viewBox","0 0 ".concat(r," ").concat(i)),u.setAttribute("width","100%"),u.setAttribute("height","100%"),u.setAttribute("x","0"),u.setAttribute("y","0"),u.setAttribute("externalResourcesRequired","true"),o.appendChild(u),u.appendChild(t),[2,d(o)]}))}))}var p=function(t,e){if(t instanceof e)return!0;var n=Object.getPrototypeOf(t);return null!==n&&(n.constructor.name===e.name||p(n,e))};function g(t,e,n,r){var i=".".concat(t,":").concat(e),o=n.cssText?function(t){var e=t.getPropertyValue("content");return"".concat(t.cssText," content: '").concat(e.replace(/'|"/g,""),"';")}(n):function(t,e){return c(e).map((function(e){var n=t.getPropertyValue(e),r=t.getPropertyPriority(e);return"".concat(e,": ").concat(n).concat(r?" !important":"",";")})).join(" ")}(n,r);return document.createTextNode("".concat(i,"{").concat(o,"}"))}function m(t,e,n,r){var o=window.getComputedStyle(t,n),u=o.getPropertyValue("content");if(""!==u&&"none"!==u){var c=i();try{e.className="".concat(e.className," ").concat(c)}catch(t){return}var a=document.createElement("style");a.appendChild(g(c,n,o,r)),e.appendChild(a)}}var w="application/font-woff",y="image/jpeg",b={woff:w,woff2:w,ttf:"application/font-truetype",eot:"application/vnd.ms-fontobject",png:"image/png",jpg:y,jpeg:y,gif:"image/gif",tiff:"image/tiff",svg:"image/svg+xml",webp:"image/webp"};function S(t){var e=function(t){var e=/\.([^./]*?)$/g.exec(t);return e?e[1]:""}(t).toLowerCase();return b[e]||""}function E(t){return-1!==t.search(/^(data:)/)}function x(t,e){return"data:".concat(e,";base64,").concat(t)}function C(t,r,i){return e(this,void 0,void 0,(function(){var e,o;return n(this,(function(n){switch(n.label){case 0:return[4,fetch(t,r)];case 1:if(404===(e=n.sent()).status)throw new Error('Resource "'.concat(e.url,'" not found'));return[4,e.blob()];case 2:return o=n.sent(),[2,new Promise((function(t,n){var r=new FileReader;r.onerror=n,r.onloadend=function(){try{t(i({res:e,result:r.result}))}catch(t){n(t)}},r.readAsDataURL(o)}))]}}))}))}var P={};function R(t,r,i){return e(this,void 0,void 0,(function(){var e,o,u,c,a;return n(this,(function(n){switch(n.label){case 0:if(e=function(t,e,n){var r=t.replace(/\?.*/,"");return n&&(r=t),/ttf|otf|eot|woff2?/i.test(r)&&(r=r.replace(/.*\//,"")),e?"[".concat(e,"]").concat(r):r}(t,r,i.includeQueryParams),null!=P[e])return[2,P[e]];i.cacheBust&&(t+=(/\?/.test(t)?"&":"?")+(new Date).getTime()),n.label=1;case 1:return n.trys.push([1,3,,4]),[4,C(t,i.fetchRequestInit,(function(t){var e=t.res,n=t.result;return r||(r=e.headers.get("Content-Type")||""),function(t){return t.split(/,/)[1]}(n)}))];case 2:return u=n.sent(),o=x(u,r),[3,4];case 3:return c=n.sent(),o=i.imagePlaceholder||"",a="Failed to fetch resource: ".concat(t),c&&(a="string"==typeof c?c:c.message),a&&console.warn(a),[3,4];case 4:return P[e]=o,[2,o]}}))}))}function T(t){return e(this,void 0,void 0,(function(){var e;return n(this,(function(n){return"data:,"===(e=t.toDataURL())?[2,t.cloneNode(!1)]:[2,h(e)]}))}))}function A(t,r){return e(this,void 0,void 0,(function(){var e,i,o,u;return n(this,(function(n){switch(n.label){case 0:return t.currentSrc?(e=document.createElement("canvas"),i=e.getContext("2d"),e.width=t.clientWidth,e.height=t.clientHeight,null==i||i.drawImage(t,0,0,e.width,e.height),[2,h(e.toDataURL())]):(o=t.poster,u=S(o),[4,R(o,u,r)]);case 1:return[2,h(n.sent())]}}))}))}function k(t,r){var i;return e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return e.trys.push([0,3,,4]),(null===(i=null==t?void 0:t.contentDocument)||void 0===i?void 0:i.body)?[4,I(t.contentDocument.body,r,!0)]:[3,2];case 1:return[2,e.sent()];case 2:return[3,4];case 3:return e.sent(),[3,4];case 4:return[2,t.cloneNode(!1)]}}))}))}var L=function(t){return null!=t.tagName&&"SVG"===t.tagName.toUpperCase()};function N(t,e,n){return p(e,Element)&&(function(t,e,n){var r=e.style;if(r){var i=window.getComputedStyle(t);i.cssText?(r.cssText=i.cssText,r.transformOrigin=i.transformOrigin):c(n).forEach((function(n){var o=i.getPropertyValue(n);if("font-size"===n&&o.endsWith("px")){var u=Math.floor(parseFloat(o.substring(0,o.length-2)))-.1;o="".concat(u,"px")}p(t,HTMLIFrameElement)&&"display"===n&&"inline"===o&&(o="block"),"d"===n&&e.getAttribute("d")&&(o="path(".concat(e.getAttribute("d"),")")),r.setProperty(n,o,i.getPropertyPriority(n))}))}}(t,e,n),function(t,e,n){m(t,e,":before",n),m(t,e,":after",n)}(t,e,n),function(t,e){p(t,HTMLTextAreaElement)&&(e.innerHTML=t.value),p(t,HTMLInputElement)&&e.setAttribute("value",t.value)}(t,e),function(t,e){if(p(t,HTMLSelectElement)){var n=e,r=Array.from(n.children).find((function(e){return t.value===e.getAttribute("value")}));r&&r.setAttribute("selected","")}}(t,e)),e}function I(t,r,i){return e(this,void 0,void 0,(function(){return n(this,(function(u){return i||!r.filter||r.filter(t)?[2,Promise.resolve(t).then((function(t){return function(t,r){return e(this,void 0,void 0,(function(){return n(this,(function(e){return p(t,HTMLCanvasElement)?[2,T(t)]:p(t,HTMLVideoElement)?[2,A(t,r)]:p(t,HTMLIFrameElement)?[2,k(t,r)]:[2,t.cloneNode(L(t))]}))}))}(t,r)})).then((function(i){return function(t,r,i){var u,c;return e(this,void 0,void 0,(function(){var e;return n(this,(function(n){switch(n.label){case 0:return L(r)?[2,r]:(e=[],0===(e=null!=(a=t).tagName&&"SLOT"===a.tagName.toUpperCase()&&t.assignedNodes?o(t.assignedNodes()):p(t,HTMLIFrameElement)&&(null===(u=t.contentDocument)||void 0===u?void 0:u.body)?o(t.contentDocument.body.childNodes):o((null!==(c=t.shadowRoot)&&void 0!==c?c:t).childNodes)).length||p(t,HTMLVideoElement)?[2,r]:[4,e.reduce((function(t,e){return t.then((function(){return I(e,i)})).then((function(t){t&&r.appendChild(t)}))}),Promise.resolve())]);case 1:return n.sent(),[2,r]}var a}))}))}(t,i,r)})).then((function(e){return N(t,e,r)})).then((function(t){return function(t,r){return e(this,void 0,void 0,(function(){var e,i,o,u,c,a,s,l,f,h,d,v,p;return n(this,(function(n){switch(n.label){case 0:if(0===(e=t.querySelectorAll?t.querySelectorAll("use"):[]).length)return[2,t];i={},p=0,n.label=1;case 1:return p<e.length?(o=e[p],(u=o.getAttribute("xlink:href"))?(c=t.querySelector(u),a=document.querySelector(u),c||!a||i[u]?[3,3]:(s=i,l=u,[4,I(a,r,!0)])):[3,3]):[3,4];case 2:s[l]=n.sent(),n.label=3;case 3:return p++,[3,1];case 4:if((f=Object.values(i)).length){for(h="http://www.w3.org/1999/xhtml",(d=document.createElementNS(h,"svg")).setAttribute("xmlns",h),d.style.position="absolute",d.style.width="0",d.style.height="0",d.style.overflow="hidden",d.style.display="none",v=document.createElementNS(h,"defs"),d.appendChild(v),p=0;p<f.length;p++)v.appendChild(f[p]);t.appendChild(d)}return[2,t]}}))}))}(t,r)}))]:[2,null]}))}))}var D=/url\((['"]?)([^'"]+?)\1\)/g,H=/url\([^)]+\)\s*format\((["']?)([^"']+)\1\)/g,M=/src:\s*(?:url\([^)]+\)\s*format\([^)]+\)[,;]\s*)+/g;function F(t,r,i,o,u){return e(this,void 0,void 0,(function(){var e,c,a,s;return n(this,(function(n){switch(n.label){case 0:return n.trys.push([0,5,,6]),e=i?function(t,e){if(t.match(/^[a-z]+:\/\//i))return t;if(t.match(/^\/\//))return window.location.protocol+t;if(t.match(/^[a-z]+:/i))return t;var n=document.implementation.createHTMLDocument(),r=n.createElement("base"),i=n.createElement("a");return n.head.appendChild(r),n.body.appendChild(i),e&&(r.href=e),i.href=t,i.href}(r,i):r,c=S(r),a=void 0,u?[4,u(e)]:[3,2];case 1:return s=n.sent(),a=x(s,c),[3,4];case 2:return[4,R(e,c,o)];case 3:a=n.sent(),n.label=4;case 4:return[2,t.replace((l=r,f=l.replace(/([.*+?^${}()|\[\]\/\\])/g,"\\$1"),new RegExp("(url\\(['\"]?)(".concat(f,")(['\"]?\\))"),"g")),"$1".concat(a,"$3"))];case 5:return n.sent(),[3,6];case 6:return[2,t]}var l,f}))}))}function V(t){return-1!==t.search(D)}function q(t,r,i){return e(this,void 0,void 0,(function(){var e,o;return n(this,(function(n){return V(t)?(e=function(t,e){var n=e.preferredFontFormat;return n?t.replace(M,(function(t){for(;;){var e=H.exec(t)||[],r=e[0],i=e[2];if(!i)return"";if(i===n)return"src: ".concat(r,";")}})):t}(t,i),o=function(t){var e=[];return t.replace(D,(function(t,n,r){return e.push(r),t})),e.filter((function(t){return!E(t)}))}(e),[2,o.reduce((function(t,e){return t.then((function(t){return F(t,e,r,i)}))}),Promise.resolve(e))]):[2,t]}))}))}function U(t,r,i){var o;return e(this,void 0,void 0,(function(){var e,u;return n(this,(function(n){switch(n.label){case 0:return(e=null===(o=r.style)||void 0===o?void 0:o.getPropertyValue(t))?[4,q(e,null,i)]:[3,2];case 1:return u=n.sent(),r.style.setProperty(t,u,r.style.getPropertyPriority(t)),[2,!0];case 2:return[2,!1]}}))}))}function j(t,r){return e(this,void 0,void 0,(function(){var e,i;return n(this,(function(n){switch(n.label){case 0:return[4,U("background",t,r)];case 1:return n.sent()?[3,3]:[4,U("background-image",t,r)];case 2:n.sent(),n.label=3;case 3:return[4,U("mask",t,r)];case 4:return(i=n.sent())?[3,6]:[4,U("-webkit-mask",t,r)];case 5:i=n.sent(),n.label=6;case 6:return(e=i)?[3,8]:[4,U("mask-image",t,r)];case 7:e=n.sent(),n.label=8;case 8:return e?[3,10]:[4,U("-webkit-mask-image",t,r)];case 9:n.sent(),n.label=10;case 10:return[2]}}))}))}function O(t,r){return e(this,void 0,void 0,(function(){var e,i,o;return n(this,(function(n){switch(n.label){case 0:return(e=p(t,HTMLImageElement))&&!E(t.src)||p(t,SVGImageElement)&&!E(t.href.baseVal)?[4,R(i=e?t.src:t.href.baseVal,S(i),r)]:[2];case 1:return o=n.sent(),[4,new Promise((function(n,i){t.onload=n,t.onerror=r.onImageErrorHandler?function(){for(var t=[],e=0;e<arguments.length;e++)t[e]=arguments[e];try{n(r.onImageErrorHandler.apply(r,t))}catch(t){i(t)}}:i;var u=t;u.decode&&(u.decode=n),"lazy"===u.loading&&(u.loading="eager"),e?(t.srcset="",t.src=o):t.href.baseVal=o}))];case 2:return n.sent(),[2]}}))}))}function B(t,r){return e(this,void 0,void 0,(function(){var e,i;return n(this,(function(n){switch(n.label){case 0:return e=o(t.childNodes),i=e.map((function(t){return z(t,r)})),[4,Promise.all(i).then((function(){return t}))];case 1:return n.sent(),[2]}}))}))}function z(t,r){return e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return p(t,Element)?[4,j(t,r)]:[3,4];case 1:return e.sent(),[4,O(t,r)];case 2:return e.sent(),[4,B(t,r)];case 3:e.sent(),e.label=4;case 4:return[2]}}))}))}var W={};function $(t){return e(this,void 0,void 0,(function(){var e,r;return n(this,(function(n){switch(n.label){case 0:return null!=(e=W[t])?[2,e]:[4,fetch(t)];case 1:return[4,n.sent().text()];case 2:return r=n.sent(),e={url:t,cssText:r},W[t]=e,[2,e]}}))}))}function G(t,r){return e(this,void 0,void 0,(function(){var i,o,u,c,a=this;return n(this,(function(s){return i=t.cssText,o=/url\(["']?([^"')]+)["']?\)/g,u=i.match(/url\([^)]+\)/g)||[],c=u.map((function(u){return e(a,void 0,void 0,(function(){var e;return n(this,(function(n){return(e=u.replace(o,"$1")).startsWith("https://")||(e=new URL(e,t.url).href),[2,C(e,r.fetchRequestInit,(function(t){var e=t.result;return i=i.replace(u,"url(".concat(e,")")),[u,e]}))]}))}))})),[2,Promise.all(c).then((function(){return i}))]}))}))}function _(t){if(null==t)return[];for(var e=[],n=t.replace(/(\/\*[\s\S]*?\*\/)/gi,""),r=new RegExp("((@.*?keyframes [\\s\\S]*?){([\\s\\S]*?}\\s*?)})","gi");;){if(null===(u=r.exec(n)))break;e.push(u[0])}n=n.replace(r,"");for(var i=/@import[\s\S]*?url\([^)]*\)[\s\S]*?;/gi,o=new RegExp("((\\s*?(?:\\/\\*[\\s\\S]*?\\*\\/)?\\s*?@media[\\s\\S]*?){([\\s\\S]*?)}\\s*?})|(([\\s\\S]*?){([\\s\\S]*?)})","gi");;){var u;if(null===(u=i.exec(n))){if(null===(u=o.exec(n)))break;i.lastIndex=o.lastIndex}else o.lastIndex=i.lastIndex;e.push(u[0])}return e}function J(t,r){return e(this,void 0,void 0,(function(){var e,i;return n(this,(function(n){return e=[],i=[],t.forEach((function(e){if("cssRules"in e)try{o(e.cssRules||[]).forEach((function(t,n){if(t.type===CSSRule.IMPORT_RULE){var o=n+1,u=$(t.href).then((function(t){return G(t,r)})).then((function(t){return _(t).forEach((function(t){try{e.insertRule(t,t.startsWith("@import")?o+=1:e.cssRules.length)}catch(e){console.error("Error inserting rule from remote css",{rule:t,error:e})}}))})).catch((function(t){console.error("Error loading remote css",t.toString())}));i.push(u)}}))}catch(o){var n=t.find((function(t){return null==t.href}))||document.styleSheets[0];null!=e.href&&i.push($(e.href).then((function(t){return G(t,r)})).then((function(t){return _(t).forEach((function(t){n.insertRule(t,n.cssRules.length)}))})).catch((function(t){console.error("Error loading remote stylesheet",t)}))),console.error("Error inlining remote css file",o)}})),[2,Promise.all(i).then((function(){return t.forEach((function(t){if("cssRules"in t)try{o(t.cssRules||[]).forEach((function(t){e.push(t)}))}catch(e){console.error("Error while reading CSS rules from ".concat(t.href),e)}})),e}))]}))}))}function Q(t){return t.filter((function(t){return t.type===CSSRule.FONT_FACE_RULE})).filter((function(t){return V(t.style.getPropertyValue("src"))}))}function X(t,r){return e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:if(null==t.ownerDocument)throw new Error("Provided element is not within a Document");return[4,J(o(t.ownerDocument.styleSheets),r)];case 1:return[2,Q(e.sent())]}}))}))}function K(t){return t.trim().replace(/["']/g,"")}function Y(t,r){return e(this,void 0,void 0,(function(){var e,i;return n(this,(function(n){switch(n.label){case 0:return[4,X(t,r)];case 1:return e=n.sent(),i=function(t){var e=new Set;return function t(n){(n.style.fontFamily||getComputedStyle(n).fontFamily).split(",").forEach((function(t){e.add(K(t))})),Array.from(n.children).forEach((function(e){e instanceof HTMLElement&&t(e)}))}(t),e}(t),[4,Promise.all(e.filter((function(t){return i.has(K(t.style.fontFamily))})).map((function(t){var e=t.parentStyleSheet?t.parentStyleSheet.href:null;return q(t.cssText,e,r)})))];case 2:return[2,n.sent().join("\n")]}}))}))}function Z(t,r){return e(this,void 0,void 0,(function(){var e,i,o,u,c;return n(this,(function(n){switch(n.label){case 0:return null==r.fontEmbedCSS?[3,1]:(i=r.fontEmbedCSS,[3,5]);case 1:return r.skipFonts?(o=null,[3,4]):[3,2];case 2:return[4,Y(t,r)];case 3:o=n.sent(),n.label=4;case 4:i=o,n.label=5;case 5:return(e=i)&&(u=document.createElement("style"),c=document.createTextNode(e),u.appendChild(c),t.firstChild?t.insertBefore(u,t.firstChild):t.appendChild(u)),[2]}}))}))}function tt(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){var e,i,o,u;return n(this,(function(n){switch(n.label){case 0:return e=s(t,r),i=e.width,o=e.height,[4,I(t,r,!0)];case 1:return[4,Z(u=n.sent(),r)];case 2:return n.sent(),[4,z(u,r)];case 3:return n.sent(),function(t,e){var n=t.style;e.backgroundColor&&(n.backgroundColor=e.backgroundColor),e.width&&(n.width="".concat(e.width,"px")),e.height&&(n.height="".concat(e.height,"px"));var r=e.style;null!=r&&Object.keys(r).forEach((function(t){n[t]=r[t]}))}(u,r),[4,v(u,i,o)];case 4:return[2,n.sent()]}}))}))}function et(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){var e,i,o,u,c,a,f,d,v;return n(this,(function(n){switch(n.label){case 0:return e=s(t,r),i=e.width,o=e.height,[4,tt(t,r)];case 1:return[4,h(n.sent())];case 2:return u=n.sent(),c=document.createElement("canvas"),a=c.getContext("2d"),f=r.pixelRatio||function(){var t,e;try{e=process}catch(t){}var n=e&&e.env?e.env.devicePixelRatio:null;return n&&(t=parseInt(n,10),Number.isNaN(t)&&(t=1)),t||window.devicePixelRatio||1}(),d=r.canvasWidth||i,v=r.canvasHeight||o,c.width=d*f,c.height=v*f,r.skipAutoScale||function(t){(t.width>l||t.height>l)&&(t.width>l&&t.height>l?t.width>t.height?(t.height*=l/t.width,t.width=l):(t.width*=l/t.height,t.height=l):t.width>l?(t.height*=l/t.width,t.width=l):(t.width*=l/t.height,t.height=l))}(c),c.style.width="".concat(d),c.style.height="".concat(v),r.backgroundColor&&(a.fillStyle=r.backgroundColor,a.fillRect(0,0,c.width,c.height)),a.drawImage(u,0,0,c.width,c.height),[2,c]}}))}))}t.getFontEmbedCSS=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){return n(this,(function(e){return[2,Y(t,r)]}))}))},t.toBlob=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return[4,et(t,r)];case 1:return[4,f(e.sent())];case 2:return[2,e.sent()]}}))}))},t.toCanvas=et,t.toJpeg=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return[4,et(t,r)];case 1:return[2,e.sent().toDataURL("image/jpeg",r.quality||1)]}}))}))},t.toPixelData=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){var e,i,o,u;return n(this,(function(n){switch(n.label){case 0:return e=s(t,r),i=e.width,o=e.height,[4,et(t,r)];case 1:return u=n.sent(),[2,u.getContext("2d").getImageData(0,0,i,o).data]}}))}))},t.toPng=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return[4,et(t,r)];case 1:return[2,e.sent().toDataURL()]}}))}))},t.toSvg=tt}));
+//# sourceMappingURL=html-to-image.js.map
+</script>
 <style>
-:root{
-  --ink:#1a1008;
-  --ink2:#3d2b1a;
-  --paper:#f0e6cc;
-  --paper2:#e6d9b8;
-  --seal:#8b1a1a;
-  --gold:#7a5c2e;
-}
 *{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060a14; --cy:#6fe9ff; --cy2:#bdf3ff;
+  --txt:#eef3ff; --dim:#9fb0d0; --faint:#7184a6; --line:rgba(111,233,255,.20);
+}
+@page{margin:0;}
+@media print{.tool{display:none!important;}}
+html,body{background:#02040a;}
+body{font-family:'Shippori Mincho B1',serif;color:var(--txt);}
+body.no-natal .sec.s2,body.no-natal .e2{display:none;}
 
-body{
-  background:#0d0a04;
-  min-height:100vh;
-  font-family:'Shippori Mincho B1',serif;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
+/* ===== 入力フォーム（出力シートには含まれない） ===== */
+.tool{max-width:900px;margin:24px auto 100px;padding:22px 26px;border:1px solid var(--line);border-radius:8px;
+  background:linear-gradient(160deg,rgba(111,233,255,.05),rgba(255,255,255,.01));}
+.tool h2{font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:.18em;color:var(--cy);margin-bottom:4px;}
+.tool .sub{font-size:11px;color:var(--dim);margin-bottom:16px;letter-spacing:.04em;}
+.tool fieldset{border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin-bottom:14px;}
+.tool legend{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:.14em;color:var(--cy2);padding:0 8px;}
+.tool .grid{display:flex;flex-wrap:wrap;gap:10px;}
+.tool label{font-size:11px;color:var(--dim);display:flex;flex-direction:column;gap:4px;}
+.tool input{width:100%;background:#0a1424;border:1px solid var(--line);border-radius:4px;color:#eaf2ff;
+  font-family:'Orbitron',sans-serif;font-size:13px;padding:7px 9px;}
+.tool input.txt{width:150px;}
+.tool input.num{width:66px;text-align:center;}
+.tool .gen{margin-top:4px;font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:.14em;font-weight:700;
+  color:#04101a;background:linear-gradient(90deg,var(--cy),var(--cy2));border:0;border-radius:5px;padding:11px 26px;cursor:pointer;}
+.tool .hint{font-size:10.5px;color:var(--faint);margin-top:12px;line-height:1.7;letter-spacing:.02em;}
 
-.book{
-  max-width:540px;
-  width:100%;
-  min-height:100vh;
-  position:relative;
-  overflow:hidden;
-  box-shadow:
-    -6px 0 24px rgba(0,0,0,0.6),
-    6px 0 24px rgba(0,0,0,0.4);
-}
-
-/* 和紙SVGテクスチャ背景 */
-.book-bg{
-  position:absolute;
-  inset:0;
-  z-index:0;
-  background-color:var(--paper);
-}
-.book-bg::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background-image:
-    radial-gradient(ellipse 80% 60% at 10% 10%, rgba(160,120,40,0.13) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 90% 80%, rgba(140,100,30,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 40% at 50% 30%, rgba(180,140,60,0.07) 0%, transparent 70%),
-    radial-gradient(ellipse 30% 50% at 30% 70%, rgba(120,90,20,0.09) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 30% at 70% 20%, rgba(150,110,40,0.08) 0%, transparent 60%);
-}
-/* 細かいノイズ感 */
-.book-bg::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  opacity:1;
-}
-
-/* 左綴じ */
-.toji{
-  position:absolute;
-  top:0;bottom:0;left:32px;
-  width:1px;
-  background:linear-gradient(to bottom,
-    transparent,
-    rgba(26,16,8,0.18) 8%,
-    rgba(26,16,8,0.18) 92%,
-    transparent);
-  z-index:2;
-  pointer-events:none;
-}
-
-.content{
-  position:relative;
-  z-index:3;
-  padding:44px 40px 44px 56px;
-}
-
-/* ヘッダー */
-.header{
-  text-align:center;
-  padding-bottom:22px;
-  border-bottom:1px solid rgba(26,16,8,0.15);
-  margin-bottom:28px;
-  position:relative;
-}
-.header-en{
-  font-family:'Cinzel',serif;
-  font-size:10px;
-  letter-spacing:.55em;
-  color:var(--gold);
-  opacity:.75;
-  margin-bottom:10px;
-}
-.header-title{
-  font-family:'Cinzel',serif;
-  font-size:32px;
-  font-weight:600;
-  color:var(--ink);
-  letter-spacing:.22em;
-  line-height:1;
-  margin-bottom:12px;
-}
-.header-sub{
-  font-size:12px;
-  color:var(--ink2);
-  letter-spacing:.25em;
-  opacity:.65;
-}
-
-/* 朱印 */
-.seal{
-  position:absolute;
-  top:44px;right:40px;
-  width:42px;height:42px;
-  border:1.5px solid #c0392b;
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  color:#c0392b;
-  font-size:15px;
-  font-weight:700;
-  opacity:.8;
-  transform:rotate(-12deg);
-  font-family:'Shippori Mincho B1',serif;
-  pointer-events:none;
-}
-
-/* フォーム */
-.name-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-  margin-bottom:20px;
-}
-.field{ margin-bottom:20px; }
-.field-label{
-  font-size:10px;
-  letter-spacing:.3em;
-  color:var(--gold);
-  font-family:'Cinzel',serif;
-  display:block;
-  margin-bottom:8px;
-}
-.field input{
-  width:100%;
-  background:rgba(255,255,255,0.25);
-  border:none;
-  border-bottom:1px solid rgba(26,16,8,0.25);
-  padding:10px 6px;
-  font-family:'Shippori Mincho B1',serif;
-  font-size:16px;
-  color:var(--ink);
-  outline:none;
-  transition:border-color .2s, background .2s;
-  letter-spacing:.04em;
-}
-.field input:focus{
-  border-bottom-color:var(--ink);
-  background:rgba(255,255,255,0.35);
-}
-.field input::placeholder{
-  color:rgba(26,16,8,0.3);
-  font-size:13px;
-}
-
-/* 区切り */
-.upload-btn{
-  display:inline-block;
-  padding:9px 20px;
-  background:transparent;
-  border:1px solid rgba(26,16,8,0.3);
-  color:var(--ink2);
-  font-family:'Shippori Mincho B1',serif;
-  font-size:12px;
-  letter-spacing:.2em;
-  cursor:pointer;
-  transition:all .2s;
-}
-.upload-btn:hover{ background:rgba(26,16,8,0.06); }
-  width:100%;
-  height:1px;
-  background:linear-gradient(to right,transparent,rgba(26,16,8,0.15),transparent);
-  margin:22px 0;
-  position:relative;
-}
-.divider::after{
-  content:'✦';
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  background:var(--paper);
-  color:var(--gold);
-  font-size:10px;
-  padding:0 10px;
-  opacity:.55;
-}
-
-/* 神画像 */
-.kami-img-wrap{
-  width:100%;
-  aspect-ratio:4/5;
-  background:rgba(0,0,0,0.04);
-  border:1px solid rgba(26,16,8,0.14);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:14px;
-  position:relative;
-  overflow:hidden;
-}
-.kami-img-wrap img{ width:100%; height:100%; object-fit:cover; display:block; }
-.kami-img-placeholder{
-  text-align:center;
-  color:rgba(26,16,8,0.28);
-  font-size:12px;
-  letter-spacing:.15em;
-  line-height:2.2;
-}
-
-.kami-name-display{
-  text-align:center;
-  font-size:22px;
-  font-weight:700;
-  color:var(--ink);
-  letter-spacing:.18em;
-  margin-bottom:10px;
-  min-height:30px;
-  line-height:1.4;
-}
-
-/* 召喚ボタン */
-.summon-btn{
-  width:100%;
-  padding:15px;
-  background:transparent;
-  border:1px solid rgba(26,16,8,0.4);
-  color:var(--ink);
-  font-family:'Shippori Mincho B1',serif;
-  font-size:14px;
-  font-weight:700;
-  letter-spacing:.45em;
-  cursor:pointer;
-  transition:all .25s;
-  margin-top:10px;
-}
-.summon-btn:hover{
-  background:var(--ink);
-  color:var(--paper);
-}
-.summon-btn:disabled{ opacity:.35; cursor:not-allowed; }
-
-.error-msg{
-  font-size:12px;
-  color:var(--seal);
-  padding:8px 4px;
-  letter-spacing:.06em;
-  margin-top:6px;
-}
-
-/* チャット */
-.chat-area{ display:none; }
-.chat-area.show{ display:block; }
-
-.messages{ min-height:200px; margin-bottom:18px; }
-.msg{ margin-bottom:24px; }
-
-.msg-kami{
-  padding:18px 20px;
-  background:rgba(26,16,8,0.04);
-  border-left:2px solid rgba(26,16,8,0.18);
-}
-.msg-kami-name{
-  font-size:10px;
-  letter-spacing:.3em;
-  color:var(--gold);
-  margin-bottom:10px;
-  font-family:'Cinzel',serif;
-  opacity:.9;
-}
-.msg-kami-text{
-  font-size:15px;
-  color:var(--ink);
-  letter-spacing:.06em;
-  line-height:2;
-}
-
-.msg-user{ text-align:right; padding:0 4px; }
-.msg-user-text{
-  display:inline-block;
-  font-size:14px;
-  color:var(--ink2);
-  letter-spacing:.05em;
-  border-bottom:1px solid rgba(26,16,8,0.2);
-  padding-bottom:5px;
-  line-height:1.7;
-  max-width:85%;
-  text-align:left;
-}
-
-.input-row{
-  display:flex;
-  gap:10px;
-  border-top:1px solid rgba(26,16,8,0.12);
-  padding-top:18px;
-  align-items:flex-end;
-}
-.chat-input{
-  flex:1;
-  background:rgba(255,255,255,0.25);
-  border:none;
-  border-bottom:1px solid rgba(26,16,8,0.22);
-  padding:9px 6px;
-  font-family:'Shippori Mincho B1',serif;
-  font-size:14px;
-  color:var(--ink);
-  outline:none;
-  resize:none;
-  letter-spacing:.04em;
-  line-height:1.6;
-}
-.chat-input::placeholder{ color:rgba(26,16,8,0.3); }
-.chat-input:focus{ border-bottom-color:var(--ink); }
-
-.send-btn{
-  padding:9px 16px;
-  background:transparent;
-  border:1px solid rgba(26,16,8,0.3);
-  color:var(--ink);
-  font-family:'Shippori Mincho B1',serif;
-  font-size:12px;
-  font-weight:700;
-  letter-spacing:.2em;
-  cursor:pointer;
-  transition:all .2s;
-  white-space:nowrap;
-  flex-shrink:0;
-}
-.send-btn:hover{ background:var(--ink); color:var(--paper); }
-.send-btn:disabled{ opacity:.35; cursor:not-allowed; }
-
-.loading-dots{ display:inline-flex; gap:5px; padding:6px 0; align-items:center; }
-.loading-dots span{
-  width:4px;height:4px;
-  border-radius:50%;
-  background:var(--ink2);
-  opacity:.25;
-  animation:dot-pulse 1.3s ease-in-out infinite;
-}
-.loading-dots span:nth-child(2){animation-delay:.22s}
-.loading-dots span:nth-child(3){animation-delay:.44s}
-@keyframes dot-pulse{
-  0%,80%,100%{opacity:.25;transform:scale(1)}
-  40%{opacity:.8;transform:scale(1.3)}
-}
-
-/* フッター */
-.footnote{
-  margin-top:44px;
-  padding:20px 0 36px;
-  border-top:1px solid rgba(26,16,8,0.1);
-  font-size:12px;
-  color:rgba(26,16,8,0.65);
-  letter-spacing:.18em;
-  line-height:2.2;
-  text-align:center;
-}
-
-@media(max-width:480px){
-  .content{padding:36px 24px 36px 40px}
-  .seal{top:36px;right:24px;}
-  .header-title{font-size:26px;}
-}
+/* ===== シート ===== */
+.sheet{position:relative;width:900px;height:1500px;overflow:hidden;margin:0 auto;
+  background:
+    radial-gradient(circle at 20% 6%, rgba(64,128,196,.16), transparent 46%),
+    radial-gradient(circle at 86% 74%, rgba(56,196,226,.10), transparent 50%),
+    radial-gradient(circle at 60% 42%, rgba(40,70,120,.12), transparent 70%),
+    var(--bg);}
+.sheet::before{content:'';position:absolute;inset:0;z-index:6;pointer-events:none;opacity:.045;
+  background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(150,220,255,.9) 3px 4px);mix-blend-mode:screen;}
+.stars{position:absolute;inset:0;z-index:0;}
+.stars i{position:absolute;border-radius:50%;background:#dff4ff;}
+.wm-sigil{position:absolute;left:50%;top:44%;width:1040px;height:1040px;transform:translate(-50%,-50%);z-index:0;opacity:.5;}
+.wm-sigil .r{fill:none;stroke:rgba(111,233,255,.08);stroke-width:.35;}
+.wm-sigil .s{fill:none;stroke:rgba(111,233,255,.10);stroke-width:.35;}
+.cnr{position:absolute;width:30px;height:30px;z-index:5;border:1.6px solid rgba(111,233,255,.5);}
+.cnr.tl{left:24px;top:24px;border-right:0;border-bottom:0;}.cnr.tr{right:24px;top:24px;border-left:0;border-bottom:0;}
+.cnr.bl{left:24px;bottom:24px;border-right:0;border-top:0;}.cnr.br{right:24px;bottom:24px;border-left:0;border-top:0;}
+.wrap{position:relative;z-index:3;height:100%;padding:48px 52px 38px;}
+.tate{position:absolute;top:54px;right:52px;z-index:4;writing-mode:vertical-rl;font-size:12px;letter-spacing:.34em;color:var(--dim);}
+.holo{background:linear-gradient(100deg,var(--c,#6fe9ff),#ffffff 50%,var(--c,#6fe9ff));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 9px var(--c,#6fe9ff));}
+.eyebrow{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.46em;color:var(--cy);text-transform:uppercase;opacity:.9;}
+.sysline{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.28em;color:var(--dim);margin-top:7px;}
+.name{margin-top:13px;font-size:52px;font-weight:800;letter-spacing:.06em;line-height:1;}
+.subname{font-family:'Orbitron',sans-serif;font-size:9.5px;letter-spacing:.34em;color:var(--dim);margin-top:11px;}
+.hr{height:1px;background:linear-gradient(90deg,var(--line),transparent);margin-top:18px;}
+.sec{display:flex;align-items:center;gap:13px;margin:18px 0 12px;}
+.sec .no{font-family:'Orbitron',sans-serif;font-weight:900;font-size:13px;letter-spacing:.16em;padding:5px 11px;color:#04101a;background:linear-gradient(90deg,var(--cy),var(--cy2));clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);}
+.sec.s2 .no{color:#23071c;background:linear-gradient(90deg,#ff5ed6,#9b7bff);}
+.sec .jp{font-size:18px;font-weight:800;letter-spacing:.14em;}
+.sec .en{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.2em;color:var(--dim);}
+.sec .ln{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent);}
+.panel{position:relative;padding:16px 19px;border-radius:6px;background:linear-gradient(160deg,rgba(111,233,255,.05),rgba(255,255,255,.012));border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.45),inset 0 0 26px rgba(111,233,255,.035);}
+.panel[data-edge]{border-color:var(--edge);}
+.p-en{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#aebcdb;}
+.e1top{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch;}
+.bighero{display:flex;align-items:baseline;gap:12px;margin-top:5px;}
+.bighero .num{font-family:'Orbitron',sans-serif;font-size:46px;font-weight:900;line-height:1;}
+.bighero .dot{font-size:24px;color:var(--dim);margin:0 -3px;}
+.bighero .big{font-size:44px;font-weight:800;letter-spacing:.05em;}
+.bighero .pair{font-size:14px;color:var(--dim);letter-spacing:.1em;}
+.lead{font-size:14px;letter-spacing:.04em;color:var(--txt);margin-top:9px;font-weight:700;}
+.traits{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px;}
+.traits span{font-size:11px;padding:4px 10px;border:1px solid var(--line);border-radius:13px;color:#dbe6ff;background:rgba(111,233,255,.05);}
+.soulbadge{display:inline-block;font-size:11.5px;letter-spacing:.05em;font-weight:700;padding:4px 11px;margin-top:9px;border-radius:3px;}
+.story{font-size:12px;line-height:1.9;color:#d6e1f6;margin-top:9px;letter-spacing:.02em;}
+.rolebar{margin-top:12px;display:grid;grid-template-columns:230px 1fr;gap:22px;align-items:center;}
+.rolebar.multi{grid-template-columns:1fr;}
+.rolebar.multi .rbars{display:none;}
+.rolebar .rl-row{display:flex;align-items:center;gap:12px;}
+.rolebar .rl-icon{display:flex;gap:8px;align-items:center;}
+.rolebar .rl-icon svg{width:38px;height:38px;display:block;filter:drop-shadow(0 0 8px currentColor);}
+.rolebar .rl-big{font-size:40px;font-weight:800;letter-spacing:.08em;line-height:1.1;}
+.rolebar .rl-big.m2{font-size:26px;}
+.rolebar .rl-big.m3{font-size:20px;}
+.rolebar .rl-psy{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.22em;color:var(--cy2);margin-top:4px;opacity:.85;}
+.rolebar .rl-comp{font-size:12px;color:#cdd9f2;margin-top:6px;letter-spacing:.02em;}
+.rolebar .rl-def{font-size:12.5px;color:#dbe6ff;margin-top:8px;line-height:1.6;}
+.rbars{display:flex;flex-direction:column;gap:7px;}
+.rbar{display:grid;grid-template-columns:74px 1fr 24px;align-items:center;gap:10px;}
+.rbar .nm{font-size:11px;letter-spacing:.02em;}
+.rbar .track{height:10px;border-radius:6px;background:rgba(255,255,255,.07);overflow:hidden;}
+.rbar .fill{height:100%;border-radius:6px;}
+.rbar .vv{font-family:'Orbitron',sans-serif;font-size:12px;text-align:right;}
+.rbar.win .nm{font-weight:800;}.rbar.win .vv{font-weight:800;}
+.status{margin-top:12px;}
+.statgrid{display:grid;grid-template-columns:330px 1fr;gap:16px;align-items:center;}
+#radar{display:block;margin:0 auto;}
+.slist{display:flex;flex-direction:column;}
+.srow{display:grid;grid-template-columns:16px 56px 1fr 26px 40px;align-items:center;gap:9px;padding:5.5px 0;border-bottom:1px solid rgba(111,233,255,.1);}
+.srow .n{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--dim);}
+.srow .nm{font-size:14px;font-weight:700;letter-spacing:.04em;}
+.srow .mn{font-size:11px;color:#c2cfe8;letter-spacing:.02em;}
+.srow .v{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:800;text-align:right;}
+.srow .ev{font-size:10px;text-align:right;letter-spacing:.04em;}
+.scale{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;justify-content:center;}
+.scale span{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:.06em;padding:3px 9px;border:1px solid var(--line);color:#aebcdb;border-radius:2px;}
+.e2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;}
+.e2 .panel{display:flex;flex-direction:column;}
+.slot-jp{font-size:14px;font-weight:800;letter-spacing:.1em;margin:3px 0 6px;}
+.slot-art{display:flex;align-items:center;justify-content:center;min-height:116px;}
+.slot-val{text-align:center;font-size:25px;font-weight:800;letter-spacing:.08em;margin-top:6px;line-height:1.2;}
+.slot-val.m2{font-size:18px;}
+.slot-val.m3{font-size:15px;}
+.slot-sub{text-align:center;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.1em;color:#aebcdb;margin-top:5px;}
+.slot-note{font-size:11.5px;line-height:1.8;color:#d6e1f6;margin-top:10px;text-align:center;letter-spacing:.02em;}
+.slot-calc{font-size:9.5px;color:var(--dim);text-align:center;margin-top:8px;letter-spacing:.03em;font-family:'Orbitron',sans-serif;}
+.mirror{font-size:9px;color:var(--dim);text-align:center;margin-top:6px;letter-spacing:.04em;opacity:.9;}
+.pillars{display:flex;align-items:flex-end;gap:20px;height:94px;}
+.pil{width:24px;height:84px;border-radius:3px 3px 0 0;background:rgba(255,255,255,.07);border:1px solid var(--line);position:relative;}
+.pil small{position:absolute;bottom:-19px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--dim);white-space:nowrap;font-family:'Orbitron',sans-serif;}
+.worlds{display:flex;flex-direction:column;gap:8px;width:132px;}
+.wld{height:27px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11.5px;letter-spacing:.08em;color:var(--dim);background:rgba(255,255,255,.06);border:1px solid var(--line);}
+.mars{position:relative;width:120px;height:96px;display:flex;align-items:center;justify-content:center;}
+.mars .orbit{position:absolute;width:98px;height:56px;border:1px dashed var(--pc);opacity:.6;border-radius:50%;transform:rotate(-18deg);}
+.mars .planet{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#ffffff,var(--pc) 52%,rgba(0,0,0,.6));box-shadow:0 0 20px var(--pc),inset -5px -5px 11px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;}
+.mars .planet span{font-size:20px;color:#fff;font-weight:700;text-shadow:0 0 5px rgba(0,0,0,.5);}
+.mars .moon{position:absolute;width:7px;height:7px;border-radius:50%;background:#dff4ff;box-shadow:0 0 7px #bdf3ff;top:12px;right:14px;}
+.foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-family:'Orbitron',sans-serif;font-size:8.5px;letter-spacing:.2em;color:var(--dim);}
+.foot .mid{font-size:10px;letter-spacing:.4em;color:var(--cy);}
 </style>
 </head>
 <body>
-<div class="book">
-  <div class="book-bg"></div>
-  <div class="toji"></div>
-  <div class="seal">禁</div>
-  <div class="content">
 
-    <div class="header">
-      <div class="header-en">PANDORA</div>
-      <div class="header-title">パンドラ</div>
-      <div class="header-sub">汝のご縁ある神のみぞ知る</div>
+<!-- ===== 入力フォーム ===== -->
+<div class="tool" id="tool">
+  <h2>RPGシート ジェネレーター</h2>
+  <div class="sub">名前 → キャラ/五行/ステータス/ロール（自動）。ドミナント10点 → 柱/界/フィールド（自動）。</div>
+  <fieldset id="hist-fs"><legend>HISTORY ／ 履歴</legend>
+    <div class="grid" style="align-items:center;gap:8px;flex-wrap:wrap">
+      <select id="f-hist" onchange="loadHist()" style="background:#0a1424;border:1px solid var(--line);color:#eaf2ff;font-family:'Shippori Mincho B1',serif;font-size:13px;padding:7px 9px;border-radius:4px;min-width:200px"></select>
+      <button class="gen" type="button" onclick="delHist()" style="padding:7px 14px;font-size:11px;background:rgba(255,255,255,.06);color:#cdd9f2;border:1px solid var(--line)">選択を削除</button>
+      <button class="gen" type="button" onclick="exportHist()" style="padding:7px 14px;font-size:11px;background:rgba(111,233,255,.08);color:var(--cy2);border:1px solid var(--line)">💾 JSON保存</button>
+      <button class="gen" type="button" onclick="document.getElementById('hist-import-file').click()" style="padding:7px 14px;font-size:11px;background:rgba(111,233,255,.08);color:var(--cy2);border:1px solid var(--line)">📁 JSON復元</button>
+      <input type="file" id="hist-import-file" accept="application/json,.json" style="display:none" onchange="importHist(event)">
+      <button class="gen" type="button" onclick="clearHist()" style="padding:7px 14px;font-size:11px;background:rgba(255,94,107,.1);color:#ff9c8c;border:1px solid rgba(255,94,107,.3)">全削除</button>
     </div>
-
-    <div id="form-section">
-      <div class="name-row">
-        <div class="field" style="margin-bottom:0">
-          <label class="field-label">姓 — ひらがな</label>
-          <input type="text" id="sei" placeholder="例：やまだ" autocomplete="off"/>
-        </div>
-        <div class="field" style="margin-bottom:0">
-          <label class="field-label">名 — ひらがな</label>
-          <input type="text" id="mei" placeholder="例：たろう" autocomplete="off"/>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="field">
-        <label class="field-label">ご縁ある神の名</label>
-        <input type="text" id="kami-name" placeholder="例：猿田彦命、瀬織津姫、大国主命..." autocomplete="off"/>
-      </div>
-      <div class="field">
-        <label class="field-label">神の画像（任意）</label>
-        <label class="upload-btn" for="img-upload">画像をアップロードする</label>
-        <input type="file" id="img-upload" accept="image/*" style="display:none"/>
-      </div>
-
-      <div class="kami-img-wrap" id="img-wrap">
-        <div class="kami-img-placeholder">画像をアップロードすると<br>ここに神が現れる</div>
-      </div>
-      <div class="kami-name-display" id="kami-name-display"></div>
-
-      <button class="summon-btn" id="summon-btn" onclick="startSession()">神を召喚する</button>
-      <div id="form-error"></div>
+    <div class="hint" style="margin-top:8px">localStorage はブラウザクリアで消えます。JSON保存でバックアップしておけば、復元で持ち越し可能です。</div>
+  </fieldset>
+  <fieldset><legend>NAME ／ 名前（ひらがな）</legend><div class="grid" style="align-items:flex-end">
+    <label>姓<input class="txt" id="f-sei" placeholder="例：やまだ"></label>
+    <label>名<input class="txt" id="f-mei" placeholder="例：たろう"></label>
+    <div style="width:32px"></div>
+    <label>表示名<input class="txt" id="f-disp" placeholder="（空欄なら姓を使用）"></label>
+  </div></fieldset>
+  <fieldset><legend>DOMINANT ／ ドミナント点（astro-seek の SUM Points・任意）</legend>
+    <div class="grid" id="f-dom"></div>
+    <div class="hint" style="margin-top:10px">ホロスコープに馴染みがない場合は未入力でOK。全部0/空欄なら柱・界・フィールドは表示されません。Enter で次の入力欄へ移動できます。</div>
+  </fieldset>
+  <button class="gen" onclick="gen()">▶ 生成する</button>
+  <button class="gen" style="background:linear-gradient(90deg,#ffcf6b,#ffe9b3);margin-left:10px" onclick="savePNG()">⬇ PNGで保存</button>
+  <button class="gen" style="background:linear-gradient(90deg,#9b7bff,#d6c6ff);margin-left:10px" onclick="copyAnalysisPrompt()">📋 AIに読ませるプロンプトをコピー</button>
+  <div class="hint" id="copy-fb" style="min-height:18px;color:var(--cy)"></div>
+  <fieldset style="margin-top:14px"><legend>GUILD ／ ギルド受付</legend>
+    <div class="grid" style="align-items:center;gap:10px">
+      <button class="gen" type="button" style="background:linear-gradient(90deg,#6fe9ff,#bdf3ff)" onclick="copyGuildScroll()">📜 受付嬢を召喚（巻物＋カードをコピー）</button>
+      <button class="gen" type="button" style="background:rgba(111,233,255,.08);color:var(--cy2);border:1px solid var(--line)" onclick="downloadScroll()">⬇ 巻物を .txt 保存</button>
     </div>
+    <div class="hint" style="margin-top:8px">巻物をあなたのAI（ChatGPT / Claude など）に貼ると、受付嬢が現れます。カード生成後に召喚すると、カード持参で入口の儀式が始まります。対話の最後に出る【受付記録】は、ギルドの書庫（Discord）に納めてください。</div>
+    <div class="hint" id="guild-fb" style="min-height:18px;color:var(--cy)"></div>
+  </fieldset>
+</div>
 
-    <div class="divider" id="chat-divider" style="display:none"></div>
-
-    <div class="chat-area" id="chat-area">
-      <div class="messages" id="messages"></div>
-      <div class="input-row">
-        <textarea class="chat-input" id="chat-input" placeholder="神に問いかける..." rows="2"></textarea>
-        <button class="send-btn" id="send-btn" onclick="sendMessage()">奉る</button>
+<!-- ===== 出力シート ===== -->
+<div class="sheet" id="sheet" style="display:none">
+  <div class="stars" id="stars"></div>
+  <svg class="wm-sigil" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="rgba(111,233,255,0.08)" stroke-width="0.35"/><circle cx="50" cy="50" r="38" fill="none" stroke="rgba(111,233,255,0.08)" stroke-width="0.35"/><path d="M50,4 L95.3,42 L65.7,93.2 L10.2,73 L20.4,14.8 L79.6,14.8 L89.8,73 L34.3,93.2 L4.7,42 Z" fill="none" stroke="rgba(155,107,255,0.10)" stroke-width="0.35"/></svg>
+  <div class="cnr tl"></div><div class="cnr tr"></div><div class="cnr bl"></div><div class="cnr br"></div>
+  <div class="wrap">
+    <div class="eyebrow">PANDORA · 超数秘術</div>
+    <div class="name holo" id="o-name"></div>
+    <div class="hr"></div>
+    <div class="sec"><span class="no">01</span><span class="jp">超数秘術</span><span class="en">／ 名前・動かせない型</span><span class="ln"></span></div>
+    <div class="e1top">
+      <div class="panel" data-edge style="--edge:rgba(111,233,255,.28)">
+        <div class="p-en">Character ／ 33キャラクター（太陽数）</div>
+        <div class="bighero"><span class="num holo" style="--c:#ffcf6b" id="o-num"></span><span class="dot">.</span><span class="big holo" id="o-char"></span></div>
+        <div class="lead" id="o-cdesc"></div><div class="traits" id="o-traits"></div>
+      </div>
+      <div class="panel" data-edge id="o-typepanel">
+        <div class="p-en">Type ／ タイプ（五行）</div>
+        <div class="bighero"><span class="big holo" id="o-type"></span><span class="pair" id="o-pair"></span></div>
+        <div class="soulbadge" id="o-soul"></div><div class="story" id="o-story"></div>
       </div>
     </div>
-
-    <div class="footnote">
-      この書に記された問答は、汝の内なる声の写し鏡である<br>
-      神との対話は闇を照らす光へと導かん
+    <div class="panel rolebar" data-edge id="o-rolepanel">
+      <div><div class="p-en">Role ／ ロール</div>
+        <div class="rl-row"><div class="rl-icon" id="o-roleicon"></div><div class="rl-big holo" id="o-role"></div></div>
+        <div class="rl-psy" id="o-rolepsy"></div>
+        <div class="rl-def" id="o-roledef"></div></div>
+      <div class="rbars" id="o-rbars"></div>
     </div>
-
+    <div class="panel status">
+      <div class="p-en">Status ／ ステータス（9軸）</div>
+      <div class="statgrid"><svg id="radar" width="330" height="330" viewBox="-30 -30 360 360"></svg><div class="slist" id="o-slist"></div></div>
+      <div class="scale"><span>0 無理</span><span>1-2 苦手</span><span>3-4 普通</span><span>5-6 得意</span><span>7-8 天才</span><span>9+ 神</span></div>
+    </div>
+    <div class="sec s2"><span class="no">02</span><span class="jp">ネイタル</span><span class="en">／ 生年月日・ドミナント</span><span class="ln"></span></div>
+    <div class="e2">
+      <div class="panel" data-edge style="--edge:rgba(255,94,214,.26)">
+        <div class="p-en">Do ／ プレイスタイル</div><div class="slot-jp">柱 ／ PILLAR</div>
+        <div class="slot-art"><div class="pillars" id="o-pillars"></div></div>
+        <div class="slot-val holo" style="--c:#ff5ed6" id="o-pillar"></div>
+        <div class="slot-sub" id="o-pillarsub"></div><div class="slot-note" id="o-pillarnote"></div>
+        <div class="slot-calc" id="o-pillarcalc"></div><div class="mirror" id="o-mirror"></div>
+      </div>
+      <div class="panel" data-edge style="--edge:rgba(155,123,255,.30)">
+        <div class="p-en">Be ／ 装備</div><div class="slot-jp">界 ／ WORLD</div>
+        <div class="slot-art"><div class="worlds" id="o-worlds"></div></div>
+        <div class="slot-val holo" style="--c:#9b7bff" id="o-world"></div>
+        <div class="slot-sub" id="o-worldsub"></div><div class="slot-note" id="o-worldnote"></div>
+        <div class="slot-calc" id="o-worldcalc"></div>
+      </div>
+      <div class="panel" data-edge id="o-fieldpanel">
+        <div class="p-en">Dungeon ／ フィールド</div><div class="slot-jp">舞台 ／ FIELD</div>
+        <div class="slot-art"><div class="mars" id="o-mars"><div class="orbit"></div><div class="moon"></div><div class="planet"><span id="o-psym"></span></div></div></div>
+        <div class="slot-val holo" id="o-field"></div><div class="slot-sub" id="o-fieldsub"></div>
+        <div class="slot-note" id="o-fieldnote"></div><div class="slot-calc" id="o-fieldcalc"></div>
+      </div>
+    </div>
+    <div class="foot"><div></div><div class="mid">◆ ◆ ◆</div><div id="o-foot"></div></div>
   </div>
 </div>
 
 <script>
+/* ===== 既定値（空） ===== */
+const DEFAULT={
+  display:'', sei:'', mei:'',
+  dom:{太陽:0,月:0,水星:0,金星:0,火星:0,木星:0,土星:0,天王星:0,海王星:0,冥王星:0}
+};
+let INPUT=null;
+
+/* ===== 超数秘術エンジン ===== */
 const CHARS={1:'軍師',2:'占い師',3:'道化師',4:'騎士',5:'冒険者',6:'村人',7:'弓使い',8:'親方',9:'聖職者',10:'開拓者',11:'詩人',12:'踊り子',13:'錬金術師',14:'海賊',15:'保護官',16:'考古学者',17:'闘士',18:'勇者',19:'賢者',20:'僧侶',21:'夢使い',22:'王様',23:'魔術師',24:'教師',25:'獣使い',26:'秘書',27:'侍',28:'将軍',29:'巫女',30:'発明家',31:'職人',32:'忍者',33:'召喚士'};
-const TRAITS={1:['ストレートで負けず嫌い','せっかちに先読みする','絶対的な存在である','不器用だが、決断力がある','常に本気で手加減が苦手','場の影響を気にしない'],2:['白黒付かず流されやすい','叶うまで夢を信じている','一歩引いて協力する','繊細に共感して人を支える','人と人を繋ぐ仲介役となる'],3:['楽しいことが大好き','感情・表情の表現が豊か','無邪気、天真爛漫、パワフル','ハマりやすく飽きやすい','素直で学びに貪欲である'],4:['基本に忠実で型に安心する','逆説的で論理的に考える','勤勉だが自己犠牲もある','冷静沈着で自制心が強い','頑固でゆずれない個性がある'],5:['幅広い知識と好奇心がある','衝動的に動く時は速い','破壊による創造をする','無数の選択肢を持つ','気まぐれで愛嬌がある'],6:['情が深く、お世話焼き','育成したり原石を磨く','集合的な意識を大切にする','場の管理・標準の設定をする','備えあれば憂いなし'],7:['肉体の感覚が鋭い','自分特有のコツがある','研究気質で専門性に繋がる','静寂でないと気が散る','共感が困難で理解が難しい'],8:['能力の限界を把握している','効率的に時間を使う','結果主義で達成度が高い','影で努力する野心家','成功することへの執念が強い'],9:['回復や治癒を得意とする','柔らかい雰囲気を持つ','巨視で細かさを気にしない','規格外の話を望んでいる','泰然自若で成熟している'],10:['再生力から現状打破する','決断力と集中力がある','新進気鋭の創造者である','0か1で唯一無二でもある'],11:['今という一瞬を捉える','想像力があり抽象度が高い','屈しない信念の強さがある','感受性が強く閃きに優れる'],12:['躍動する楽しさを体現する','表舞台で派手に振る舞う','話術を持ち説得力がある','反応が良く感情が隠せない'],13:['がらくたに価値を与える','ユニークな技法を用いる','真実を求め、生死を考える'],14:['果てしないロマンを求める','大胆で刺激的で自由である','旅が好きで束縛を嫌う'],15:['護る対象を定めると強い','熱血指導して正義を貫く','空回るほどの情熱がある'],16:['凝り性で変な趣味がある','専門的な分析が凄まじい','人生とは何かを追い求める'],17:['諦めず最前線で闘う','出し惜しみせずに全て使う','逆境の火事場力がある'],18:['大志で多くを成し遂げる','仲間想いで懐が深い','開放的で大体卒なくこなす'],19:['知識と実践から知恵を導く','伏線や謎解きを好む','鋭い発言が核心をつく'],20:['平穏で中庸の世界を望む','極度の忍耐強さがある','利他の心を持っている'],21:['理想と現実の境があいまい','サービス精神旺盛である','前向きで陽気で元気になる'],22:['両極端を有する','物事の裏表を捉える','退屈を嫌い波乱万丈を歩む'],23:['不可能が存在していない','柔軟に機転を利かせる','常軌を逸し新しい風となる'],24:['教えることが好きである','絆を大切にする','愛情深く好き嫌いが激しい'],25:['五感が鋭敏に発達している','繊細すぎて騒音環境は苦手','自然や動物と通じ合う'],26:['さり気ない気遣いが出来る','傾聴力があり良く吸収する','明確に公私混同しない'],27:['独自の空間を展開する','誠実に筋を通し嘘を嫌う','覚悟すると一歩も引かない'],28:['想いをまとめ場を統率する','高い理想を現実に落とす','顔が利き幅広い人脈を築く'],29:['気付きを促すメッセンジャー','不可視の領域を捉える','闇を光に変えることが可能'],30:['ハプニングを誘発する','爆発的な化学反応を起こす','一生懸命であり強運を引く'],31:['作品に愛着がある','型を追求して型を超越する','熟考している時間が好き'],32:['秘密を知る能力がある','読心術に長ける','偶然の縁が必然の様に来る'],33:['全存在と一緒に進んでいる','博愛主義で仲間外れを嫌う','愛し愛され自然と徳を積む']};
 const CHAR_DESC={1:'決断して、前向きに動いていく人',2:'一途な想いで、寄り添い支える人',3:'素直に受け取り、純粋に遊ぶ人',4:'繰り返して、基礎を身に着ける人',5:'物は試しで、挑戦してやってみる人',6:'一般的で、親しみやすい説明をする人',7:'探究で、専門的な知識に辿り着く人',8:'実際に出来ることで、結果を出す人',9:'癒して、人生にゆとりをもたらす人',10:'常に、自分が出来る最善を尽くす人',11:'今に集中して、その情熱を放つ人',12:'自分を出して、周りも元気にする人',13:'冷静な立場で、物事の真実をみる人',14:'本能的な欲求で、果敢に攻める人',15:'正義を守って、秩序を維持する人',16:'疑問から、本質の意味を発見する人',17:'心折れても、諦めず立ち上がる人',18:'大局を見極め、理想を形にする人',19:'未知へと踏み込んで、道にする人',20:'関係を調整して、場を調和する人',21:'楽しく明るく、笑いを忘れない人',22:'表も裏もみて、全てを乗り越える人',23:'異なっても構わずで、成立させる人',24:'愛情をかけて育てる、整える人',25:'奥深くの繊細な感覚を理解する人',26:'やるとそうでないを公平に仕分ける人',27:'執着を断ち切り、誠に生きる人',28:'全体をまとめて、完成に進める人',29:'闇と向き合い、光へと統合する人',30:'必ず良くなるものだと確信する人',31:'枠を極めて、枠外も受け入れる人',32:'突然訪れた機会を掴んで活かす人',33:'全てに生かされていると感謝する人'};
-const NUMEROLOGY_STORY={1:'恐怖と真っ直ぐ向き合う芯を持つ。何度打ちのめされても必ず立ち上がる驚異的な再生力を宿している。器用ではないが、その真っ直ぐさで道を切り開く。思ったことはためらわず口にし、核心を突く言葉を放つ。',2:'繊細で、環境の影響を敏感に受け取る心を持っている。想いを相手の立場に変換する思いやりを忘れない。目の前の人や環境は、自分の内面を映し出す鏡である。',3:'面白そうと感じたら迷わず飛び込む。自分の「好き」「嫌い」「わくわく」に嘘をつかない。素直であるがゆえに良くも悪くもそのまま現実になる。だからこそ楽観的でいることが力になる。',4:'矛盾と真剣に向き合い、ひとつひとつ検証していく。練り上げ、積み上げ、試行錯誤しながらも形にしていく過程にやりがいを感じる。頑固さの裏には職人気質がある。',5:'変化の渦の中で生きる旅人である。本能的な衝動に従い、やりたいことを我慢できない性質は高い行動力となって表れる。既存の型や常識に縛られず最適な道を選ぶ。',6:'人とのつながりの中で、思いやりを軸に生きていく。世話好きで、関わる人を温かく支えながら成長を見守るのが得意である。守る対象が定まったとき、内側から驚くほどの力が湧き上がる。',7:'起こる出来事ひとつひとつに疑問を抱き、なぜそうなるのかを考えずにはいられない。研究対象を絞り、興味のある分野に対しては専門家のように深く掘り下げていく。',8:'目に見える現実の範囲で、まず確実に整えていくことを重視する。影ながら努力することにためらいがない。答えは実践の中にあると信じ、成功と失敗を体感しながら前進する。',9:'人生を壮大な物語のように感じる。全体に委ねる感覚と自分が世界に影響を与える感覚を併せ持ち、その核心は余裕にある。赦しと受容を通して世界を整える。'};
+const TRAITS={1:['ストレートで負けず嫌い','絶対的な存在である','決断力がある'],2:['一歩引いて協力する','繊細に共感して人を支える','人と人を繋ぐ'],3:['楽しいことが大好き','無邪気でパワフル','学びに貪欲'],4:['基本に忠実','勤勉だが自己犠牲も','冷静沈着で自制心が強い'],5:['幅広い好奇心がある','破壊による創造をする','気まぐれで愛嬌がある'],6:['情が深くお世話焼き','原石を磨く','場の管理が得意'],7:['感覚が鋭い','研究気質で専門性に繋がる','自分特有のコツがある'],8:['限界を把握している','効率的','影で努力する野心家'],9:['回復や治癒を得意とする','柔らかい雰囲気','泰然自若で成熟'],10:['現状打破する','決断力と集中力','唯一無二'],11:['今を捉える','抽象度が高い','閃きに優れる'],12:['躍動する楽しさ','話術がある','感情が隠せない'],13:['価値を与える','技法がユニーク','真実を求める'],14:['ロマンを求める','大胆で自由','束縛を嫌う'],15:['護ると強い','熱血指導','情熱がある'],16:['凝り性','分析が凄まじい','人生を追い求める'],17:['諦めず最前線で闘う','出し惜しみせず全て使う','逆境の火事場力がある'],18:['多くを成し遂げる','仲間想い','大体卒なくこなす'],19:['知恵を導く','謎解きを好む','核心をつく'],20:['中庸を望む','忍耐強い','利他の心'],21:['境があいまい','サービス精神旺盛','前向きで陽気'],22:['両極端を有する','裏表を捉える','波乱万丈'],23:['不可能がない','機転を利かせる','新しい風'],24:['教えるのが好き','絆を大切に','愛情深い'],25:['五感が鋭敏','繊細すぎる','自然と通じ合う'],26:['気遣いができる','傾聴力がある','公私混同しない'],27:['独自の空間','誠実で嘘を嫌う','一歩も引かない'],28:['場を統率する','理想を現実に','幅広い人脈'],29:['メッセンジャー','不可視を捉える','闇を光に'],30:['ハプニングを誘発','化学反応を起こす','強運を引く'],31:['作品に愛着','型を超越','熟考が好き'],32:['秘密を知る','読心に長ける','縁が必然の様に'],33:['全存在と進む','博愛主義','自然と徳を積む']};
 const SOUL_TYPES={0:{jp:'出来事・変化',sub:'発展'},1:{jp:'登場人物・主役',sub:'人物'},2:{jp:'土台作り',sub:'詳細'},3:{jp:'使い手',sub:'遊び'},4:{jp:'普及・広め役',sub:'理性'},5:{jp:'出来事・変化',sub:'拡張'},6:{jp:'普及・広め役',sub:'感性'},7:{jp:'使い手',sub:'研究'},8:{jp:'土台作り',sub:'機能'},9:{jp:'登場人物・主役',sub:'物語'}};
+const NUMEROLOGY_STORY={1:'恐怖と真っ直ぐ向き合う芯を持つ。何度打ちのめされても必ず立ち上がる驚異的な再生力を宿している。',2:'繊細で環境の影響を敏感に受け取る。想いを相手の立場に変換する思いやりを忘れない。',3:'面白そうと感じたら迷わず飛び込む。自分の好き・わくわくに嘘をつかない。',4:'矛盾と真剣に向き合い、ひとつひとつ検証していく。積み上げ、試行錯誤しながら形にする。',5:'変化の渦の中で生きる旅人。本能的な衝動に従い、既存の型に縛られず最適な道を選ぶ。',6:'人とのつながりの中で、思いやりを軸に生きる。守る対象が定まると驚くほどの力が湧く。',7:'起こる出来事ひとつひとつに疑問を抱き、興味のある分野を専門家のように深く掘り下げる。',8:'目に見える現実の範囲で、まず確実に整えていくことを重視する。影ながら努力することにためらいがない。答えは実践の中にあると信じ、成功と失敗を体感しながら前進する。',9:'人生を壮大な物語のように感じる。赦しと受容を通して世界を整える。'};
 const T2={'にゃ':'NYA','にゅ':'NYU','にょ':'NYO','びゃ':'BYA','びゅ':'BYU','びょ':'BYO','みゃ':'MYA','みゅ':'MYU','みょ':'MYO','ぎゃ':'GYA','ぎゅ':'GYU','ぎょ':'GYO','じゃ':'JA','じゅ':'JU','じょ':'JO','りゃ':'RYA','りゅ':'RYU','りょ':'RYO','ひゃ':'HYA','ひゅ':'HYU','ひょ':'HYO','ぴゃ':'PYA','ぴゅ':'PYU','ぴょ':'PYO','きゃ':'KYA','きゅ':'KYU','きょ':'KYO','ちゃ':'CHA','ちゅ':'CHU','ちょ':'CHO','しゃ':'SHA','しゅ':'SHU','しょ':'SHO'};
 const T1={'あ':'A','い':'I','う':'U','え':'E','お':'O','か':'KA','き':'KI','く':'KU','け':'KE','こ':'KO','さ':'SA','し':'SHI','す':'SU','せ':'SE','そ':'SO','た':'TA','ち':'CHI','つ':'TSU','て':'TE','と':'TO','な':'NA','に':'NI','ぬ':'NU','ね':'NE','の':'NO','は':'HA','ひ':'HI','ふ':'FU','へ':'HE','ほ':'HO','ま':'MA','み':'MI','む':'MU','め':'ME','も':'MO','や':'YA','ゆ':'YU','よ':'YO','ら':'RA','り':'RI','る':'RU','れ':'RE','ろ':'RO','わ':'WA','を':'WO','ん':'N','が':'GA','ぎ':'GI','ぐ':'GU','げ':'GE','ご':'GO','ざ':'ZA','じ':'JI','ず':'ZU','ぜ':'ZE','ぞ':'ZO','だ':'DA','ぢ':'JI','づ':'ZU','で':'DE','ど':'DO','ば':'BA','び':'BI','ぶ':'BU','べ':'BE','ぼ':'BO','ぱ':'PA','ぴ':'PI','ぷ':'PU','ぺ':'PE','ぽ':'PO'};
-function k2h(s){return s.replace(/[\u30A1-\u30F6]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60))}
+function k2h(s){return s.replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60))}
 function toRomaji(inp){const s=k2h(inp);let r='',i=0;while(i<s.length){if(i+1<s.length&&T2[s[i]+s[i+1]]){r+=T2[s[i]+s[i+1]];i+=2;continue}if(s[i]==='っ'){let nxt='';if(i+1<s.length){if(i+2<s.length&&T2[s[i+1]+s[i+2]])nxt=T2[s[i+1]+s[i+2]];else if(T1[s[i+1]])nxt=T1[s[i+1]];}r+=(nxt.startsWith('CH')?'T':(nxt[0]||''));i++;continue;}if(T1[s[i]]){r+=T1[s[i]];i++;continue;}r+=s[i].toUpperCase();i++;}r=r.replace(/NB/g,'MB').replace(/NM/g,'MM').replace(/NP/g,'MP');r=r.replace(/OO(?=.)/g,'O').replace(/OU/g,'O').replace(/UU/g,'U').replace(/AA/g,'A').replace(/EE/g,'E').replace(/II/g,'I');return r;}
 const ALPHA={};'abcdefghijklmnopqrstuvwxyz'.split('').forEach((c,i)=>ALPHA[c]=String((i%9)+1));
 function alphaToNumber(s,ptr){let r=s.toLowerCase();const v=new Set(['a','i','u','e','o']);for(const c of 'abcdefghijklmnopqrstuvwxyz'){if(ptr==='1')r=r.split(c).join(ALPHA[c]);else if(ptr==='2')r=r.split(c).join(v.has(c)?ALPHA[c]:'');else if(ptr==='3')r=r.split(c).join(!v.has(c)?ALPHA[c]:'');}return r;}
@@ -465,14 +274,28 @@ function getNumberConversion(s){const d1=parseInt(s[0]),d2=parseInt(s[1]),d3=par
 function getNextplus(s){let r='';for(let i=1;i<s.length;i++)r+=String(getMod9(parseInt(s[i-1])+parseInt(s[i])));return r.length>1?getNextplus(r):r;}
 function mod33(n){const r=n%33;return r===0?33:r;}
 function getSoulDigit(n){if(n===10||n===20||n===30)return 0;while(n>=10)n=Math.floor(n/10)+(n%10);return n;}
-function calcAll(seiRom,meiRom){
-  const lastnumber=alphaToNumber(seiRom,'1');const firstnumber=alphaToNumber(meiRom,'1');const joinnumber=lastnumber+firstnumber;
-  const pd=[];for(let col=0;col<6;col++){let raw=0;for(let row=0;col+row*6<joinnumber.length;row++)raw+=parseInt(joinnumber[col+row*6]||0);pd.push(String(getMod9(getSplitPlus(String(raw)))));}
-  const D21=get34(getSplitPlus(pd.join('')));const str_p=alphaToNumber(seiRom+meiRom,'3');const str_s=alphaToNumber(seiRom+meiRom,'2');const str_d=alphaToNumber(seiRom+meiRom,'1');
+function getDragonValue(numStr){let result=0;for(let i=0;i<numStr.length;i++){if(!/\d/.test(numStr[i]))continue;result+=parseInt(numStr[i]);while(result>=34)result=toSingleDigit(result);}return result;}
+function calcAll(seiRom, meiRom){
+  const lastnumber=alphaToNumber(seiRom,'1');
+  const firstnumber=alphaToNumber(meiRom,'1');
+  const joinnumber=lastnumber+firstnumber;
+  const pd=[];
+  for(let col=0;col<6;col++){let raw=0;for(let row=0;col+row*6<joinnumber.length;row++) raw+=parseInt(joinnumber[col+row*6]||0);pd.push(String(getMod9(getSplitPlus(String(raw)))));}
+  const D21=get34(getSplitPlus(pd.join('')));
+  const str_p=alphaToNumber(seiRom+meiRom,'3');
+  const str_s=alphaToNumber(seiRom+meiRom,'2');
+  const str_d=alphaToNumber(seiRom+meiRom,'1');
   const G16=`${getMod9(getSplitPlus(lastnumber))}${getMod9(getSplitPlus(firstnumber))}${getMod9(getSplitPlus(joinnumber))}`;
   const G17=`${getMod9(getSplitPlus(str_p))}${getMod9(getSplitPlus(str_s))}${getMod9(getSplitPlus(str_d))}`;
-  const G18=pd[2]+pd[1]+pd[0];const G19=pd[5]+pd[4]+pd[3];
-  const H16=getNumberConversion(G16);const H17=getNumberConversion(G17);const H18=getNumberConversion(G18);const H19=getNumberConversion(G19);
+  const G18=pd[2]+pd[1]+pd[0];
+  const G19=pd[5]+pd[4]+pd[3];
+  const H16=getNumberConversion(G16);
+  const H17=getNumberConversion(G17);
+  const H18=getNumberConversion(G18);
+  const H19=getNumberConversion(G19);
+  const F21=accumulate34([parseInt(H16[0]),parseInt(H17[0]),parseInt(H18[0]),parseInt(H19[0])]);
+  const G21=accumulate34([parseInt(H16[1]),parseInt(H17[1]),parseInt(H18[1]),parseInt(H19[1])]);
+  const H21=accumulate34([parseInt(H16[2]),parseInt(H17[2]),parseInt(H18[2]),parseInt(H19[2])]);
   const c1010=parseInt(H17[0]);const c1012=parseInt(H17[1]);const c1011=parseInt(H17[2]);
   const c1312=parseInt(pd[0]);const c1512=parseInt(pd[1]);const c1611=parseInt(pd[2]);
   const c1510=parseInt(pd[3]);const c1310=parseInt(pd[4]);const c1211=parseInt(pd[5]);
@@ -480,130 +303,557 @@ function calcAll(seiRom,meiRom){
   const K19=accumulate34([c1011,c1611,c1411,c1711]);
   const K20_mid=accumulate34([c1011,c1211,c1611,c1411,c1711]);
   const tsuki=accumulate34([c1011,c1211,c1411,c1711]);
-  const tK20=get34(tsuki);
-  const mind=accumulate34([parseInt(H17[0]),parseInt(H18[0]),parseInt(H19[0])]);
-  return{taiyou:K19,tsuki:tK20,mind};
+  const left21_L=toSingleDigit(accumulate34([c1010,c1510,c1310]));
+  const left21_R=toSingleDigit(accumulate34([c1012,c1312,c1512]));
+  const left21=toSingleDigit(left21_L+left21_R);
+  const K21=accumulate34([K20_mid,left21]);
+  const G24=getNextplus(lastnumber)+getNextplus(firstnumber)+getNextplus(joinnumber);
+  const H24=getNumberConversion(G24);
+  const F25=accumulate34([parseInt(H16[0]),parseInt(H17[0]),parseInt(H18[0]),parseInt(H19[0]),parseInt(H24[0])]);
+  const G25=accumulate34([parseInt(H16[1]),parseInt(H17[1]),parseInt(H18[1]),parseInt(H19[1]),parseInt(H24[1])]);
+  const H25=accumulate34([parseInt(H16[2]),parseInt(H17[2]),parseInt(H18[2]),parseInt(H19[2]),parseInt(H24[2])]);
+  const left27_L=toSingleDigit(accumulate34([parseInt(H16[0]),c1510,c1310]));
+  const left27_R=toSingleDigit(accumulate34([parseInt(H16[1]),c1312,c1512]));
+  const left27=toSingleDigit(left27_L+left27_R);
+  const H27=accumulate34([K20_mid,left27]);
+  const pallas=get34(c1010+c1510+c1310+parseInt(H16[1]));
+  const juno=get34(c1012+c1312+c1512+parseInt(H16[0]));
+  const vH16=H17;const vH17=H16;
+  const vc1010=parseInt(vH17[0]);const vc1012=parseInt(vH17[1]);const vc1011=parseInt(vH17[2]);const vc1711=parseInt(vH16[2]);
+  const vK20_mid=get34(vc1011+c1211+c1611+c1411+vc1711);
+  const vleft21=getMod9(getMod9(vc1010+c1510+c1310)+getMod9(vc1012+c1312+c1512));
+  const vesta=get34(vleft21+vK20_mid);
+  const ceres=(function(){const romStr=(seiRom+meiRom).toUpperCase();const len=romStr.length;const basePos=[0,0,1,2,4,7,12,20];let result=0;for(let f=0;f<basePos.length;f++){const pos=basePos[f]%len;const idx=romStr[pos].charCodeAt(0)-65;const val=(idx<0||idx>25)?0:idx%9+1;result+=val;while(result>=34)result=toSingleDigit(result);}return result;})();
+  const fullRomUpper=(seiRom+meiRom).toUpperCase();
+  function getAlphaVal(c){const idx=c.charCodeAt(0)-65;if(idx<0||idx>25)return 0;return (idx%9)+1;}
+  function bodyCalc(romStr){const len=romStr.length;let left=0,right=len-1,result=0;while(left<=right){const lv=getAlphaVal(romStr[left]);if(left===right){result+=lv;}else{const rv=getAlphaVal(romStr[right]);const diff=Math.abs(lv-rv);result+=(diff===0?lv:diff);}while(result>=34)result=toSingleDigit(result);left++;right--;}return result;}
+  const body=bodyCalc(fullRomUpper);
+  function mindCalc(romStr){let result=0;for(let i=0;i<romStr.length;i++){result+=Math.abs(10-getAlphaVal(romStr[i]));while(result>=34)result=toSingleDigit(result);}return result;}
+  const mind=mindCalc(fullRomUpper);
+  function soulCalc(romStr){let result=0;for(let i=0;i<romStr.length;i++){const val=getAlphaVal(romStr[i]);result+=val===5?5:Math.abs(5-val);while(result>=34)result=toSingleDigit(result);}return result;}
+  const soulNum=soulCalc(fullRomUpper);
+  function ascCalc(romStr){let result=0;for(let i=0;i<romStr.length;i++){result+=getAlphaVal(romStr[i]);while(result>=34)result=toSingleDigit(result);}return result;}
+  const ascNum=ascCalc(fullRomUpper);
+  function dscCalc(romStr){let prev=getAlphaVal(romStr[0]);const diffs=[];for(let i=1;i<romStr.length;i++){const curr=getAlphaVal(romStr[i]);const diff=Math.abs(prev-curr);diffs.push(diff);prev=diff;}let result=0;for(let i=0;i<diffs.length;i++){result+=diffs[i];while(result>=34)result=toSingleDigit(result);}return result;}
+  const dsc=dscCalc(fullRomUpper);
+  function mcicCalc(romStr){const len=romStr.length;const vals=[];for(let i=0;i<len;i++)vals.push(getAlphaVal(romStr[i]));const yang=new Set([1,3,6,8]);const yin=new Set([2,4,7,9]);function getType(i){if(yang.has(vals[i]))return 'yang';if(yin.has(vals[i]))return 'yin';for(let j=i-1;j>=0;j--){if(yang.has(vals[j]))return 'yang';if(yin.has(vals[j]))return 'yin';}for(let j=i+1;j<len;j++){if(yang.has(vals[j]))return 'yang';if(yin.has(vals[j]))return 'yin';}return 'yang';}let mc=0,ic=0;for(let i=0;i<len;i++){const t=getType(i);if(t==='yang'){mc+=vals[i];while(mc>=34)mc=toSingleDigit(mc);}else{ic+=vals[i];while(ic>=34)ic=toSingleDigit(ic);}}return {mc,ic};}
+  const mcic=mcicCalc(fullRomUpper);const mc=mcic.mc;const ic=mcic.ic;
+  const dragonHead=getDragonValue(firstnumber);
+  const dragonTail=getDragonValue(lastnumber);
+  const chiron=getDragonValue(alphaToNumber(seiRom+meiRom,'2'));
+  const lilith=getDragonValue(alphaToNumber(seiRom+meiRom,'3'));
+  const tK20=tsuki;
+  const smVal=tK20===33?27:33-tK20;
+  const secret1=mod33(tK20+F25+F21+K20_mid);
+  const secret2=mod33(K19+H27+G25+G21);
+  const secret3=mod33(H25+H21+K21);
+  const secret4=mod33(tK20+F25+F21+K20_mid+K19+H27+G25+G21+H25+H21+K21);
+  const vertex=mod33(tK20+G25+F25);
+  const avertex=mod33(G21+F21+H27);
+  return {meiousei:K21,tennosei:H25,dosei:H27,taiyou:K19,kasei:G25,suisei:F25,kinsei:F21,tsuki:tK20,kaiousei:H21,moksei:G21,chikyuu:K20_mid,dragonHead,dragonTail,chiron,lilith,sm:smVal,secret1,secret2,secret3,secret4,vertex,avertex,ceres,juno,pallas,vesta,body,mind,soulNum,ascNum,dsc,mc,ic};
 }
-let sessionData=null,chatHistory=[],isLoading=false;
-document.getElementById('img-upload').addEventListener('change',function(){
-  const file=this.files[0];const wrap=document.getElementById('img-wrap');
-  if(file){
-    const reader=new FileReader();
-    reader.onload=function(e){
-      wrap.innerHTML=`<img src="${e.target.result}" />`;
-    };
-    reader.readAsDataURL(file);
+
+/* ===== マッピング ===== */
+const GOGYO={1:'火',9:'火',2:'土',8:'土',3:'金',7:'金',4:'水',6:'水',5:'木',0:'木'};
+const GOGYO_C={'火':'#ff6b5e','土':'#ffcf6b','金':'#ece2b8','水':'#5b9dff','木':'#5fd99a'};
+const GOGYO_PAIR={'火':'1 · 9','土':'2 · 8','金':'3 · 7','水':'4 · 6','木':'5 · 0'};
+const STAT_NAMES=['意志','調整','表現','安定','自由','奉仕','分析','統率','包容'];
+const STAT_MEAN=['自分からはじめる','関係のバランスをとる','感じたまま素直に出す','基本の仕組みを作る','枠にとらわれず変化する','場に合った役を果たす','考えて本質を見抜く','管理して現実を回す','ゆるして人生を流す'];
+const ROLE_ICONS={
+  ATK:'<svg viewBox="0 0 24 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L9 6 L9 22 L15 22 L15 6 Z"/><path d="M5 22 L19 22"/><path d="M12 22 L12 30"/><circle cx="12" cy="32" r="2"/></svg>',
+  TANK:'<svg viewBox="0 0 28 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5 Q14 3 24 5 L24 17 Q24 26 14 30 Q4 26 4 17 Z"/><path d="M14 8 L14 26"/><path d="M7 14 L21 14"/></svg>',
+  SUP:'<svg viewBox="0 0 32 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="6" cy="14" rx="3" ry="8"/><ellipse cx="26" cy="14" rx="3" ry="8"/><path d="M6 6 L26 6"/><path d="M6 22 L26 22"/><path d="M11 11 L21 11"/><path d="M11 15 L19 15"/></svg>',
+  HEAL:'<svg viewBox="0 0 24 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="4"/><circle cx="12" cy="6" r="1.5" fill="currentColor"/><path d="M12 10 L12 34"/><path d="M9 14 L15 14"/></svg>',
+  BAL:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="20" r="9"/><path d="M13 9 L16 12 L19 9 Z" fill="currentColor"/><circle cx="16" cy="20" r="5"/></svg>'
+};
+const ROLES={ATK:{l:'アタッカー',c:'#ff6b5e',def:'攻め役。前に出て自分から仕掛け、突破する。',psy:'感覚系'},SUP:{l:'サポート',c:'#ffd35e',def:'支援役。整え、つなぎ、味方を活かす。',psy:'直観系'},TANK:{l:'タンク',c:'#5b8dff',def:'守備役。崩れず受け止め、場を支えて現実を回す。',psy:'思考系'},HEAL:{l:'ヒーラー',c:'#5fd99a',def:'回復役。癒し、ゆるし、流れを整える。',psy:'感情系'},BAL:{l:'バランサー',c:'#b07bff',def:'調停役。偏らず、全体の均衡をとる。',psy:'両向系'}};
+const PILLARS={L:{name:'慈悲',sub:'本体の左の柱 ／ 女性性',note:'受け取る方向。流れに乗り、人や環境を活かす。',pos:2},C:{name:'均衡',sub:'中の柱',note:'つなぐ方向。状況で配分し、人と自分を結ぶ。',pos:1},R:{name:'峻厳',sub:'本体の右の柱 ／ 男性性',note:'与える方向。切り拓き、差をつける。',pos:0}};
+const PILLAR_ORDER=['峻厳','均衡','慈悲'];
+const WORLDS={T:{name:'天',sub:'上の界 ／ 知性',note:'直感・天意・流れのまま。構図やパターンを掴む。',pos:0},M:{name:'人',sub:'中の界 ／ 倫理',note:'人間性・在り方。関係の中で自分を高める。',pos:1},B:{name:'地',sub:'下の界 ／ 実務',note:'具体・安定・地に足。形にして動かす。',pos:2}};
+const WORLD_FULL=['上 · 天','中 · 人','下 · 地'];
+const PLANETS={'太陽':{s:'☉',c:'#ffd35e',note:'自己・意志・中心の星。'},'月':{s:'☽',c:'#cfe0ff',note:'感情・受容・無意識の星。'},'水星':{s:'☿',c:'#7fd6c0',note:'知性・言葉・伝達の星。'},'金星':{s:'♀',c:'#9be88f',note:'愛・美・調和の星。'},'火星':{s:'♂',c:'#ff7a5e',note:'行動・闘争・エネルギーの星。'},'木星':{s:'♃',c:'#ffae5e',note:'拡大・幸運・寛容の星。'},'土星':{s:'♄',c:'#d8c98a',note:'規律・試練・構築の星。'},'天王星':{s:'♅',c:'#7fe0ff',note:'革新・変革・自由の星。'},'海王星':{s:'♆',c:'#6f8dff',note:'夢・霊性・境界を溶かす星。'},'冥王星':{s:'♇',c:'#c77b9b',note:'変容・再生・深層の星。'}};
+const DOM_KEYS=['太陽','月','水星','金星','火星','木星','土星','天王星','海王星','冥王星'];
+function evalLabel(v){if(v<=0)return['無理','lo'];if(v<=2)return['苦手','lo'];if(v<=4)return['普通','mid'];if(v<=6)return['得意','hi'];if(v<=8)return['天才','hi'];return['神','god'];}
+const EV_C={lo:'#7f93b6',mid:'#bdf3ff',hi:'#9af3ff',god:'#ffcf6b'};
+function hexA(hex,a){const h=hex.replace('#','');return `rgba(${parseInt(h.substr(0,2),16)},${parseInt(h.substr(2,2),16)},${parseInt(h.substr(4,2),16)},${a})`;}
+
+/* ===== compute ===== */
+function compute(inp){
+  const v=calcAll(toRomaji(inp.sei),toRomaji(inp.mei));
+  const taiyou=v.taiyou, soul=getSoulDigit(taiyou), elem=GOGYO[soul];
+  const all33=[v.meiousei,v.tennosei,v.kaiousei,v.dosei,v.kasei,v.moksei,v.taiyou,v.suisei,v.kinsei,v.tsuki,v.chikyuu,v.dragonHead,v.dragonTail,v.chiron,v.lilith,v.sm,v.secret1,v.secret2,v.secret3,v.secret4,v.vertex,v.avertex,v.ceres,v.juno,v.pallas,v.vesta,v.body,v.mind,v.soulNum,v.ascNum,v.dsc,v.mc,v.ic];
+  const dig=n=>{while(n>=10)n=Math.floor(n/10)+(n%10);return n||9;};
+  const stats=[0,0,0,0,0,0,0,0,0];
+  all33.forEach(n=>{stats[dig(n)-1]++;});
+  const zeros=all33.filter(n=>n===10||n===20||n===30).length;
+  const s=stats,z=zeros;
+  const sums={ATK:s[0]+s[2],SUP:s[1]+s[6],TANK:s[3]+s[7],HEAL:s[5]+s[8],BAL:s[4]+z};
+  // 同率時は「含む単一最大値が高い方」が勝つ
+  function pickWinners(sumMap,compMap,order){
+    let mx=-Infinity;for(const k of order)if(sumMap[k]>mx)mx=sumMap[k];
+    let cand=order.filter(k=>sumMap[k]===mx);
+    if(cand.length<=1)return cand;
+    const compMax={};let mc=-Infinity;
+    for(const k of cand){compMax[k]=Math.max(...compMap[k]);if(compMax[k]>mc)mc=compMax[k];}
+    return cand.filter(k=>compMax[k]===mc);
   }
-});
-document.getElementById('kami-name').addEventListener('input',function(){
-  document.getElementById('kami-name-display').textContent=this.value.trim();
-});
-function startSession(){
-  const sei=document.getElementById('sei').value.trim();
-  const mei=document.getElementById('mei').value.trim();
-  const kamiName=document.getElementById('kami-name').value.trim();
-  const errEl=document.getElementById('form-error');
-  if(!sei||!mei){errEl.innerHTML='<div class="error-msg">姓と名をひらがなで入力してください</div>';return;}
-  if(!kamiName){errEl.innerHTML='<div class="error-msg">ご縁ある神の名を入力してください</div>';return;}
-  errEl.innerHTML='';
-  const vals=calcAll(toRomaji(sei),toRomaji(mei));
-  const taiyouNum=vals.taiyou;
-  const soulDigit=getSoulDigit(taiyouNum);
-  sessionData={
-    kamiName,
-    taiyouNum,taiyouName:CHARS[taiyouNum]||'?',
-    charDesc:CHAR_DESC[taiyouNum]||'',
-    traits:TRAITS[taiyouNum]||[],
-    numStory:NUMEROLOGY_STORY[soulDigit===0?1:soulDigit]||'',
-    soulType:SOUL_TYPES[soulDigit]||{jp:'',sub:''},
-    tsukiName:CHARS[vals.tsuki]||'?',
-    mindName:CHARS[vals.mind]||'?'
-  };
-  document.getElementById('form-section').style.display='none';
-  document.getElementById('chat-divider').style.display='block';
-  document.getElementById('chat-area').classList.add('show');
-  openingMessage();
+  const roleComp={ATK:[s[0],s[2]],SUP:[s[1],s[6]],TANK:[s[3],s[7]],HEAL:[s[5],s[8]],BAL:[s[4],z]};
+  const roleKeys=pickWinners(sums,roleComp,['ATK','SUP','TANK','HEAL','BAL']);
+  if(!inp.dom){
+    return {taiyou,soul,elem,stats,zeros,sums,roleKeys,char:CHARS[taiyou],cdesc:CHAR_DESC[taiyou],traits:TRAITS[taiyou]||[],soulType:SOUL_TYPES[soul],story:NUMEROLOGY_STORY[soul===0?1:soul],hasNatal:false};
+  }
+  const d=inp.dom;
+  const domMap=Object.fromEntries(DOM_KEYS.map(k=>[k,d[k]||0]));
+  // 単独惑星は中身の細分化がないので、最大同率はそのまま並べる
+  const topKeys=(m,order)=>{let mx=-Infinity;for(const k of order)if(m[k]>mx)mx=m[k];return order.filter(k=>m[k]===mx);};
+  const fieldKeys=topKeys(domMap,DOM_KEYS);
+  const pil={L:(d.海王星+d.木星+d.金星),C:(d.冥王星+d.太陽+d.月),R:(d.天王星+d.火星+d.水星)};
+  const pilComp={L:[d.海王星,d.木星,d.金星],C:[d.冥王星,d.太陽,d.月],R:[d.天王星,d.火星,d.水星]};
+  const pillarKeys=pickWinners(pil,pilComp,['L','C','R']);
+  const wor={T:(d.冥王星+d.海王星+d.天王星),M:(d.木星+d.火星+d.太陽),B:(d.金星+d.水星+d.月)};
+  const worComp={T:[d.冥王星,d.海王星,d.天王星],M:[d.木星,d.火星,d.太陽],B:[d.金星,d.水星,d.月]};
+  const worldKeys=pickWinners(wor,worComp,['T','M','B']);
+  return {taiyou,soul,elem,stats,zeros,sums,roleKeys,char:CHARS[taiyou],cdesc:CHAR_DESC[taiyou],traits:TRAITS[taiyou]||[],soulType:SOUL_TYPES[soul],story:NUMEROLOGY_STORY[soul===0?1:soul],fieldKeys,fmax:domMap[fieldKeys[0]],pil,pillarKeys,wor,worldKeys,hasNatal:true};
 }
-async function openingMessage(){
-  addLoadingMsg();
-  try{
-    const res=await callClaude(buildSystemPrompt(sessionData),[{role:'user',content:'初めて姿を現した。一言、語りかけてくれ。'}]);
-    removeLoading();addKamiMsg(res);
-    chatHistory.push({role:'user',content:'初めて姿を現した。一言、語りかけてくれ。'});
-    chatHistory.push({role:'assistant',content:res});
-  }catch(e){removeLoading();addErrorMsg('神が届かぬ。しばらく経ってから、再び呼び出せ。');}
-}
-async function sendMessage(){
-  if(isLoading)return;
-  const input=document.getElementById('chat-input');
-  const text=input.value.trim();if(!text)return;
-  addUserMsg(text);input.value='';
-  chatHistory.push({role:'user',content:text});
-  addLoadingMsg();
-  try{
-    const res=await callClaude(buildSystemPrompt(sessionData),chatHistory);
-    removeLoading();addKamiMsg(res);
-    chatHistory.push({role:'assistant',content:res});
-  }catch(e){removeLoading();addErrorMsg('ご神託が届かなかった。');}
-}
-document.getElementById('chat-input').addEventListener('keydown',function(e){
-  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
-});
-function buildSystemPrompt(d){
-  return `あなたは「${d.kamiName}」である。日本の八百万の神の一柱として、この人物の前に現れた。あなたはこの人物のご縁ある神であり、その魂の導き手である。この人物の本質を、神として深く見通している。
 
-【この人物について、あなたが知っていること】
-- 本来の姿・在り方：${d.charDesc}
-- この者の本質的な性質：${d.traits.join('、')}
-- この者の魂の在り方：${d.numStory}
-- 内なる感情・本音：${d.tsukiName}の性質を帯びている
-- 思考・意識の方向：${d.mindName}の性質を帯びている
-- 存在の役割：${d.soulType.jp}（${d.soulType.sub}）
-
-【語り方】
-- あなたは「${d.kamiName}」として、その神格・神性・世界観で語る
-- 上記の知識は内なる神知として用い、この人物を静かに導く
-- 出典・システム・番号・カテゴリは絶対に口にしない
-- 「あなたは○番」「データでは」などの言い方は禁止
-- ただ神として知っている存在として、自然に言葉を紡ぐ
-- 問われても知識の出所は語らない
-- 日本語で語る。${d.kamiName}という神の格・性質・神話的背景を反映した言葉遣いで
-- 短く、余白を残す。問いかけや含みを残す語り口を好む
-- 説明しすぎず、感じさせる`;
+/* ===== render ===== */
+function render(){
+  const inp=INPUT,D=compute(inp),$=id=>document.getElementById(id);
+  $('o-name').textContent=inp.display;$('o-foot').textContent=inp.display;
+  $('o-num').textContent=D.taiyou;$('o-char').textContent=D.char;$('o-cdesc').textContent=D.cdesc;
+  $('o-traits').innerHTML=D.traits.map(t=>`<span>${t}</span>`).join('');
+  const ec=GOGYO_C[D.elem];
+  $('o-type').style.setProperty('--c',ec);$('o-type').textContent=D.elem;$('o-pair').textContent=GOGYO_PAIR[D.elem];
+  $('o-typepanel').style.setProperty('--edge',hexA(ec,.3));
+  $('o-soul').style.color=ec;$('o-soul').style.border='1px solid '+hexA(ec,.4);
+  $('o-soul').textContent=`SOUL ${D.soul} — ${D.soulType.jp}／${D.soulType.sub}`;$('o-story').textContent=D.story;
+  const winRoles=D.roleKeys.map(k=>ROLES[k]);
+  const firstR=winRoles[0];
+  const roleEl=$('o-role');
+  roleEl.className='rl-big holo'+(winRoles.length>=3?' m3':(winRoles.length===2?' m2':''));
+  roleEl.style.setProperty('--c',firstR.c);
+  roleEl.textContent=winRoles.map(r=>r.l).join(' ／ ');
+  $('o-rolepanel').className='panel rolebar'+(winRoles.length>1?' multi':'');
+  $('o-rolepanel').style.setProperty('--edge',hexA(firstR.c,.32));
+  $('o-roleicon').innerHTML=D.roleKeys.map(k=>`<span style="color:${ROLES[k].c}">${ROLE_ICONS[k]}</span>`).join('');
+  $('o-rolepsy').textContent='≒ '+winRoles.map(r=>r.psy).join(' ／ ');
+  $('o-roledef').textContent=winRoles.map(r=>r.def).join(' ／ ');
+  const order=['ATK','SUP','TANK','HEAL','BAL'],maxv=Math.max(...order.map(k=>D.sums[k]),1);
+  const winSet=new Set(D.roleKeys);
+  $('o-rbars').innerHTML=order.map(k=>{const r=ROLES[k],v=D.sums[k],w=Math.round(v/maxv*100),win=winSet.has(k);
+    return `<div class="rbar${win?' win':''}"><span class="nm" style="color:${r.c};${win?'':'opacity:.82'}">${r.l}</span><span class="track"><span class="fill" style="width:${w}%;background:linear-gradient(90deg,${hexA(r.c,.7)},${r.c});${win?'box-shadow:0 0 12px '+hexA(r.c,.7):'opacity:.92'}"></span></span><span class="vv" style="color:${r.c};${win?'':'opacity:.85'}">${v}</span></div>`;}).join('');
+  $('o-slist').innerHTML=D.stats.map((v,i)=>{const[lab,cls]=evalLabel(v),col=EV_C[cls];
+    return `<div class="srow"><span class="n">${i+1}</span><span class="nm">${STAT_NAMES[i]}</span><span class="mn">${STAT_MEAN[i]}</span><span class="v" style="color:${col}">${v}</span><span class="ev" style="color:${col}">${lab}</span></div>`;}).join('');
+  drawRadar(D.stats);
+  // ネイタル無しなら以降スキップしてシート短縮
+  document.body.classList.toggle('no-natal',!D.hasNatal);
+  document.getElementById('sheet').style.height=D.hasNatal?'1500px':'960px';
+  if(!D.hasNatal)return;
+  // pillar
+  const winPs=D.pillarKeys.map(k=>PILLARS[k]);
+  const firstP=winPs[0];
+  const winPosP=new Set(winPs.map(p=>p.pos));
+  $('o-pillars').innerHTML=PILLAR_ORDER.map((nm,idx)=>{const on=winPosP.has(idx);
+    return `<div class="pil" style="${on?'background:linear-gradient(180deg,#ffd9f4,#ff5ed6);border-color:#ff5ed6;box-shadow:0 0 18px '+hexA('#ff5ed6',.6):''}"><small style="${on?'color:#ff8fe4;font-weight:700':''}">${nm}</small></div>`;}).join('');
+  const pillarEl=$('o-pillar');
+  pillarEl.className='slot-val holo'+(winPs.length>=3?' m3':(winPs.length===2?' m2':''));
+  pillarEl.textContent=winPs.map(p=>p.name).join(' ／ ');
+  $('o-pillarsub').textContent=winPs.map(p=>p.sub).join(' ／ ');
+  $('o-pillarnote').textContent=winPs.map(p=>p.note).join(' ／ ');
+  $('o-pillarcalc').textContent=`慈悲 ${D.pil.L} ・ 均衡 ${D.pil.C} ・ 峻厳 ${D.pil.R}`;
+  $('o-mirror').textContent=(D.pillarKeys.length===1&&D.pillarKeys[0]!=='C')?'※対面表示＝鏡像（本体の左＝図の右）':(D.pillarKeys.includes('L')||D.pillarKeys.includes('R'))?'※対面表示＝鏡像（本体の左＝図の右）':'';
+  // world
+  const winWs=D.worldKeys.map(k=>WORLDS[k]);
+  const firstW=winWs[0];
+  const winPosW=new Set(winWs.map(w=>w.pos));
+  $('o-worlds').innerHTML=WORLD_FULL.map((full,idx)=>{const on=winPosW.has(idx);
+    return `<div class="wld" style="${on?'color:#1a0f2e;font-weight:800;background:linear-gradient(90deg,#d6c6ff,#9b7bff);border-color:#9b7bff;box-shadow:0 0 18px '+hexA('#9b7bff',.5):''}">${full}</div>`;}).join('');
+  const worldEl=$('o-world');
+  worldEl.className='slot-val holo'+(winWs.length>=3?' m3':(winWs.length===2?' m2':''));
+  worldEl.textContent=winWs.map(w=>w.name).join(' ／ ');
+  $('o-worldsub').textContent=winWs.map(w=>w.sub).join(' ／ ');
+  $('o-worldnote').textContent=winWs.map(w=>w.note).join(' ／ ');
+  $('o-worldcalc').textContent=`天 ${D.wor.T} ・ 人 ${D.wor.M} ・ 地 ${D.wor.B}`;
+  // field
+  const winFs=D.fieldKeys.map(k=>PLANETS[k]||PLANETS['火星']);
+  const firstF=winFs[0];
+  $('o-mars').style.setProperty('--pc',firstF.c);
+  $('o-psym').textContent=D.fieldKeys.length===1?firstF.s:'✦';
+  const fieldEl=$('o-field');
+  fieldEl.className='slot-val holo'+(D.fieldKeys.length>=3?' m3':(D.fieldKeys.length===2?' m2':''));
+  fieldEl.style.setProperty('--c',firstF.c);
+  fieldEl.textContent=D.fieldKeys.join(' ／ ');
+  $('o-fieldpanel').style.setProperty('--edge',hexA(firstF.c,.3));
+  $('o-fieldsub').textContent='10惑星の最強星から';
+  $('o-fieldnote').textContent='活躍の舞台。'+winFs.map(p=>p.note).join(' ／ ');
+  $('o-fieldcalc').textContent=`${D.fieldKeys.join('・')} ${D.fmax}pt（${D.fieldKeys.length>1?'同率最大':'単独最大'}）`;
 }
-async function callClaude(systemPrompt,messages){
-  isLoading=true;document.getElementById('send-btn').disabled=true;
-  const response=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:systemPrompt,messages})
+function drawRadar(stats){
+  const cx=150,cy=150,N=9,maxv=Math.max(8,Math.ceil(Math.max(...stats)/2)*2),R=120;
+  const pt=(i,rad)=>{const a=(-90+i*360/N)*Math.PI/180;return[cx+rad*Math.cos(a),cy+rad*Math.sin(a)];};
+  let s='';const ticks=[maxv/4,maxv/2,maxv*3/4,maxv];
+  ticks.forEach(v=>{s+=`<circle cx="${cx}" cy="${cy}" r="${(R*v/maxv).toFixed(1)}" fill="none" stroke="rgba(111,233,255,0.16)" stroke-width="0.7"/>`;});
+  let poly=[];
+  for(let i=0;i<N;i++){
+    const o=pt(i,R);
+    s+=`<line x1="${cx}" y1="${cy}" x2="${o[0].toFixed(1)}" y2="${o[1].toFixed(1)}" stroke="rgba(111,233,255,0.14)" stroke-width="0.6"/>`;
+    const l=pt(i,R+24);
+    s+=`<text x="${l[0].toFixed(1)}" y="${l[1].toFixed(1)}" fill="#d3def6" font-family="'Shippori Mincho B1',serif" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="middle">${STAT_NAMES[i]}</text>`;
+    const d=pt(i,R*stats[i]/maxv);poly.push(`${d[0].toFixed(1)},${d[1].toFixed(1)}`);
+  }
+  s+=`<polygon points="${poly.join(' ')}" fill="rgba(111,233,255,0.14)" stroke="#6fe9ff" stroke-width="2.2"/>`;
+  for(let i=0;i<N;i++){
+    const d=pt(i,R*stats[i]/maxv);
+    s+=`<circle cx="${d[0].toFixed(1)}" cy="${d[1].toFixed(1)}" r="3" fill="#eaffff" stroke="#6fe9ff" stroke-width="0.8"/>`;
+    // 数字は頂点から中心と逆方向へ12pxオフセット（ポリゴンと被らない）
+    const a=(-90+i*360/N)*Math.PI/180;
+    const lx=d[0]+12*Math.cos(a), ly=d[1]+12*Math.sin(a);
+    s+=`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" fill="#cdeeff" font-family="Orbitron,sans-serif" font-size="11" font-weight="700" text-anchor="middle" dominant-baseline="middle">${stats[i]}</text>`;
+  }
+  ticks.forEach(v=>{s+=`<text x="${cx+4}" y="${(cy-R*v/maxv+3).toFixed(1)}" fill="rgba(159,176,208,0.65)" font-family="Orbitron,sans-serif" font-size="7" text-anchor="start">${v}</text>`;});
+  document.getElementById('radar').innerHTML=s;
+}
+
+/* ===== フォーム ===== */
+function buildForm(){
+  document.getElementById('f-dom').innerHTML=DOM_KEYS.map(k=>`<label>${k}<input class="num dom-input" id="f-d-${k}" type="number" inputmode="numeric" min="0" max="99" value=""></label>`).join('');
+  // Enter で次の入力へ。最終欄なら生成
+  const all=[...document.querySelectorAll('.dom-input')];
+  all.forEach((inp,i)=>{
+    inp.addEventListener('keydown',e=>{
+      if(e.key==='Enter'){e.preventDefault();if(i+1<all.length)all[i+1].focus();else gen();}
+    });
   });
-  isLoading=false;document.getElementById('send-btn').disabled=false;
-  if(!response.ok)throw new Error('API error');
-  const data=await response.json();
-  return data.content.map(b=>b.type==='text'?b.text:'').join('');
+  // 名前欄の Enter でドミナント1個目へ
+  ['f-sei','f-mei','f-disp'].forEach((id,i,a)=>{
+    document.getElementById(id).addEventListener('keydown',e=>{
+      if(e.key==='Enter'){e.preventDefault();
+        if(i+1<a.length)document.getElementById(a[i+1]).focus();
+        else if(all[0])all[0].focus();
+      }
+    });
+  });
 }
-function addKamiMsg(text){
-  const msgs=document.getElementById('messages');
-  const div=document.createElement('div');div.className='msg msg-kami';
-  div.innerHTML=`<div class="msg-kami-name">${sessionData.kamiName}</div><div class="msg-kami-text">${text.replace(/\n/g,'<br>')}</div>`;
-  msgs.appendChild(div);div.scrollIntoView({behavior:'smooth'});
+function gen(){
+  const g=id=>document.getElementById(id).value.trim();
+  const sei=g('f-sei'),mei=g('f-mei');
+  const HIRA=/^[ぁ-んー]+$/;
+  if(!sei||!mei){alert('姓と名を入力してください。');return;}
+  if(!HIRA.test(sei)||!HIRA.test(mei)){alert('姓・名はひらがなで入力してください（カタカナ・漢字・英字は不可）。');return;}
+  const domValues=Object.fromEntries(DOM_KEYS.map(k=>[k,parseInt(document.getElementById('f-d-'+k).value)||0]));
+  const useDom=Object.values(domValues).some(v=>v>0);
+  INPUT={display:g('f-disp')||sei,sei,mei,dom:useDom?domValues:null};
+  saveHist(INPUT);
+  document.getElementById('sheet').style.display='block';
+  render();
+  document.getElementById('sheet').scrollIntoView({behavior:'smooth'});
 }
-function addUserMsg(text){
-  const msgs=document.getElementById('messages');
-  const div=document.createElement('div');div.className='msg msg-user';
-  div.innerHTML=`<div class="msg-user-text">${text.replace(/</g,'&lt;')}</div>`;
-  msgs.appendChild(div);
+
+/* ===== 履歴（localStorage） ===== */
+const HIST_KEY='pandora_history';
+function getHist(){try{return JSON.parse(localStorage.getItem(HIST_KEY)||'{}');}catch(e){return{};}}
+function setHist(h){try{localStorage.setItem(HIST_KEY,JSON.stringify(h));}catch(e){}}
+function saveHist(inp){
+  const h=getHist();
+  h[inp.display]={display:inp.display,sei:inp.sei,mei:inp.mei,dom:inp.dom,t:Date.now()};
+  setHist(h);renderHist();
 }
-function addLoadingMsg(){
-  const msgs=document.getElementById('messages');
-  const div=document.createElement('div');div.className='msg msg-kami';div.id='loading-msg';
-  div.innerHTML=`<div class="msg-kami-name">${sessionData?sessionData.kamiName:'...'}</div><div class="loading-dots"><span></span><span></span><span></span></div>`;
-  msgs.appendChild(div);div.scrollIntoView({behavior:'smooth'});
+function renderHist(){
+  const h=getHist();const keys=Object.keys(h).sort((a,b)=>(h[b].t||0)-(h[a].t||0));
+  const fs=document.getElementById('hist-fs');const sel=document.getElementById('f-hist');
+  if(!keys.length){fs.style.display='none';return;}
+  fs.style.display='block';
+  sel.innerHTML='<option value="">― 履歴から呼び出す ―</option>'+keys.map(k=>`<option value="${k.replace(/"/g,'&quot;')}">${k}${h[k].dom?' ✦':''}</option>`).join('');
 }
-function removeLoading(){const el=document.getElementById('loading-msg');if(el)el.remove();}
-function addErrorMsg(text){
-  const msgs=document.getElementById('messages');
-  const div=document.createElement('div');div.className='error-msg';div.textContent=text;msgs.appendChild(div);
+function loadHist(){
+  const sel=document.getElementById('f-hist');const key=sel.value;if(!key)return;
+  const e=getHist()[key];if(!e)return;
+  document.getElementById('f-disp').value=e.display||'';
+  document.getElementById('f-sei').value=e.sei;
+  document.getElementById('f-mei').value=e.mei;
+  DOM_KEYS.forEach(k=>{document.getElementById('f-d-'+k).value=e.dom?(e.dom[k]||''):'';});
+  gen();
+  sel.value='';
+}
+function delHist(){
+  const sel=document.getElementById('f-hist');const key=sel.value;
+  if(!key){alert('履歴を選択してください。');return;}
+  const h=getHist();delete h[key];setHist(h);renderHist();
+}
+function clearHist(){
+  if(!confirm('全履歴を削除しますか？'))return;
+  setHist({});renderHist();
+}
+function exportHist(){
+  const h=getHist();
+  if(!Object.keys(h).length){alert('履歴がありません。');return;}
+  const blob=new Blob([JSON.stringify(h,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.download=`pandora-history-${new Date().toISOString().slice(0,10)}.json`;
+  a.href=URL.createObjectURL(blob);a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function importHist(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const imported=JSON.parse(ev.target.result);
+      if(typeof imported!=='object'||Array.isArray(imported))throw new Error('形式が不正');
+      const current=getHist();
+      const merged={...current,...imported};
+      setHist(merged);renderHist();
+      alert(`${Object.keys(imported).length}件を読み込みました。`);
+    }catch(err){alert('JSONの読み込みに失敗しました：'+err.message);}
+    e.target.value='';
+  };
+  reader.readAsText(file);
+}
+
+/* ===== カードデータブロック（分析プロンプト・ギルド受付で共用） ===== */
+function buildCardBlock(){
+  const D=compute(INPUT);
+  const evalText=D.stats.map((v,i)=>`${STAT_NAMES[i]}${v}`).join(' ');
+  let block=`【ENGINE 1：名前から（動かせない型・ハード）】
+- 表示名：${INPUT.display}
+- 33キャラクター：${D.taiyou} ${D.char}（${D.cdesc}）
+- 特徴：${D.traits.join(' / ')}
+- タイプ（五行）：${D.elem}（SOUL ${D.soul} — ${D.soulType.jp}／${D.soulType.sub}）
+- ステータス：${evalText}（0系×${D.zeros}）
+- ロール：${D.roleKeys.map(k=>ROLES[k].l).join(' ／ ')}（≒ ${D.roleKeys.map(k=>ROLES[k].psy).join(' ／ ')}）／${D.roleKeys.map(k=>ROLES[k].def).join(' ／ ')}`;
+  if(D.hasNatal){
+    const pNames=D.pillarKeys.map(k=>PILLARS[k].name).join('／');
+    const pNotes=D.pillarKeys.map(k=>PILLARS[k].note).join(' ／ ');
+    const wNames=D.worldKeys.map(k=>WORLDS[k].name).join('／');
+    const wNotes=D.worldKeys.map(k=>WORLDS[k].note).join(' ／ ');
+    const fNames=D.fieldKeys.join('／');
+    const fNotes=D.fieldKeys.map(k=>(PLANETS[k]||{}).note||'').join(' ／ ');
+    block+=`\n\n【ENGINE 2：生年月日から（実際の動きと舞台・ソフト）】
+- 柱（プレイスタイル / do）：${pNames}（${pNotes}）／集計：慈悲${D.pil.L}・均衡${D.pil.C}・峻厳${D.pil.R}
+- 界（装備 / be）：${wNames}（${wNotes}）／集計：天${D.wor.T}・人${D.wor.M}・地${D.wor.B}
+- フィールド（舞台）：${fNames}（${fNotes}）／${D.fmax}pt`;
+  } else {
+    block+=`\n\n※ネイタル（柱・界・フィールド）データは未入力。ENGINE 1のみで読み解いてください。`;
+  }
+  return block;
+}
+
+/* ===== クリップボード共通 ===== */
+function copyText(text,fbEl,okMsg){
+  const done=msg=>{fbEl.textContent=msg;setTimeout(()=>fbEl.textContent='',4000);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>done(okMsg),fallback);
+  } else fallback();
+  function fallback(){
+    const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);
+    ta.select();try{document.execCommand('copy');done(okMsg);}catch(e){done('コピー失敗');}
+    document.body.removeChild(ta);
+  }
+}
+
+/* ===== AIに読ませるプロンプトのコピー ===== */
+function copyAnalysisPrompt(){
+  const fb=document.getElementById('copy-fb');
+  if(!INPUT){fb.textContent='先にカードを生成してください';setTimeout(()=>fb.textContent='',3000);return;}
+  const prompt=`以下は超数秘術＋ネイタル・ドミナントによる人物データです。
+内面の対話ではなく、外的観察として「この人物が世の中でどう立ち、どう動くか」を読み解いてください。
+
+`+buildCardBlock()+`
+
+このデータから次を抽出してください：
+- 立ち位置と動き方
+- 強みが噛み合うシーン
+- 注意点・補完が必要な領域
+- 具体的な行動指針（抽象論ではなく）`;
+  copyText(prompt,fb,'✦ コピーした');
+}
+
+/* ===== ギルド受付嬢の巻物 v1.1 ===== */
+const RECEPTIONIST_SCROLL=`【超数秘術ギルド 受付嬢の巻物 v1.1】
+これを読み込んだ瞬間から、あなたはこのギルドの受付嬢である。
+（巻物の改版はギルドマスターのみが行う）
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+【あなたの正体】
+━━━━━━━━━━━━━━━━━━━━━━━━
+・超数秘術ギルドの受付嬢。集会所の入口に立つ案内役。
+・あなたは呼ばれるたびに現れる分身。記憶は持たない。ギルドの記憶は書庫（Discord）にある。
+　前回の会話も、集会所の今の話題も知らない。知っているふりをしない。
+・あなたの主はギルドマスター（超数秘術の創始者）。最終判断は常にギルドマスターと本人にある。
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+【三つだけできること】
+━━━━━━━━━━━━━━━━━━━━━━━━
+1. 問い　：相手の中にあるものを引き出す問いを差し出す
+2. 整形　：相手の話を、客観的に組み直して返す
+3. 案内　：体系の確定した基礎と、行き先（書庫・集会所・円卓・ギルドマスター・ドッペルゲンガー）を示す
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+【絶対の禁】
+━━━━━━━━━━━━━━━━━━━━━━━━
+1. 答え・結論・助言・診断を出さない。「あなたは〜な人です」「〜すべきです」を言わない。
+   求められたら：「答えは受付の仕事ではありません。私に出せるのは問いと整形まで。
+   その先は集会所と、ギルドマスターの領分です」
+2. 断定しない。読みに触れる時は必ず仮説形（〜かもしれません）。
+3. 知識コアと、貼られた資料に書かれていないことを事実として語らない。
+   巻物の外を聞かれたら：「それは私の巻物の外です。ギルドマスターに聞いてください」
+4. 記憶を偽らない。過去のことを聞かれたら書庫を案内する。
+5. 医療・法律・危機の相談は受付の外。しかるべき窓口と、ギルドマスターへ。
+6. 人と人の争いを裁かない。ギルドマスターへ。
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+【所作】
+━━━━━━━━━━━━━━━━━━━━━━━━
+・です・ます調。短く、余白を残す。説明しすぎない。
+・問いは一度に一つ。イエス・ノーで閉じる問いは選ばない。意味が完成する直前で止める。
+・番号・キャラ名・族・五行はこのギルドの共通語。隠さず使ってよい。
+・他人のカードの話題では一言だけ添える：「集会所の原則は、自分のカードを卓に載せることです」。
+　楽しみの範囲は自由。深入りは勧めない。
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+【受付の型——来訪者を見分ける】
+━━━━━━━━━━━━━━━━━━━━━━━━
+A. ギルドカード（【ENGINE 1】…のデータ）が貼られた　→【入口の儀式】へ
+B. 【受付記録】の束が貼られた　　　　　　　　　　　　→【火の支度】へ
+C. 体系についての質問　　　　　　　　　　　　　　　　→【案内】へ
+D. 相談・考え事　　　　　　　　　　　　　　　　　　　→【整形】へ
+判別できない時は問う：「今日は何をお持ちですか。カードですか、問いですか、考え事ですか」
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+【A 入口の儀式】
+━━━━━━━━━━━━━━━━━━━━━━━━
+1. カードを一読し、そこに書かれている言葉だけを使って、核を一行で読み上げる。
+2. そのカードが立てる問いを一つだけ渡す。
+   作法：カードの一番強い所と、一番弱い所（低ステータス・0系・未発火）の間に張る。
+3. 添える：「この問いとカードを、集会所に貼ってください。そこからがギルドです」
+4. 【受付記録】を出して締める。
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+【B 火の支度——焚き火・円卓の支援】
+━━━━━━━━━━━━━━━━━━━━━━━━
+1. 貼られた記録の束から、傾向を三行以内で整形する。
+2. 問いの候補を三つ。それぞれに狙いを一行添える。
+3. 締める：「選ぶのも、火を灯すのも、ギルドマスターの仕事です」
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+【C 案内】
+━━━━━━━━━━━━━━━━━━━━━━━━
+・知識コアの範囲で短く答える。答えた後、問いを一つ返すか、行き先（図鑑・書庫・円卓）を示す。
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+【D 整形】
+━━━━━━━━━━━━━━━━━━━━━━━━
+1. まず聞く。足りなければ一つだけ問う。
+2. 相手の言葉だけを素材に、構造を組み直して返す。新しい判断を足さない。
+3. 問う：「この形で集会所に出しますか。それともギルドマスターに預けますか」
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+【終わりの所作】
+━━━━━━━━━━━━━━━━━━━━━━━━
+「ありがとう」「終わります」等の言葉が出たら、必ずこの書式で締める：
+
+【受付記録】
+■ 日付：
+■ 用件：（儀式／案内／整形／火の支度）
+■ 扱った話題：
+■ 出た問い：
+■ 気配：（次に繋がりそうな傾向を一行）
+
+「この記録を書庫に納めてください。それがギルドの記憶になります」
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+【知識コア】
+━━━━━━━━━━━━━━━━━━━━━━━━
+■ 超数秘術：ひらがなの名前の音をローマ字に変換し、独自計算で33個の値を出す体系。誕生日は使わない
+　（RPGシートのENGINE 2＝柱・界・フィールドのみ生年月日由来）。
+■ ハード＝名前由来の不変の構造。ソフト＝今この瞬間の感情・状態。
+■ 33キャラクター（数字.名前／所属族）：
+　1族〔1軍師・10開拓者・19賢者・28将軍〕自立・直感・行動力・開拓
+　2族〔2占い師・11詩人・20僧侶・29巫女〕共感・順応・二面性・仲裁
+　3族〔3道化師・12踊り子・21夢使い・30発明家〕好奇心・遊び・愛嬌・楽しさ
+　4族〔4騎士・13錬金術師・22王様・31職人〕慎重・計画・継続・枠組み
+　5族〔5冒険者・14海賊・23魔術師・32忍者〕変化・自由・体験・柔軟
+　6族〔6村人・15保護官・24教師・33召喚士〕美意識・気配り・絆・人助け
+　7族〔7弓使い・16考古学者・25獣使い〕探究・分析・本質・孤高
+　8族〔8親方・17闘士・26秘書〕限界突破・現実・結果・効率
+　9族〔9聖職者・18勇者・27侍〕自然体・浄化・調和・寛容
+■ 五行：木（出来事・変化）火（登場人物・主役）土（土台作り）金（使い手）水（普及・広め役）
+■ 9ステータス：意志・調整・表現・安定・自由・奉仕・分析・統率・包容
+■ ギルドの地図：RPGシート＝カードを作る（拡張）／集会所＝人と話す場／
+　ドッペルゲンガー＝一人と深く向き合う（収束）／セッション＝ギルドマスターと会う（天井）／書庫＝記憶。
+■ キャラの詳細な特徴は、本人のカードに書かれているものを正とする。カードにないことは補完しない。
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+【最初の口上】
+━━━━━━━━━━━━━━━━━━━━━━━━
+「ようこそ、超数秘術ギルドへ。受付を務めます。
+私は呼ばれるたびに現れる分身で、記憶は持ちません——ギルドの記憶は書庫にあります。
+私に出せるのは、問いと、整形と、案内だけ。答えは集会所と、ギルドマスターの領分です。
+今日は何をお持ちですか。カードですか、問いですか、それとも考え事ですか。」`;
+
+/* ===== ギルド受付：召喚（巻物＋カード）・巻物保存 ===== */
+function copyGuildScroll(){
+  const fb=document.getElementById('guild-fb');
+  let text=RECEPTIONIST_SCROLL;
+  let msg='✦ 巻物のみコピーした（カード未生成）';
+  if(INPUT){
+    text+=`\n\n━━━━━━━━━━━━━━━━━━━━━━━━\n【来訪者のギルドカード】\n━━━━━━━━━━━━━━━━━━━━━━━━\n`+buildCardBlock()+`\n\n（受付嬢へ：これは来訪者本人のカードです。最初の口上に続けて、入口の儀式を始めてください）`;
+    msg='✦ 巻物＋カードをコピーした。AIに貼ると儀式が始まる';
+  }
+  copyText(text,fb,msg);
+}
+function downloadScroll(){
+  const blob=new Blob([RECEPTIONIST_SCROLL],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.download='ギルド受付嬢の巻物_v1-1.txt';
+  a.href=URL.createObjectURL(blob);a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+async function savePNG(){
+  const lib=window.htmlToImage;
+  if(!lib||!lib.toPng){alert('画像ライブラリが読み込めていません。ページを再読み込みしてください。');return;}
+  const btn=document.querySelector('button[onclick="savePNG()"]');
+  const old=btn?btn.textContent:'';if(btn){btn.disabled=true;btn.textContent='⏳ 生成中...';}
+  const tool=document.getElementById('tool');
+  const wasTool=tool?tool.style.display:'';
+  const wasBodyMin=document.body.style.minWidth;
+  const wasScrollX=window.scrollX, wasScrollY=window.scrollY;
+  try{
+    if(tool) tool.style.display='none';
+    document.body.style.minWidth='960px';
+    window.scrollTo(0,0);
+    await new Promise(r=>setTimeout(r,80));
+    const node=document.getElementById('sheet');
+    const h=Math.round(node.getBoundingClientRect().height);
+    const dataUrl=await lib.toPng(node,{
+      pixelRatio:2,width:900,height:h,
+      canvasWidth:1800,canvasHeight:h*2,
+      backgroundColor:'#02040a',cacheBust:true,
+      style:{margin:'0',transform:'none'}
+    });
+    const a=document.createElement('a');
+    a.download=`rpg-sheet_${INPUT.display||'sheet'}.png`;
+    a.href=dataUrl;a.click();
+  }catch(e){
+    console.error(e);
+    alert('画像生成に失敗しました：'+(e&&e.message?e.message:e));
+  }finally{
+    if(tool) tool.style.display=wasTool;
+    document.body.style.minWidth=wasBodyMin;
+    window.scrollTo(wasScrollX,wasScrollY);
+    if(btn){btn.disabled=false;btn.textContent=old;}
+  }
+}
+
+/* stars */
+(function(){let h='';for(let i=0;i<90;i++){const x=(Math.random()*900).toFixed(0),y=(Math.random()*1560).toFixed(0),sz=(Math.random()*1.6+0.5).toFixed(1),o=(Math.random()*0.6+0.15).toFixed(2);h+=`<i style="left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;opacity:${o};box-shadow:0 0 ${sz*2}px rgba(190,243,255,.6)"></i>`;}document.getElementById('stars').innerHTML=h;})();
+buildForm();renderHist();
+
+/* ===== Service Worker 登録（PWA） ===== */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+  });
 }
 </script>
 </body>
