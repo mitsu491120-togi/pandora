@@ -196,11 +196,12 @@ body.kinsho .sheet::before{
 /* 筆文字（毛筆楷書） */
 body.kinsho .name,body.kinsho .sec .jp,body.kinsho .bighero .big,body.kinsho .rl-big,
 body.kinsho .srow .nm,body.kinsho .memo-v,body.kinsho .slot-jp{font-family:'Yuji Syuku',serif;font-weight:400;}
-/* 墨絵レイヤー（太陽数に対応する sumie/N.png を乗算で浮かべる。白背景の画像でも白は消える） */
+/* 墨絵レイヤー（太陽数に対応する sumie/N.png をフルブリードで乗算合成。
+   白背景は和紙に溶け、墨と朱のアクセントはそのまま残る） */
 body.kinsho .sumie{
-  display:block;position:absolute;top:150px;left:50%;transform:translateX(-50%);
-  width:78%;height:62%;object-fit:contain;
-  opacity:.15;mix-blend-mode:multiply;filter:grayscale(1) contrast(1.1);
+  display:block;position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 20%;
+  opacity:.18;mix-blend-mode:multiply;filter:contrast(1.05);
   z-index:1;pointer-events:none;
 }
 /* 五行の色（岩絵具の渋色：木=緑青 火=弁柄 土=黄土 金=金古美 水=藍） */
