@@ -21,7 +21,7 @@ html,body{background:#0e0a06;}
 body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
 
 /* ===== 入力フォーム（出力カードには含まれない） ===== */
-.tool{max-width:900px;margin:24px auto 60px;padding:22px 26px;border:1px solid rgba(240,230,204,.18);border-radius:8px;
+.tool{max-width:1500px;margin:24px auto 60px;padding:22px 26px;border:1px solid rgba(240,230,204,.18);border-radius:8px;
   background:linear-gradient(160deg,rgba(240,230,204,.05),rgba(240,230,204,.01));color:#d8ccb0;}
 .tool h2{font-family:'Yuji Syuku',serif;font-size:17px;letter-spacing:.2em;color:#e8ddc0;margin-bottom:4px;}
 .tool .sub{font-size:11px;color:#a89878;margin-bottom:16px;letter-spacing:.04em;}
@@ -41,7 +41,7 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
 .hint{font-size:10.5px;color:#a89878;margin-top:12px;line-height:1.7;letter-spacing:.02em;}
 
 /* ===== ギルドカード ===== */
-.sheet{position:relative;width:900px;overflow:hidden;margin:0 auto;
+.sheet{position:relative;width:1500px;overflow:hidden;margin:0 auto;
   background:
     radial-gradient(ellipse 80% 60% at 10% 10%, rgba(160,120,40,.13) 0%, transparent 60%),
     radial-gradient(ellipse 60% 80% at 90% 80%, rgba(140,100,30,.12) 0%, transparent 60%),
@@ -64,15 +64,16 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
     radial-gradient(ellipse 280px 210px at 10% 80%, rgba(120,90,30,.10), transparent 70%),
     radial-gradient(ellipse 160px 120px at 30% 8%, rgba(110,80,30,.08), transparent 70%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.005 0.012' numOctaves='3' seed='11'/%3E%3CfeDiffuseLighting surfaceScale='3' diffuseConstant='1.15' lighting-color='%23ffffff'%3E%3CfeDistantLight azimuth='55' elevation='60'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='900' height='900' filter='url(%23w)' opacity='0.16'/%3E%3C/svg%3E");}
-/* 墨絵（sumie/太陽数.png・フルブリード乗算。白背景は和紙に溶け、朱は残る） */
-.sumie{display:block;position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;object-position:center 20%;
-  opacity:.18;mix-blend-mode:multiply;filter:contrast(1.05);
-  z-index:1;pointer-events:none;}
 .cnr{position:absolute;width:30px;height:30px;z-index:5;border:1.6px solid rgba(26,16,8,.6);}
 .cnr.tl{left:24px;top:24px;border-right:0;border-bottom:0;}.cnr.tr{right:24px;top:24px;border-left:0;border-bottom:0;}
 .cnr.bl{left:24px;bottom:24px;border-right:0;border-top:0;}.cnr.br{right:24px;bottom:24px;border-left:0;border-top:0;}
-.wrap{position:relative;z-index:3;padding:48px 52px 38px;}
+.wrap{position:relative;z-index:3;padding:44px 46px 34px;}
+.cardgrid{display:grid;grid-template-columns:1fr 470px;gap:26px;align-items:stretch;margin-top:4px;}
+.left{min-width:0;}
+/* キャラ画像（sumie/太陽数.png を右面に差し込む。白背景は乗算で和紙に溶ける） */
+.artcol{position:relative;border:1px solid var(--line);border-radius:3px;overflow:hidden;min-height:640px;}
+.artcol .art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;mix-blend-mode:multiply;filter:contrast(1.03);}
+.artcol .art-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;font-family:'Yuji Syuku',serif;font-size:72px;letter-spacing:.3em;color:rgba(26,16,8,.16);}
 /* 朱印 */
 .wrap::after{content:'禁';position:absolute;top:46px;right:44px;width:46px;height:46px;
   border:2px solid rgba(139,26,26,.75);border-radius:50%;
@@ -111,11 +112,11 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
 .rolebar .rl-psy{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.22em;color:var(--gold);margin-top:4px;}
 .rolebar .rl-def{font-size:12.5px;color:var(--ink2);margin-top:8px;line-height:1.6;}
 .rbars{display:flex;flex-direction:column;gap:7px;}
-.rbar{display:grid;grid-template-columns:74px 1fr 24px;align-items:center;gap:10px;}
+.rbar{display:grid;grid-template-columns:74px 1fr 32px;align-items:center;gap:10px;}
 .rbar .nm{font-size:11px;letter-spacing:.02em;color:var(--ink2);}
 .rbar .track{display:block;height:10px;border-radius:2px;background:rgba(26,16,8,.1);overflow:hidden;}
 .rbar .fill{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,rgba(61,43,26,.55),rgba(61,43,26,.85));}
-.rbar .vv{font-size:12px;text-align:right;color:var(--ink2);font-family:'Shippori Mincho B1',serif;}
+.rbar .vv{font-size:17px;font-weight:700;text-align:right;color:var(--ink2);font-family:'Shippori Mincho B1',serif;}
 .rbar.win .nm{font-weight:800;color:var(--shu);}
 .rbar.win .vv{font-weight:800;color:var(--shu);}
 .rbar.win .fill{background:linear-gradient(90deg,rgba(139,26,26,.75),#8b1a1a);}
@@ -123,8 +124,8 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
 .statgrid{display:grid;grid-template-columns:330px 1fr;gap:16px;align-items:center;}
 #radar{display:block;margin:0 auto;}
 .slist{display:flex;flex-direction:column;}
-.srow{display:grid;grid-template-columns:16px 56px 1fr 26px 40px;align-items:center;gap:9px;padding:5.5px 0;border-bottom:1px solid rgba(26,16,8,.15);}
-.srow .n{font-family:'Cinzel',serif;font-size:10px;color:var(--gold);}
+.srow{display:grid;grid-template-columns:56px 56px 1fr 26px 40px;align-items:center;gap:9px;padding:5.5px 0;border-bottom:1px solid rgba(26,16,8,.15);}
+.srow .n{font-family:'Yuji Syuku',serif;font-size:14px;color:var(--gold);letter-spacing:.02em;}
 .srow .nm{font-size:14px;letter-spacing:.04em;font-family:'Yuji Syuku',serif;color:var(--ink);}
 .srow .mn{font-size:11px;color:var(--ink2);letter-spacing:.02em;}
 .srow .v{font-size:18px;font-weight:800;text-align:right;color:var(--ink);font-family:'Shippori Mincho B1',serif;}
@@ -163,37 +164,44 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
 
 <!-- ===== ギルドカード ===== -->
 <div class="sheet" id="sheet" style="display:none">
-  <img class="sumie" id="o-sumie" alt="" aria-hidden="true">
   <div class="cnr tl"></div><div class="cnr tr"></div><div class="cnr bl"></div><div class="cnr br"></div>
   <div class="wrap">
     <div class="eyebrow">Guild Card · 超数秘術ギルド</div>
     <div class="sysline">SUPER NUMEROLOGY GUILD</div>
     <div class="name" id="o-name"></div>
     <div class="hr"></div>
-    <div class="sec"><span class="no">01</span><span class="jp">超数秘術</span><span class="en">／ 名前・動かせない型</span><span class="ln"></span></div>
-    <div class="e1top">
-      <div class="panel">
-        <div class="p-en">Character ／ 33キャラクター（太陽数）</div>
-        <div class="bighero"><span class="num" id="o-num"></span><span class="dot">.</span><span class="big" id="o-char"></span></div>
-        <div class="lead" id="o-cdesc"></div><div class="traits" id="o-traits"></div>
+    <div class="cardgrid">
+      <div class="left">
+        <div class="sec"><span class="no" id="o-zoku"></span><span class="jp">超数秘術</span><span class="en">／ 名前・動かせない型</span><span class="ln"></span></div>
+        <div class="e1top">
+          <div class="panel">
+            <div class="p-en">Character ／ 33キャラクター（太陽数）</div>
+            <div class="bighero"><span class="num" id="o-num"></span><span class="dot">.</span><span class="big" id="o-char"></span></div>
+            <div class="lead" id="o-cdesc"></div><div class="traits" id="o-traits"></div>
+          </div>
+          <div class="panel">
+            <div class="p-en">Type ／ タイプ（五行）</div>
+            <div class="bighero"><span class="big" id="o-type"></span><span class="pair" id="o-pair"></span></div>
+            <div class="soulbadge" id="o-soul"></div><div class="story" id="o-story"></div>
+          </div>
+        </div>
+        <div class="panel rolebar">
+          <div><div class="p-en">Role ／ ロール</div>
+            <div class="rl-row"><div class="rl-icon" id="o-roleicon"></div><div class="rl-big" id="o-role"></div></div>
+            <div class="rl-psy" id="o-rolepsy"></div>
+            <div class="rl-def" id="o-roledef"></div></div>
+          <div class="rbars" id="o-rbars"></div>
+        </div>
+        <div class="panel status">
+          <div class="p-en">Status ／ ステータス（9軸）</div>
+          <div class="statgrid"><svg id="radar" width="330" height="330" viewBox="-30 -30 360 360"></svg><div class="slist" id="o-slist"></div></div>
+          <div class="scale"><span>0 無理</span><span>1-2 苦手</span><span>3-4 普通</span><span>5-6 得意</span><span>7-8 天才</span><span>9+ 神</span></div>
+        </div>
       </div>
-      <div class="panel">
-        <div class="p-en">Type ／ タイプ（五行）</div>
-        <div class="bighero"><span class="big" id="o-type"></span><span class="pair" id="o-pair"></span></div>
-        <div class="soulbadge" id="o-soul"></div><div class="story" id="o-story"></div>
+      <div class="artcol">
+        <div class="art-fallback" id="o-artfb"></div>
+        <img class="art" id="o-art" alt="">
       </div>
-    </div>
-    <div class="panel rolebar">
-      <div><div class="p-en">Role ／ ロール</div>
-        <div class="rl-row"><div class="rl-icon" id="o-roleicon"></div><div class="rl-big" id="o-role"></div></div>
-        <div class="rl-psy" id="o-rolepsy"></div>
-        <div class="rl-def" id="o-roledef"></div></div>
-      <div class="rbars" id="o-rbars"></div>
-    </div>
-    <div class="panel status">
-      <div class="p-en">Status ／ ステータス（9軸）</div>
-      <div class="statgrid"><svg id="radar" width="330" height="330" viewBox="-30 -30 360 360"></svg><div class="slist" id="o-slist"></div></div>
-      <div class="scale"><span>0 無理</span><span>1-2 苦手</span><span>3-4 普通</span><span>5-6 得意</span><span>7-8 天才</span><span>9+ 神</span></div>
     </div>
     <div class="foot"><div>SUPER NUMEROLOGY GUILD</div><div class="mid">◆ ◆ ◆</div><div id="o-foot"></div></div>
   </div>
@@ -221,6 +229,8 @@ function getNumberConversion(s){const d1=parseInt(s[0]),d2=parseInt(s[1]),d3=par
 function getNextplus(s){let r='';for(let i=1;i<s.length;i++)r+=String(getMod9(parseInt(s[i-1])+parseInt(s[i])));return r.length>1?getNextplus(r):r;}
 function mod33(n){const r=n%33;return r===0?33:r;}
 function getSoulDigit(n){if(n===10||n===20||n===30)return 0;while(n>=10)n=Math.floor(n/10)+(n%10);return n;}
+const NUMEROLOGY_CHARS={1:[1,10,19,28],2:[2,11,20,29],3:[3,12,21,30],4:[4,13,22,31],5:[5,14,23,32],6:[6,15,24,33],7:[7,16,25],8:[8,17,26],9:[9,18,27]};
+function getNumerologyGroup(charNum){for(const [num,chars] of Object.entries(NUMEROLOGY_CHARS)){if(chars.includes(charNum))return parseInt(num);}return null;}
 function getDragonValue(numStr){let result=0;for(let i=0;i<numStr.length;i++){if(!/\d/.test(numStr[i]))continue;result+=parseInt(numStr[i]);while(result>=34)result=toSingleDigit(result);}return result;}
 function calcAll(seiRom, meiRom){
   const lastnumber=alphaToNumber(seiRom,'1');
@@ -366,13 +376,18 @@ function render(){
   $('o-rbars').innerHTML=order.map(k=>{const r=ROLES[k],v=D.sums[k],w=Math.round(v/maxv*100),win=winSet.has(k);
     return `<div class="rbar${win?' win':''}"><span class="nm">${r.l}</span><span class="track"><span class="fill" style="width:${w}%"></span></span><span class="vv">${v}</span></div>`;}).join('');
   $('o-slist').innerHTML=D.stats.map((v,i)=>{const[lab,cls]=evalLabel(v),col=EV_C[cls];
-    return `<div class="srow"><span class="n">${i+1}</span><span class="nm">${STAT_NAMES[i]}</span><span class="mn">${STAT_MEAN[i]}</span><span class="v" style="color:${col}">${v}</span><span class="ev" style="color:${col}">${lab}</span></div>`;}).join('');
+    return `<div class="srow"><span class="n">数秘${i+1}</span><span class="nm">${STAT_NAMES[i]}</span><span class="mn">${STAT_MEAN[i]}</span><span class="v" style="color:${col}">${v}</span><span class="ev" style="color:${col}">${lab}</span></div>`;}).join('');
   drawRadar(D.stats);
-  // 墨絵（太陽数に対応。無ければ非表示で純粋な和紙）
-  const sumie=document.getElementById('o-sumie');
-  sumie.style.display='';
-  sumie.onerror=()=>{sumie.style.display='none';};
-  sumie.src='sumie/'+D.taiyou+'.png';
+  // 数秘族チップ
+  $('o-zoku').textContent='数秘'+getNumerologyGroup(D.taiyou)+'族';
+  // キャラ画像（sumie/太陽数.png を右面に差し込む。無ければキャラ名の透かし）
+  const art=$('o-art'),artfb=$('o-artfb');
+  artfb.textContent=D.char;
+  artfb.style.display='';
+  art.style.display='';
+  art.onload=()=>{artfb.style.display='none';};
+  art.onerror=()=>{art.style.display='none';artfb.style.display='';};
+  art.src='sumie/'+D.taiyou+'.png';
   // カード高さは内容から実測
   requestAnimationFrame(fitSheetHeight);
 }
@@ -629,14 +644,15 @@ async function savePNG(){
   const wasScrollX=window.scrollX, wasScrollY=window.scrollY;
   try{
     if(tool) tool.style.display='none';
-    document.body.style.minWidth='960px';
+    document.body.style.minWidth='1560px';
     window.scrollTo(0,0);
     await new Promise(r=>setTimeout(r,80));
     const node=document.getElementById('sheet');
-    const h=Math.round(node.getBoundingClientRect().height);
+    const rect=node.getBoundingClientRect();
+    const w=Math.round(rect.width), h=Math.round(rect.height);
     const dataUrl=await lib.toPng(node,{
-      pixelRatio:2,width:900,height:h,
-      canvasWidth:1800,canvasHeight:h*2,
+      pixelRatio:2,width:w,height:h,
+      canvasWidth:w*2,canvasHeight:h*2,
       backgroundColor:'#efe4c8',cacheBust:true,
       style:{margin:'0',transform:'none'}
     });
