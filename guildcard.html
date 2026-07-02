@@ -133,16 +133,28 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
 .foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:.2em;color:var(--ink2);}
 .foot .mid{font-size:10px;letter-spacing:.4em;color:var(--shu);}
 
-/* ===== 縦型（スマホ・共有用）。情報は横型と同一、縦に積み直すだけ ===== */
+/* ===== 縦型（スマホ・共有用）。情報は横型と同一のまま、内部を畳んで1画面比率に寄せる ===== */
 .sheet.portrait{width:900px;}
-.sheet.portrait .wrap{padding:40px 34px 30px;}
-.sheet.portrait .cardgrid{grid-template-columns:1fr;gap:20px;}
-.sheet.portrait .artcol{order:-1;min-height:0;height:620px;}
-.sheet.portrait .name{font-size:44px;}
-.sheet.portrait .e1top{grid-template-columns:1fr;gap:14px;}
-.sheet.portrait .rolebar{grid-template-columns:1fr;gap:14px;}
-.sheet.portrait .statgrid{grid-template-columns:1fr;gap:10px;justify-items:center;}
-.sheet.portrait .slist{width:100%;}
+.sheet.portrait .wrap{padding:32px 28px 22px;}
+.sheet.portrait .cardgrid{grid-template-columns:1fr;gap:14px;margin-top:2px;}
+.sheet.portrait .artcol{order:-1;min-height:0;height:auto;aspect-ratio:900/580;}
+.sheet.portrait .artcol .art{object-position:center 25%;}
+.sheet.portrait .name{font-size:38px;margin-top:10px;}
+.sheet.portrait .hr{margin-top:12px;}
+.sheet.portrait .sec{margin:10px 0 8px;}
+.sheet.portrait .e1top{grid-template-columns:1fr 1fr;gap:12px;}
+.sheet.portrait .panel{padding:13px 15px;}
+.sheet.portrait .bighero .num{font-size:38px;}
+.sheet.portrait .bighero .big{font-size:36px;}
+.sheet.portrait .rolebar{grid-template-columns:210px 1fr;gap:16px;margin-top:0;}
+.sheet.portrait .rolebar .rl-big{font-size:32px;}
+.sheet.portrait .status{margin-top:0;}
+.sheet.portrait .statgrid{grid-template-columns:280px 1fr;gap:22px;}
+.sheet.portrait .srow{padding:4px 0;grid-template-columns:50px 52px 1fr 24px 36px;gap:7px;}
+.sheet.portrait .srow .mn{font-size:10px;}
+.sheet.portrait .scale{margin-top:8px;}
+.sheet.portrait .story{font-size:11.5px;line-height:1.8;}
+.sheet.portrait .foot{margin-top:10px;}
 </style>
 </head>
 <body>
