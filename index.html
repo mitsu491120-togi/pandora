@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PANDORA</title>
 <meta name="theme-color" content="#02040a">
-<meta name="description" content="名前と生年月日から、あなたのRPGキャラ構造（キャラクター・タイプ・ステータス・ロール・柱・界・フィールド）を可視化する超数秘術＋ネイタル・ドミナント解析。">
+<meta name="description" content="名前から、あなたのRPGキャラ構造（キャラクター・タイプ・ステータス・ロール）を可視化する超数秘術ギルドカード。ネイタル・ドミナントは任意の備考。">
+<!-- 本体はこのindex.html一つで完結。manifest / service-worker / icon.svg は「アプリとしてインストール」用の任意ファイル（無くても全機能が動く） -->
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%2302040a'/%3E%3Ccircle cx='256' cy='256' r='200' fill='none' stroke='%236fe9ff' stroke-opacity='0.35' stroke-width='6'/%3E%3Ccircle cx='256' cy='256' r='46' fill='%236fe9ff' fill-opacity='0.12' stroke='%236fe9ff' stroke-width='8'/%3E%3Ccircle cx='256' cy='256' r='12' fill='%23bdf3ff'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="icon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Orbitron:wght@500;700;900&family=Shippori+Mincho+B1:wght@400;500;700;800&display=swap" rel="stylesheet">
 <script>!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"function"==typeof define&&define.amd?define(["exports"],e):e((t="undefined"!=typeof globalThis?globalThis:t||self).htmlToImage={})}(this,(function(t){"use strict";function e(t,e,n,r){return new(n||(n=Promise))((function(i,o){function u(t){try{a(r.next(t))}catch(t){o(t)}}function c(t){try{a(r.throw(t))}catch(t){o(t)}}function a(t){var e;t.done?i(t.value):(e=t.value,e instanceof n?e:new n((function(t){t(e)}))).then(u,c)}a((r=r.apply(t,e||[])).next())}))}function n(t,e){var n,r,i,o,u={label:0,sent:function(){if(1&i[0])throw i[1];return i[1]},trys:[],ops:[]};return o={next:c(0),throw:c(1),return:c(2)},"function"==typeof Symbol&&(o[Symbol.iterator]=function(){return this}),o;function c(c){return function(a){return function(c){if(n)throw new TypeError("Generator is already executing.");for(;o&&(o=0,c[0]&&(u=0)),u;)try{if(n=1,r&&(i=2&c[0]?r.return:c[0]?r.throw||((i=r.return)&&i.call(r),0):r.next)&&!(i=i.call(r,c[1])).done)return i;switch(r=0,i&&(c=[2&c[0],i.value]),c[0]){case 0:case 1:i=c;break;case 4:return u.label++,{value:c[1],done:!1};case 5:u.label++,r=c[1],c=[0];continue;case 7:c=u.ops.pop(),u.trys.pop();continue;default:if(!(i=u.trys,(i=i.length>0&&i[i.length-1])||6!==c[0]&&2!==c[0])){u=0;continue}if(3===c[0]&&(!i||c[1]>i[0]&&c[1]<i[3])){u.label=c[1];break}if(6===c[0]&&u.label<i[1]){u.label=i[1],i=c;break}if(i&&u.label<i[2]){u.label=i[2],u.ops.push(c);break}i[2]&&u.ops.pop(),u.trys.pop();continue}c=e.call(t,u)}catch(t){c=[6,t],r=0}finally{n=i=0}if(5&c[0])throw c[1];return{value:c[0]?c[1]:void 0,done:!0}}([c,a])}}}var r,i=(r=0,function(){return r+=1,"u".concat("0000".concat((Math.random()*Math.pow(36,4)<<0).toString(36)).slice(-4)).concat(r)});function o(t){for(var e=[],n=0,r=t.length;n<r;n++)e.push(t[n]);return e}var u=null;function c(t){return void 0===t&&(t={}),u||(u=t.includeStyleProperties?t.includeStyleProperties:o(window.getComputedStyle(document.documentElement)))}function a(t,e){var n=(t.ownerDocument.defaultView||window).getComputedStyle(t).getPropertyValue(e);return n?parseFloat(n.replace("px","")):0}function s(t,e){void 0===e&&(e={});var n,r,i,o=e.width||(r=a(n=t,"border-left-width"),i=a(n,"border-right-width"),n.clientWidth+r+i),u=e.height||function(t){var e=a(t,"border-top-width"),n=a(t,"border-bottom-width");return t.clientHeight+e+n}(t);return{width:o,height:u}}var l=16384;function f(t,e){return void 0===e&&(e={}),t.toBlob?new Promise((function(n){t.toBlob(n,e.type?e.type:"image/png",e.quality?e.quality:1)})):new Promise((function(n){for(var r=window.atob(t.toDataURL(e.type?e.type:void 0,e.quality?e.quality:void 0).split(",")[1]),i=r.length,o=new Uint8Array(i),u=0;u<i;u+=1)o[u]=r.charCodeAt(u);n(new Blob([o],{type:e.type?e.type:"image/png"}))}))}function h(t){return new Promise((function(e,n){var r=new Image;r.onload=function(){r.decode().then((function(){requestAnimationFrame((function(){return e(r)}))}))},r.onerror=n,r.crossOrigin="anonymous",r.decoding="async",r.src=t}))}function d(t){return e(this,void 0,void 0,(function(){return n(this,(function(e){return[2,Promise.resolve().then((function(){return(new XMLSerializer).serializeToString(t)})).then(encodeURIComponent).then((function(t){return"data:image/svg+xml;charset=utf-8,".concat(t)}))]}))}))}function v(t,r,i){return e(this,void 0,void 0,(function(){var e,o,u;return n(this,(function(n){return e="http://www.w3.org/2000/svg",o=document.createElementNS(e,"svg"),u=document.createElementNS(e,"foreignObject"),o.setAttribute("width","".concat(r)),o.setAttribute("height","".concat(i)),o.setAttribute("viewBox","0 0 ".concat(r," ").concat(i)),u.setAttribute("width","100%"),u.setAttribute("height","100%"),u.setAttribute("x","0"),u.setAttribute("y","0"),u.setAttribute("externalResourcesRequired","true"),o.appendChild(u),u.appendChild(t),[2,d(o)]}))}))}var p=function(t,e){if(t instanceof e)return!0;var n=Object.getPrototypeOf(t);return null!==n&&(n.constructor.name===e.name||p(n,e))};function g(t,e,n,r){var i=".".concat(t,":").concat(e),o=n.cssText?function(t){var e=t.getPropertyValue("content");return"".concat(t.cssText," content: '").concat(e.replace(/'|"/g,""),"';")}(n):function(t,e){return c(e).map((function(e){var n=t.getPropertyValue(e),r=t.getPropertyPriority(e);return"".concat(e,": ").concat(n).concat(r?" !important":"",";")})).join(" ")}(n,r);return document.createTextNode("".concat(i,"{").concat(o,"}"))}function m(t,e,n,r){var o=window.getComputedStyle(t,n),u=o.getPropertyValue("content");if(""!==u&&"none"!==u){var c=i();try{e.className="".concat(e.className," ").concat(c)}catch(t){return}var a=document.createElement("style");a.appendChild(g(c,n,o,r)),e.appendChild(a)}}var w="application/font-woff",y="image/jpeg",b={woff:w,woff2:w,ttf:"application/font-truetype",eot:"application/vnd.ms-fontobject",png:"image/png",jpg:y,jpeg:y,gif:"image/gif",tiff:"image/tiff",svg:"image/svg+xml",webp:"image/webp"};function S(t){var e=function(t){var e=/\.([^./]*?)$/g.exec(t);return e?e[1]:""}(t).toLowerCase();return b[e]||""}function E(t){return-1!==t.search(/^(data:)/)}function x(t,e){return"data:".concat(e,";base64,").concat(t)}function C(t,r,i){return e(this,void 0,void 0,(function(){var e,o;return n(this,(function(n){switch(n.label){case 0:return[4,fetch(t,r)];case 1:if(404===(e=n.sent()).status)throw new Error('Resource "'.concat(e.url,'" not found'));return[4,e.blob()];case 2:return o=n.sent(),[2,new Promise((function(t,n){var r=new FileReader;r.onerror=n,r.onloadend=function(){try{t(i({res:e,result:r.result}))}catch(t){n(t)}},r.readAsDataURL(o)}))]}}))}))}var P={};function R(t,r,i){return e(this,void 0,void 0,(function(){var e,o,u,c,a;return n(this,(function(n){switch(n.label){case 0:if(e=function(t,e,n){var r=t.replace(/\?.*/,"");return n&&(r=t),/ttf|otf|eot|woff2?/i.test(r)&&(r=r.replace(/.*\//,"")),e?"[".concat(e,"]").concat(r):r}(t,r,i.includeQueryParams),null!=P[e])return[2,P[e]];i.cacheBust&&(t+=(/\?/.test(t)?"&":"?")+(new Date).getTime()),n.label=1;case 1:return n.trys.push([1,3,,4]),[4,C(t,i.fetchRequestInit,(function(t){var e=t.res,n=t.result;return r||(r=e.headers.get("Content-Type")||""),function(t){return t.split(/,/)[1]}(n)}))];case 2:return u=n.sent(),o=x(u,r),[3,4];case 3:return c=n.sent(),o=i.imagePlaceholder||"",a="Failed to fetch resource: ".concat(t),c&&(a="string"==typeof c?c:c.message),a&&console.warn(a),[3,4];case 4:return P[e]=o,[2,o]}}))}))}function T(t){return e(this,void 0,void 0,(function(){var e;return n(this,(function(n){return"data:,"===(e=t.toDataURL())?[2,t.cloneNode(!1)]:[2,h(e)]}))}))}function A(t,r){return e(this,void 0,void 0,(function(){var e,i,o,u;return n(this,(function(n){switch(n.label){case 0:return t.currentSrc?(e=document.createElement("canvas"),i=e.getContext("2d"),e.width=t.clientWidth,e.height=t.clientHeight,null==i||i.drawImage(t,0,0,e.width,e.height),[2,h(e.toDataURL())]):(o=t.poster,u=S(o),[4,R(o,u,r)]);case 1:return[2,h(n.sent())]}}))}))}function k(t,r){var i;return e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return e.trys.push([0,3,,4]),(null===(i=null==t?void 0:t.contentDocument)||void 0===i?void 0:i.body)?[4,I(t.contentDocument.body,r,!0)]:[3,2];case 1:return[2,e.sent()];case 2:return[3,4];case 3:return e.sent(),[3,4];case 4:return[2,t.cloneNode(!1)]}}))}))}var L=function(t){return null!=t.tagName&&"SVG"===t.tagName.toUpperCase()};function N(t,e,n){return p(e,Element)&&(function(t,e,n){var r=e.style;if(r){var i=window.getComputedStyle(t);i.cssText?(r.cssText=i.cssText,r.transformOrigin=i.transformOrigin):c(n).forEach((function(n){var o=i.getPropertyValue(n);if("font-size"===n&&o.endsWith("px")){var u=Math.floor(parseFloat(o.substring(0,o.length-2)))-.1;o="".concat(u,"px")}p(t,HTMLIFrameElement)&&"display"===n&&"inline"===o&&(o="block"),"d"===n&&e.getAttribute("d")&&(o="path(".concat(e.getAttribute("d"),")")),r.setProperty(n,o,i.getPropertyPriority(n))}))}}(t,e,n),function(t,e,n){m(t,e,":before",n),m(t,e,":after",n)}(t,e,n),function(t,e){p(t,HTMLTextAreaElement)&&(e.innerHTML=t.value),p(t,HTMLInputElement)&&e.setAttribute("value",t.value)}(t,e),function(t,e){if(p(t,HTMLSelectElement)){var n=e,r=Array.from(n.children).find((function(e){return t.value===e.getAttribute("value")}));r&&r.setAttribute("selected","")}}(t,e)),e}function I(t,r,i){return e(this,void 0,void 0,(function(){return n(this,(function(u){return i||!r.filter||r.filter(t)?[2,Promise.resolve(t).then((function(t){return function(t,r){return e(this,void 0,void 0,(function(){return n(this,(function(e){return p(t,HTMLCanvasElement)?[2,T(t)]:p(t,HTMLVideoElement)?[2,A(t,r)]:p(t,HTMLIFrameElement)?[2,k(t,r)]:[2,t.cloneNode(L(t))]}))}))}(t,r)})).then((function(i){return function(t,r,i){var u,c;return e(this,void 0,void 0,(function(){var e;return n(this,(function(n){switch(n.label){case 0:return L(r)?[2,r]:(e=[],0===(e=null!=(a=t).tagName&&"SLOT"===a.tagName.toUpperCase()&&t.assignedNodes?o(t.assignedNodes()):p(t,HTMLIFrameElement)&&(null===(u=t.contentDocument)||void 0===u?void 0:u.body)?o(t.contentDocument.body.childNodes):o((null!==(c=t.shadowRoot)&&void 0!==c?c:t).childNodes)).length||p(t,HTMLVideoElement)?[2,r]:[4,e.reduce((function(t,e){return t.then((function(){return I(e,i)})).then((function(t){t&&r.appendChild(t)}))}),Promise.resolve())]);case 1:return n.sent(),[2,r]}var a}))}))}(t,i,r)})).then((function(e){return N(t,e,r)})).then((function(t){return function(t,r){return e(this,void 0,void 0,(function(){var e,i,o,u,c,a,s,l,f,h,d,v,p;return n(this,(function(n){switch(n.label){case 0:if(0===(e=t.querySelectorAll?t.querySelectorAll("use"):[]).length)return[2,t];i={},p=0,n.label=1;case 1:return p<e.length?(o=e[p],(u=o.getAttribute("xlink:href"))?(c=t.querySelector(u),a=document.querySelector(u),c||!a||i[u]?[3,3]:(s=i,l=u,[4,I(a,r,!0)])):[3,3]):[3,4];case 2:s[l]=n.sent(),n.label=3;case 3:return p++,[3,1];case 4:if((f=Object.values(i)).length){for(h="http://www.w3.org/1999/xhtml",(d=document.createElementNS(h,"svg")).setAttribute("xmlns",h),d.style.position="absolute",d.style.width="0",d.style.height="0",d.style.overflow="hidden",d.style.display="none",v=document.createElementNS(h,"defs"),d.appendChild(v),p=0;p<f.length;p++)v.appendChild(f[p]);t.appendChild(d)}return[2,t]}}))}))}(t,r)}))]:[2,null]}))}))}var D=/url\((['"]?)([^'"]+?)\1\)/g,H=/url\([^)]+\)\s*format\((["']?)([^"']+)\1\)/g,M=/src:\s*(?:url\([^)]+\)\s*format\([^)]+\)[,;]\s*)+/g;function F(t,r,i,o,u){return e(this,void 0,void 0,(function(){var e,c,a,s;return n(this,(function(n){switch(n.label){case 0:return n.trys.push([0,5,,6]),e=i?function(t,e){if(t.match(/^[a-z]+:\/\//i))return t;if(t.match(/^\/\//))return window.location.protocol+t;if(t.match(/^[a-z]+:/i))return t;var n=document.implementation.createHTMLDocument(),r=n.createElement("base"),i=n.createElement("a");return n.head.appendChild(r),n.body.appendChild(i),e&&(r.href=e),i.href=t,i.href}(r,i):r,c=S(r),a=void 0,u?[4,u(e)]:[3,2];case 1:return s=n.sent(),a=x(s,c),[3,4];case 2:return[4,R(e,c,o)];case 3:a=n.sent(),n.label=4;case 4:return[2,t.replace((l=r,f=l.replace(/([.*+?^${}()|\[\]\/\\])/g,"\\$1"),new RegExp("(url\\(['\"]?)(".concat(f,")(['\"]?\\))"),"g")),"$1".concat(a,"$3"))];case 5:return n.sent(),[3,6];case 6:return[2,t]}var l,f}))}))}function V(t){return-1!==t.search(D)}function q(t,r,i){return e(this,void 0,void 0,(function(){var e,o;return n(this,(function(n){return V(t)?(e=function(t,e){var n=e.preferredFontFormat;return n?t.replace(M,(function(t){for(;;){var e=H.exec(t)||[],r=e[0],i=e[2];if(!i)return"";if(i===n)return"src: ".concat(r,";")}})):t}(t,i),o=function(t){var e=[];return t.replace(D,(function(t,n,r){return e.push(r),t})),e.filter((function(t){return!E(t)}))}(e),[2,o.reduce((function(t,e){return t.then((function(t){return F(t,e,r,i)}))}),Promise.resolve(e))]):[2,t]}))}))}function U(t,r,i){var o;return e(this,void 0,void 0,(function(){var e,u;return n(this,(function(n){switch(n.label){case 0:return(e=null===(o=r.style)||void 0===o?void 0:o.getPropertyValue(t))?[4,q(e,null,i)]:[3,2];case 1:return u=n.sent(),r.style.setProperty(t,u,r.style.getPropertyPriority(t)),[2,!0];case 2:return[2,!1]}}))}))}function j(t,r){return e(this,void 0,void 0,(function(){var e,i;return n(this,(function(n){switch(n.label){case 0:return[4,U("background",t,r)];case 1:return n.sent()?[3,3]:[4,U("background-image",t,r)];case 2:n.sent(),n.label=3;case 3:return[4,U("mask",t,r)];case 4:return(i=n.sent())?[3,6]:[4,U("-webkit-mask",t,r)];case 5:i=n.sent(),n.label=6;case 6:return(e=i)?[3,8]:[4,U("mask-image",t,r)];case 7:e=n.sent(),n.label=8;case 8:return e?[3,10]:[4,U("-webkit-mask-image",t,r)];case 9:n.sent(),n.label=10;case 10:return[2]}}))}))}function O(t,r){return e(this,void 0,void 0,(function(){var e,i,o;return n(this,(function(n){switch(n.label){case 0:return(e=p(t,HTMLImageElement))&&!E(t.src)||p(t,SVGImageElement)&&!E(t.href.baseVal)?[4,R(i=e?t.src:t.href.baseVal,S(i),r)]:[2];case 1:return o=n.sent(),[4,new Promise((function(n,i){t.onload=n,t.onerror=r.onImageErrorHandler?function(){for(var t=[],e=0;e<arguments.length;e++)t[e]=arguments[e];try{n(r.onImageErrorHandler.apply(r,t))}catch(t){i(t)}}:i;var u=t;u.decode&&(u.decode=n),"lazy"===u.loading&&(u.loading="eager"),e?(t.srcset="",t.src=o):t.href.baseVal=o}))];case 2:return n.sent(),[2]}}))}))}function B(t,r){return e(this,void 0,void 0,(function(){var e,i;return n(this,(function(n){switch(n.label){case 0:return e=o(t.childNodes),i=e.map((function(t){return z(t,r)})),[4,Promise.all(i).then((function(){return t}))];case 1:return n.sent(),[2]}}))}))}function z(t,r){return e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return p(t,Element)?[4,j(t,r)]:[3,4];case 1:return e.sent(),[4,O(t,r)];case 2:return e.sent(),[4,B(t,r)];case 3:e.sent(),e.label=4;case 4:return[2]}}))}))}var W={};function $(t){return e(this,void 0,void 0,(function(){var e,r;return n(this,(function(n){switch(n.label){case 0:return null!=(e=W[t])?[2,e]:[4,fetch(t)];case 1:return[4,n.sent().text()];case 2:return r=n.sent(),e={url:t,cssText:r},W[t]=e,[2,e]}}))}))}function G(t,r){return e(this,void 0,void 0,(function(){var i,o,u,c,a=this;return n(this,(function(s){return i=t.cssText,o=/url\(["']?([^"')]+)["']?\)/g,u=i.match(/url\([^)]+\)/g)||[],c=u.map((function(u){return e(a,void 0,void 0,(function(){var e;return n(this,(function(n){return(e=u.replace(o,"$1")).startsWith("https://")||(e=new URL(e,t.url).href),[2,C(e,r.fetchRequestInit,(function(t){var e=t.result;return i=i.replace(u,"url(".concat(e,")")),[u,e]}))]}))}))})),[2,Promise.all(c).then((function(){return i}))]}))}))}function _(t){if(null==t)return[];for(var e=[],n=t.replace(/(\/\*[\s\S]*?\*\/)/gi,""),r=new RegExp("((@.*?keyframes [\\s\\S]*?){([\\s\\S]*?}\\s*?)})","gi");;){if(null===(u=r.exec(n)))break;e.push(u[0])}n=n.replace(r,"");for(var i=/@import[\s\S]*?url\([^)]*\)[\s\S]*?;/gi,o=new RegExp("((\\s*?(?:\\/\\*[\\s\\S]*?\\*\\/)?\\s*?@media[\\s\\S]*?){([\\s\\S]*?)}\\s*?})|(([\\s\\S]*?){([\\s\\S]*?)})","gi");;){var u;if(null===(u=i.exec(n))){if(null===(u=o.exec(n)))break;i.lastIndex=o.lastIndex}else o.lastIndex=i.lastIndex;e.push(u[0])}return e}function J(t,r){return e(this,void 0,void 0,(function(){var e,i;return n(this,(function(n){return e=[],i=[],t.forEach((function(e){if("cssRules"in e)try{o(e.cssRules||[]).forEach((function(t,n){if(t.type===CSSRule.IMPORT_RULE){var o=n+1,u=$(t.href).then((function(t){return G(t,r)})).then((function(t){return _(t).forEach((function(t){try{e.insertRule(t,t.startsWith("@import")?o+=1:e.cssRules.length)}catch(e){console.error("Error inserting rule from remote css",{rule:t,error:e})}}))})).catch((function(t){console.error("Error loading remote css",t.toString())}));i.push(u)}}))}catch(o){var n=t.find((function(t){return null==t.href}))||document.styleSheets[0];null!=e.href&&i.push($(e.href).then((function(t){return G(t,r)})).then((function(t){return _(t).forEach((function(t){n.insertRule(t,n.cssRules.length)}))})).catch((function(t){console.error("Error loading remote stylesheet",t)}))),console.error("Error inlining remote css file",o)}})),[2,Promise.all(i).then((function(){return t.forEach((function(t){if("cssRules"in t)try{o(t.cssRules||[]).forEach((function(t){e.push(t)}))}catch(e){console.error("Error while reading CSS rules from ".concat(t.href),e)}})),e}))]}))}))}function Q(t){return t.filter((function(t){return t.type===CSSRule.FONT_FACE_RULE})).filter((function(t){return V(t.style.getPropertyValue("src"))}))}function X(t,r){return e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:if(null==t.ownerDocument)throw new Error("Provided element is not within a Document");return[4,J(o(t.ownerDocument.styleSheets),r)];case 1:return[2,Q(e.sent())]}}))}))}function K(t){return t.trim().replace(/["']/g,"")}function Y(t,r){return e(this,void 0,void 0,(function(){var e,i;return n(this,(function(n){switch(n.label){case 0:return[4,X(t,r)];case 1:return e=n.sent(),i=function(t){var e=new Set;return function t(n){(n.style.fontFamily||getComputedStyle(n).fontFamily).split(",").forEach((function(t){e.add(K(t))})),Array.from(n.children).forEach((function(e){e instanceof HTMLElement&&t(e)}))}(t),e}(t),[4,Promise.all(e.filter((function(t){return i.has(K(t.style.fontFamily))})).map((function(t){var e=t.parentStyleSheet?t.parentStyleSheet.href:null;return q(t.cssText,e,r)})))];case 2:return[2,n.sent().join("\n")]}}))}))}function Z(t,r){return e(this,void 0,void 0,(function(){var e,i,o,u,c;return n(this,(function(n){switch(n.label){case 0:return null==r.fontEmbedCSS?[3,1]:(i=r.fontEmbedCSS,[3,5]);case 1:return r.skipFonts?(o=null,[3,4]):[3,2];case 2:return[4,Y(t,r)];case 3:o=n.sent(),n.label=4;case 4:i=o,n.label=5;case 5:return(e=i)&&(u=document.createElement("style"),c=document.createTextNode(e),u.appendChild(c),t.firstChild?t.insertBefore(u,t.firstChild):t.appendChild(u)),[2]}}))}))}function tt(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){var e,i,o,u;return n(this,(function(n){switch(n.label){case 0:return e=s(t,r),i=e.width,o=e.height,[4,I(t,r,!0)];case 1:return[4,Z(u=n.sent(),r)];case 2:return n.sent(),[4,z(u,r)];case 3:return n.sent(),function(t,e){var n=t.style;e.backgroundColor&&(n.backgroundColor=e.backgroundColor),e.width&&(n.width="".concat(e.width,"px")),e.height&&(n.height="".concat(e.height,"px"));var r=e.style;null!=r&&Object.keys(r).forEach((function(t){n[t]=r[t]}))}(u,r),[4,v(u,i,o)];case 4:return[2,n.sent()]}}))}))}function et(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){var e,i,o,u,c,a,f,d,v;return n(this,(function(n){switch(n.label){case 0:return e=s(t,r),i=e.width,o=e.height,[4,tt(t,r)];case 1:return[4,h(n.sent())];case 2:return u=n.sent(),c=document.createElement("canvas"),a=c.getContext("2d"),f=r.pixelRatio||function(){var t,e;try{e=process}catch(t){}var n=e&&e.env?e.env.devicePixelRatio:null;return n&&(t=parseInt(n,10),Number.isNaN(t)&&(t=1)),t||window.devicePixelRatio||1}(),d=r.canvasWidth||i,v=r.canvasHeight||o,c.width=d*f,c.height=v*f,r.skipAutoScale||function(t){(t.width>l||t.height>l)&&(t.width>l&&t.height>l?t.width>t.height?(t.height*=l/t.width,t.width=l):(t.width*=l/t.height,t.height=l):t.width>l?(t.height*=l/t.width,t.width=l):(t.width*=l/t.height,t.height=l))}(c),c.style.width="".concat(d),c.style.height="".concat(v),r.backgroundColor&&(a.fillStyle=r.backgroundColor,a.fillRect(0,0,c.width,c.height)),a.drawImage(u,0,0,c.width,c.height),[2,c]}}))}))}t.getFontEmbedCSS=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){return n(this,(function(e){return[2,Y(t,r)]}))}))},t.toBlob=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return[4,et(t,r)];case 1:return[4,f(e.sent())];case 2:return[2,e.sent()]}}))}))},t.toCanvas=et,t.toJpeg=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return[4,et(t,r)];case 1:return[2,e.sent().toDataURL("image/jpeg",r.quality||1)]}}))}))},t.toPixelData=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){var e,i,o,u;return n(this,(function(n){switch(n.label){case 0:return e=s(t,r),i=e.width,o=e.height,[4,et(t,r)];case 1:return u=n.sent(),[2,u.getContext("2d").getImageData(0,0,i,o).data]}}))}))},t.toPng=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return[4,et(t,r)];case 1:return[2,e.sent().toDataURL()]}}))}))},t.toSvg=tt}));
@@ -23,7 +24,7 @@
 @media print{.tool{display:none!important;}}
 html,body{background:#02040a;}
 body{font-family:'Shippori Mincho B1',serif;color:var(--txt);}
-body.no-natal .sec.s2,body.no-natal .e2{display:none;}
+body.no-natal .memo-natal{display:none;}
 
 /* ===== 入力フォーム（出力シートには含まれない） ===== */
 .tool{max-width:900px;margin:24px auto 100px;padding:22px 26px;border:1px solid var(--line);border-radius:8px;
@@ -69,7 +70,6 @@ body.no-natal .sec.s2,body.no-natal .e2{display:none;}
 .hr{height:1px;background:linear-gradient(90deg,var(--line),transparent);margin-top:18px;}
 .sec{display:flex;align-items:center;gap:13px;margin:18px 0 12px;}
 .sec .no{font-family:'Orbitron',sans-serif;font-weight:900;font-size:13px;letter-spacing:.16em;padding:5px 11px;color:#04101a;background:linear-gradient(90deg,var(--cy),var(--cy2));clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);}
-.sec.s2 .no{color:#23071c;background:linear-gradient(90deg,#ff5ed6,#9b7bff);}
 .sec .jp{font-size:18px;font-weight:800;letter-spacing:.14em;}
 .sec .en{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.2em;color:var(--dim);}
 .sec .ln{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent);}
@@ -103,7 +103,7 @@ body.no-natal .sec.s2,body.no-natal .e2{display:none;}
 .rbar{display:grid;grid-template-columns:74px 1fr 24px;align-items:center;gap:10px;}
 .rbar .nm{font-size:11px;letter-spacing:.02em;}
 .rbar .track{height:10px;border-radius:6px;background:rgba(255,255,255,.07);overflow:hidden;}
-.rbar .fill{height:100%;border-radius:6px;}
+.rbar .fill{display:block;height:100%;border-radius:6px;}
 .rbar .vv{font-family:'Orbitron',sans-serif;font-size:12px;text-align:right;}
 .rbar.win .nm{font-weight:800;}.rbar.win .vv{font-weight:800;}
 .status{margin-top:12px;}
@@ -118,29 +118,90 @@ body.no-natal .sec.s2,body.no-natal .e2{display:none;}
 .srow .ev{font-size:10px;text-align:right;letter-spacing:.04em;}
 .scale{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;justify-content:center;}
 .scale span{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:.06em;padding:3px 9px;border:1px solid var(--line);color:#aebcdb;border-radius:2px;}
-.e2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;}
-.e2 .panel{display:flex;flex-direction:column;}
-.slot-jp{font-size:14px;font-weight:800;letter-spacing:.1em;margin:3px 0 6px;}
-.slot-art{display:flex;align-items:center;justify-content:center;min-height:116px;}
-.slot-val{text-align:center;font-size:25px;font-weight:800;letter-spacing:.08em;margin-top:6px;line-height:1.2;}
-.slot-val.m2{font-size:18px;}
-.slot-val.m3{font-size:15px;}
-.slot-sub{text-align:center;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.1em;color:#aebcdb;margin-top:5px;}
-.slot-note{font-size:11.5px;line-height:1.8;color:#d6e1f6;margin-top:10px;text-align:center;letter-spacing:.02em;}
-.slot-calc{font-size:9.5px;color:var(--dim);text-align:center;margin-top:8px;letter-spacing:.03em;font-family:'Orbitron',sans-serif;}
-.mirror{font-size:9px;color:var(--dim);text-align:center;margin-top:6px;letter-spacing:.04em;opacity:.9;}
-.pillars{display:flex;align-items:flex-end;gap:20px;height:94px;}
-.pil{width:24px;height:84px;border-radius:3px 3px 0 0;background:rgba(255,255,255,.07);border:1px solid var(--line);position:relative;}
-.pil small{position:absolute;bottom:-19px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--dim);white-space:nowrap;font-family:'Orbitron',sans-serif;}
-.worlds{display:flex;flex-direction:column;gap:8px;width:132px;}
-.wld{height:27px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11.5px;letter-spacing:.08em;color:var(--dim);background:rgba(255,255,255,.06);border:1px solid var(--line);}
-.mars{position:relative;width:120px;height:96px;display:flex;align-items:center;justify-content:center;}
-.mars .orbit{position:absolute;width:98px;height:56px;border:1px dashed var(--pc);opacity:.6;border-radius:50%;transform:rotate(-18deg);}
-.mars .planet{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#ffffff,var(--pc) 52%,rgba(0,0,0,.6));box-shadow:0 0 20px var(--pc),inset -5px -5px 11px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;}
-.mars .planet span{font-size:20px;color:#fff;font-weight:700;text-shadow:0 0 5px rgba(0,0,0,.5);}
-.mars .moon{position:absolute;width:7px;height:7px;border-radius:50%;background:#dff4ff;box-shadow:0 0 7px #bdf3ff;top:12px;right:14px;}
+/* ネイタル備考ストリップ（任意情報・メモ扱い） */
+.memo-natal{margin-top:16px;border-style:dashed;background:rgba(255,255,255,.015);}
+.memo-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:8px;}
+.memo-k{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--dim);display:block;text-transform:uppercase;}
+.memo-v{font-size:16px;font-weight:700;letter-spacing:.06em;display:block;margin-top:4px;}
+.memo-s{font-size:9px;color:var(--faint);display:block;margin-top:4px;font-family:'Orbitron',sans-serif;letter-spacing:.04em;}
 .foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-family:'Orbitron',sans-serif;font-size:8.5px;letter-spacing:.2em;color:var(--dim);}
 .foot .mid{font-size:10px;letter-spacing:.4em;color:var(--cy);}
+
+/* ===== 禁書スタイル（ギルドカード）テーマ ===== */
+body.kinsho{
+  --k-paper:#f0e6cc; --k-paper2:#e6d9b8; --k-ink:#1a1008; --k-ink2:#3d2b1a;
+  --k-shu:#8b1a1a; --k-gold:#7a5c2e; --k-line:rgba(26,16,8,.28);
+  background:#0e0a06;
+}
+body.kinsho .sheet{
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 10%, rgba(160,120,40,.13) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 90% 80%, rgba(140,100,30,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 30%, rgba(180,140,60,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 50% at 30% 70%, rgba(120,90,20,.09) 0%, transparent 60%),
+    var(--k-paper);
+  box-shadow:inset 0 0 0 3px rgba(26,16,8,.55), inset 0 0 0 8px transparent, inset 0 0 0 9px rgba(26,16,8,.25);
+  color:var(--k-ink);
+}
+body.kinsho .sheet::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  opacity:1;mix-blend-mode:multiply;
+}
+body.kinsho .stars{display:none;}
+body.kinsho .wm-sigil{opacity:.35;}
+body.kinsho .wm-sigil .r,body.kinsho .wm-sigil circle{stroke:rgba(26,16,8,.10)!important;}
+body.kinsho .wm-sigil path{stroke:rgba(139,26,26,.10)!important;}
+body.kinsho .cnr{border-color:rgba(26,16,8,.6);}
+body.kinsho .tate{color:var(--k-ink2);opacity:.75;}
+body.kinsho .eyebrow{color:var(--k-shu);opacity:.9;}
+body.kinsho .sysline{color:var(--k-gold);font-family:'Cinzel',serif;}
+body.kinsho .subname{color:var(--k-ink2);opacity:.7;font-family:'Cinzel',serif;}
+body.kinsho .hr{background:linear-gradient(90deg,rgba(26,16,8,.4),transparent);}
+body.kinsho .holo{background:none!important;-webkit-text-fill-color:var(--k-ink)!important;background-clip:border-box!important;color:var(--k-ink)!important;filter:none!important;}
+body.kinsho .bighero .num{font-family:'Shippori Mincho B1',serif;-webkit-text-fill-color:var(--k-shu)!important;color:var(--k-shu)!important;}
+body.kinsho .bighero .dot{color:var(--k-ink2);}
+body.kinsho .bighero .pair{color:var(--k-ink2);}
+body.kinsho .sec .no{background:var(--k-shu);color:var(--k-paper);font-family:'Shippori Mincho B1',serif;}
+body.kinsho .sec .jp{color:var(--k-ink);}
+body.kinsho .sec .en{color:var(--k-ink2);opacity:.7;}
+body.kinsho .sec .ln{background:linear-gradient(90deg,var(--k-line),transparent);}
+body.kinsho .panel{background:rgba(255,252,240,.4);border-color:var(--k-line)!important;box-shadow:none;border-radius:3px;}
+body.kinsho .p-en{color:var(--k-gold);font-family:'Cinzel',serif;}
+body.kinsho .lead,body.kinsho .story,body.kinsho .rl-comp,body.kinsho .rl-def{color:var(--k-ink2);}
+body.kinsho .traits span{border-color:var(--k-line);color:var(--k-ink2);background:rgba(26,16,8,.05);border-radius:3px;}
+body.kinsho .soulbadge{color:var(--k-shu)!important;border-color:rgba(139,26,26,.45)!important;border-radius:3px;}
+body.kinsho .rl-icon span{color:var(--k-shu)!important;}
+body.kinsho .rl-big{-webkit-text-fill-color:var(--k-ink)!important;color:var(--k-ink)!important;}
+body.kinsho .rl-psy{color:var(--k-gold);}
+body.kinsho .rbar .nm,body.kinsho .rbar .vv{color:var(--k-ink2)!important;opacity:1!important;font-family:'Shippori Mincho B1',serif;}
+body.kinsho .rbar.win .nm,body.kinsho .rbar.win .vv{color:var(--k-shu)!important;}
+body.kinsho .rbar .track{background:rgba(26,16,8,.1)!important;border-radius:2px;}
+body.kinsho .rbar .fill{background:linear-gradient(90deg,rgba(61,43,26,.55),rgba(61,43,26,.85))!important;box-shadow:none!important;border-radius:2px;}
+body.kinsho .rbar.win .fill{background:linear-gradient(90deg,rgba(139,26,26,.75),#8b1a1a)!important;}
+body.kinsho .srow{border-bottom:1px solid rgba(26,16,8,.15);}
+body.kinsho .srow .n{color:var(--k-gold);font-family:'Cinzel',serif;}
+body.kinsho .srow .nm{color:var(--k-ink);}
+body.kinsho .srow .mn{color:var(--k-ink2);}
+body.kinsho .srow .v,body.kinsho .srow .ev{color:var(--k-ink)!important;font-family:'Shippori Mincho B1',serif;}
+body.kinsho .scale span{border-color:var(--k-line);color:var(--k-ink2);border-radius:2px;font-family:'Shippori Mincho B1',serif;}
+body.kinsho #radar circle[fill="none"]{stroke:rgba(26,16,8,.25);}
+body.kinsho #radar line{stroke:rgba(26,16,8,.2);}
+body.kinsho #radar polygon{fill:rgba(139,26,26,.16);stroke:#8b1a1a;}
+body.kinsho #radar circle[fill="#eaffff"]{fill:#f0e6cc;stroke:#8b1a1a;}
+body.kinsho #radar text{fill:#2a1c10;font-family:'Shippori Mincho B1',serif;}
+body.kinsho .memo-natal{border-color:var(--k-line)!important;background:rgba(26,16,8,.03);}
+body.kinsho .memo-k{color:var(--k-gold);font-family:'Cinzel',serif;}
+body.kinsho .memo-v{color:var(--k-ink);}
+body.kinsho .memo-s{color:var(--k-ink2);opacity:.75;font-family:'Shippori Mincho B1',serif;}
+body.kinsho .foot{border-top:1px solid var(--k-line);color:var(--k-ink2);font-family:'Cinzel',serif;}
+body.kinsho .foot .mid{color:var(--k-shu);}
+body.kinsho .wrap::after{
+  content:'禁';position:absolute;top:46px;right:44px;width:46px;height:46px;
+  border:2px solid rgba(139,26,26,.75);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(139,26,26,.85);font-size:19px;font-weight:700;
+  font-family:'Shippori Mincho B1',serif;transform:rotate(-12deg);pointer-events:none;
+}
 </style>
 </head>
 <body>
@@ -166,13 +227,17 @@ body.no-natal .sec.s2,body.no-natal .e2{display:none;}
     <div style="width:32px"></div>
     <label>表示名<input class="txt" id="f-disp" placeholder="（空欄なら姓を使用）"></label>
   </div></fieldset>
-  <fieldset><legend>DOMINANT ／ ドミナント点（astro-seek の SUM Points・任意）</legend>
-    <div class="grid" id="f-dom"></div>
-    <div class="hint" style="margin-top:10px">ホロスコープに馴染みがない場合は未入力でOK。全部0/空欄なら柱・界・フィールドは表示されません。Enter で次の入力欄へ移動できます。</div>
-  </fieldset>
+  <details style="margin-bottom:14px">
+    <summary style="cursor:pointer;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:.14em;color:var(--cy2);padding:4px 0">OPTION ／ ネイタル・ドミナント（任意・備考）</summary>
+    <fieldset style="margin-top:10px;margin-bottom:0"><legend>DOMINANT ／ ドミナント点（astro-seek の SUM Points）</legend>
+      <div class="grid" id="f-dom"></div>
+      <div class="hint" style="margin-top:10px">超数秘術のメインは名前。これは外部ホロスコープ由来の備考です。入力するとカード下部に小さくメモとして載ります。無くても構いません。</div>
+    </fieldset>
+  </details>
   <button class="gen" onclick="gen()">▶ 生成する</button>
   <button class="gen" style="background:linear-gradient(90deg,#ffcf6b,#ffe9b3);margin-left:10px" onclick="savePNG()">⬇ PNGで保存</button>
   <button class="gen" style="background:linear-gradient(90deg,#9b7bff,#d6c6ff);margin-left:10px" onclick="copyAnalysisPrompt()">📋 AIに読ませるプロンプトをコピー</button>
+  <button class="gen" type="button" id="theme-btn" style="background:linear-gradient(90deg,#e6d9b8,#f0e6cc);color:#3d2b1a;margin-left:10px" onclick="toggleTheme()">⚜ 禁書スタイルに切替</button>
   <div class="hint" id="copy-fb" style="min-height:18px;color:var(--cy)"></div>
   <fieldset style="margin-top:14px"><legend>GUILD ／ ギルド受付</legend>
     <div class="grid" style="align-items:center;gap:10px">
@@ -218,27 +283,12 @@ body.no-natal .sec.s2,body.no-natal .e2{display:none;}
       <div class="statgrid"><svg id="radar" width="330" height="330" viewBox="-30 -30 360 360"></svg><div class="slist" id="o-slist"></div></div>
       <div class="scale"><span>0 無理</span><span>1-2 苦手</span><span>3-4 普通</span><span>5-6 得意</span><span>7-8 天才</span><span>9+ 神</span></div>
     </div>
-    <div class="sec s2"><span class="no">02</span><span class="jp">ネイタル</span><span class="en">／ 生年月日・ドミナント</span><span class="ln"></span></div>
-    <div class="e2">
-      <div class="panel" data-edge style="--edge:rgba(255,94,214,.26)">
-        <div class="p-en">Do ／ プレイスタイル</div><div class="slot-jp">柱 ／ PILLAR</div>
-        <div class="slot-art"><div class="pillars" id="o-pillars"></div></div>
-        <div class="slot-val holo" style="--c:#ff5ed6" id="o-pillar"></div>
-        <div class="slot-sub" id="o-pillarsub"></div><div class="slot-note" id="o-pillarnote"></div>
-        <div class="slot-calc" id="o-pillarcalc"></div><div class="mirror" id="o-mirror"></div>
-      </div>
-      <div class="panel" data-edge style="--edge:rgba(155,123,255,.30)">
-        <div class="p-en">Be ／ 装備</div><div class="slot-jp">界 ／ WORLD</div>
-        <div class="slot-art"><div class="worlds" id="o-worlds"></div></div>
-        <div class="slot-val holo" style="--c:#9b7bff" id="o-world"></div>
-        <div class="slot-sub" id="o-worldsub"></div><div class="slot-note" id="o-worldnote"></div>
-        <div class="slot-calc" id="o-worldcalc"></div>
-      </div>
-      <div class="panel" data-edge id="o-fieldpanel">
-        <div class="p-en">Dungeon ／ フィールド</div><div class="slot-jp">舞台 ／ FIELD</div>
-        <div class="slot-art"><div class="mars" id="o-mars"><div class="orbit"></div><div class="moon"></div><div class="planet"><span id="o-psym"></span></div></div></div>
-        <div class="slot-val holo" id="o-field"></div><div class="slot-sub" id="o-fieldsub"></div>
-        <div class="slot-note" id="o-fieldnote"></div><div class="slot-calc" id="o-fieldcalc"></div>
+    <div class="panel memo-natal" data-edge>
+      <div class="p-en">Memo ／ ネイタル・ドミナント（備考）</div>
+      <div class="memo-row">
+        <div><span class="memo-k">柱 ／ do</span><span class="memo-v" id="o-pillar"></span><span class="memo-s" id="o-pillarcalc"></span></div>
+        <div><span class="memo-k">界 ／ be</span><span class="memo-v" id="o-world"></span><span class="memo-s" id="o-worldcalc"></span></div>
+        <div><span class="memo-k">舞台 ／ field</span><span class="memo-v" id="o-field"></span><span class="memo-s" id="o-fieldcalc"></span></div>
       </div>
     </div>
     <div class="foot"><div></div><div class="mid">◆ ◆ ◆</div><div id="o-foot"></div></div>
@@ -368,9 +418,7 @@ const ROLE_ICONS={
 };
 const ROLES={ATK:{l:'アタッカー',c:'#ff6b5e',def:'攻め役。前に出て自分から仕掛け、突破する。',psy:'感覚系'},SUP:{l:'サポート',c:'#ffd35e',def:'支援役。整え、つなぎ、味方を活かす。',psy:'直観系'},TANK:{l:'タンク',c:'#5b8dff',def:'守備役。崩れず受け止め、場を支えて現実を回す。',psy:'思考系'},HEAL:{l:'ヒーラー',c:'#5fd99a',def:'回復役。癒し、ゆるし、流れを整える。',psy:'感情系'},BAL:{l:'バランサー',c:'#b07bff',def:'調停役。偏らず、全体の均衡をとる。',psy:'両向系'}};
 const PILLARS={L:{name:'慈悲',sub:'本体の左の柱 ／ 女性性',note:'受け取る方向。流れに乗り、人や環境を活かす。',pos:2},C:{name:'均衡',sub:'中の柱',note:'つなぐ方向。状況で配分し、人と自分を結ぶ。',pos:1},R:{name:'峻厳',sub:'本体の右の柱 ／ 男性性',note:'与える方向。切り拓き、差をつける。',pos:0}};
-const PILLAR_ORDER=['峻厳','均衡','慈悲'];
 const WORLDS={T:{name:'天',sub:'上の界 ／ 知性',note:'直感・天意・流れのまま。構図やパターンを掴む。',pos:0},M:{name:'人',sub:'中の界 ／ 倫理',note:'人間性・在り方。関係の中で自分を高める。',pos:1},B:{name:'地',sub:'下の界 ／ 実務',note:'具体・安定・地に足。形にして動かす。',pos:2}};
-const WORLD_FULL=['上 · 天','中 · 人','下 · 地'];
 const PLANETS={'太陽':{s:'☉',c:'#ffd35e',note:'自己・意志・中心の星。'},'月':{s:'☽',c:'#cfe0ff',note:'感情・受容・無意識の星。'},'水星':{s:'☿',c:'#7fd6c0',note:'知性・言葉・伝達の星。'},'金星':{s:'♀',c:'#9be88f',note:'愛・美・調和の星。'},'火星':{s:'♂',c:'#ff7a5e',note:'行動・闘争・エネルギーの星。'},'木星':{s:'♃',c:'#ffae5e',note:'拡大・幸運・寛容の星。'},'土星':{s:'♄',c:'#d8c98a',note:'規律・試練・構築の星。'},'天王星':{s:'♅',c:'#7fe0ff',note:'革新・変革・自由の星。'},'海王星':{s:'♆',c:'#6f8dff',note:'夢・霊性・境界を溶かす星。'},'冥王星':{s:'♇',c:'#c77b9b',note:'変容・再生・深層の星。'}};
 const DOM_KEYS=['太陽','月','水星','金星','火星','木星','土星','天王星','海王星','冥王星'];
 function evalLabel(v){if(v<=0)return['無理','lo'];if(v<=2)return['苦手','lo'];if(v<=4)return['普通','mid'];if(v<=6)return['得意','hi'];if(v<=8)return['天才','hi'];return['神','god'];}
@@ -445,48 +493,21 @@ function render(){
   $('o-slist').innerHTML=D.stats.map((v,i)=>{const[lab,cls]=evalLabel(v),col=EV_C[cls];
     return `<div class="srow"><span class="n">${i+1}</span><span class="nm">${STAT_NAMES[i]}</span><span class="mn">${STAT_MEAN[i]}</span><span class="v" style="color:${col}">${v}</span><span class="ev" style="color:${col}">${lab}</span></div>`;}).join('');
   drawRadar(D.stats);
-  // ネイタル無しなら以降スキップしてシート短縮
+  // ネイタルは任意の備考。無ければ備考ストリップごと非表示
   document.body.classList.toggle('no-natal',!D.hasNatal);
-  document.getElementById('sheet').style.height=D.hasNatal?'1500px':'960px';
-  if(!D.hasNatal)return;
-  // pillar
-  const winPs=D.pillarKeys.map(k=>PILLARS[k]);
-  const firstP=winPs[0];
-  const winPosP=new Set(winPs.map(p=>p.pos));
-  $('o-pillars').innerHTML=PILLAR_ORDER.map((nm,idx)=>{const on=winPosP.has(idx);
-    return `<div class="pil" style="${on?'background:linear-gradient(180deg,#ffd9f4,#ff5ed6);border-color:#ff5ed6;box-shadow:0 0 18px '+hexA('#ff5ed6',.6):''}"><small style="${on?'color:#ff8fe4;font-weight:700':''}">${nm}</small></div>`;}).join('');
-  const pillarEl=$('o-pillar');
-  pillarEl.className='slot-val holo'+(winPs.length>=3?' m3':(winPs.length===2?' m2':''));
-  pillarEl.textContent=winPs.map(p=>p.name).join(' ／ ');
-  $('o-pillarsub').textContent=winPs.map(p=>p.sub).join(' ／ ');
-  $('o-pillarnote').textContent=winPs.map(p=>p.note).join(' ／ ');
-  $('o-pillarcalc').textContent=`慈悲 ${D.pil.L} ・ 均衡 ${D.pil.C} ・ 峻厳 ${D.pil.R}`;
-  $('o-mirror').textContent=(D.pillarKeys.length===1&&D.pillarKeys[0]!=='C')?'※対面表示＝鏡像（本体の左＝図の右）':(D.pillarKeys.includes('L')||D.pillarKeys.includes('R'))?'※対面表示＝鏡像（本体の左＝図の右）':'';
-  // world
-  const winWs=D.worldKeys.map(k=>WORLDS[k]);
-  const firstW=winWs[0];
-  const winPosW=new Set(winWs.map(w=>w.pos));
-  $('o-worlds').innerHTML=WORLD_FULL.map((full,idx)=>{const on=winPosW.has(idx);
-    return `<div class="wld" style="${on?'color:#1a0f2e;font-weight:800;background:linear-gradient(90deg,#d6c6ff,#9b7bff);border-color:#9b7bff;box-shadow:0 0 18px '+hexA('#9b7bff',.5):''}">${full}</div>`;}).join('');
-  const worldEl=$('o-world');
-  worldEl.className='slot-val holo'+(winWs.length>=3?' m3':(winWs.length===2?' m2':''));
-  worldEl.textContent=winWs.map(w=>w.name).join(' ／ ');
-  $('o-worldsub').textContent=winWs.map(w=>w.sub).join(' ／ ');
-  $('o-worldnote').textContent=winWs.map(w=>w.note).join(' ／ ');
-  $('o-worldcalc').textContent=`天 ${D.wor.T} ・ 人 ${D.wor.M} ・ 地 ${D.wor.B}`;
-  // field
-  const winFs=D.fieldKeys.map(k=>PLANETS[k]||PLANETS['火星']);
-  const firstF=winFs[0];
-  $('o-mars').style.setProperty('--pc',firstF.c);
-  $('o-psym').textContent=D.fieldKeys.length===1?firstF.s:'✦';
-  const fieldEl=$('o-field');
-  fieldEl.className='slot-val holo'+(D.fieldKeys.length>=3?' m3':(D.fieldKeys.length===2?' m2':''));
-  fieldEl.style.setProperty('--c',firstF.c);
-  fieldEl.textContent=D.fieldKeys.join(' ／ ');
-  $('o-fieldpanel').style.setProperty('--edge',hexA(firstF.c,.3));
-  $('o-fieldsub').textContent='10惑星の最強星から';
-  $('o-fieldnote').textContent='活躍の舞台。'+winFs.map(p=>p.note).join(' ／ ');
-  $('o-fieldcalc').textContent=`${D.fieldKeys.join('・')} ${D.fmax}pt（${D.fieldKeys.length>1?'同率最大':'単独最大'}）`;
+  if(D.hasNatal){
+    $('o-pillar').textContent=D.pillarKeys.map(k=>PILLARS[k].name).join('／');
+    $('o-pillarcalc').textContent=`慈悲${D.pil.L}・均衡${D.pil.C}・峻厳${D.pil.R}`;
+    $('o-world').textContent=D.worldKeys.map(k=>WORLDS[k].name).join('／');
+    $('o-worldcalc').textContent=`天${D.wor.T}・人${D.wor.M}・地${D.wor.B}`;
+    $('o-field').textContent=D.fieldKeys.join('／');
+    $('o-fieldcalc').textContent=`${D.fmax}pt（${D.fieldKeys.length>1?'同率最大':'単独最大'}）`;
+  }
+  // シート高さは内容から実測（フッター位置＋下余白）
+  requestAnimationFrame(()=>{
+    const foot=document.querySelector('.foot');
+    document.getElementById('sheet').style.height=Math.ceil(foot.offsetTop+foot.offsetHeight+38)+'px';
+  });
 }
 function drawRadar(stats){
   const cx=150,cy=150,N=9,maxv=Math.max(8,Math.ceil(Math.max(...stats)/2)*2),R=120;
@@ -809,6 +830,20 @@ function downloadScroll(){
   a.href=URL.createObjectURL(blob);a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 }
+
+/* ===== テーマ切替（ホロ ⇔ 禁書ギルドカード） ===== */
+const THEME_KEY='pandora_theme';
+function applyTheme(t){
+  document.body.classList.toggle('kinsho',t==='kinsho');
+  const btn=document.getElementById('theme-btn');
+  if(btn) btn.textContent = t==='kinsho' ? '⚡ ホロスタイルに戻す' : '⚜ 禁書スタイルに切替';
+}
+function toggleTheme(){
+  const next=document.body.classList.contains('kinsho')?'holo':'kinsho';
+  try{localStorage.setItem(THEME_KEY,next);}catch(e){}
+  applyTheme(next);
+}
+(function(){let t='holo';try{t=localStorage.getItem(THEME_KEY)||'holo';}catch(e){}applyTheme(t);})();
 async function savePNG(){
   const lib=window.htmlToImage;
   if(!lib||!lib.toPng){alert('画像ライブラリが読み込めていません。ページを再読み込みしてください。');return;}
@@ -828,7 +863,7 @@ async function savePNG(){
     const dataUrl=await lib.toPng(node,{
       pixelRatio:2,width:900,height:h,
       canvasWidth:1800,canvasHeight:h*2,
-      backgroundColor:'#02040a',cacheBust:true,
+      backgroundColor:document.body.classList.contains('kinsho')?'#efe4c8':'#02040a',cacheBust:true,
       style:{margin:'0',transform:'none'}
     });
     const a=document.createElement('a');
