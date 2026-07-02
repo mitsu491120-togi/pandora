@@ -132,6 +132,17 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
 .scale span{font-size:8px;letter-spacing:.06em;padding:3px 9px;border:1px solid var(--line);color:var(--ink2);border-radius:2px;font-family:'Shippori Mincho B1',serif;}
 .foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:.2em;color:var(--ink2);}
 .foot .mid{font-size:10px;letter-spacing:.4em;color:var(--shu);}
+
+/* ===== 縦型（スマホ・共有用）。情報は横型と同一、縦に積み直すだけ ===== */
+.sheet.portrait{width:900px;}
+.sheet.portrait .wrap{padding:40px 34px 30px;}
+.sheet.portrait .cardgrid{grid-template-columns:1fr;gap:20px;}
+.sheet.portrait .artcol{order:-1;min-height:0;height:620px;}
+.sheet.portrait .name{font-size:44px;}
+.sheet.portrait .e1top{grid-template-columns:1fr;gap:14px;}
+.sheet.portrait .rolebar{grid-template-columns:1fr;gap:14px;}
+.sheet.portrait .statgrid{grid-template-columns:1fr;gap:10px;justify-items:center;}
+.sheet.portrait .slist{width:100%;}
 </style>
 </head>
 <body>
@@ -152,6 +163,12 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
     <div style="width:32px"></div>
     <label>表示名<input class="txt" id="f-disp" placeholder="（空欄なら姓を使用）"></label>
   </div></fieldset>
+  <fieldset><legend>LAYOUT ／ カードの向き</legend>
+    <div class="grid" style="align-items:center;gap:18px">
+      <label style="flex-direction:row;align-items:center;gap:6px;cursor:pointer"><input type="radio" name="f-orient" value="portrait" checked onchange="applyOrient()">縦型（スマホ・共有用）</label>
+      <label style="flex-direction:row;align-items:center;gap:6px;cursor:pointer"><input type="radio" name="f-orient" value="landscape" onchange="applyOrient()">横型（印刷・PC用）</label>
+    </div>
+  </fieldset>
   <button class="gen" onclick="gen()">▶ ギルドカードを発行する</button>
   <button class="gen sub2" style="margin-left:10px" onclick="savePNG()">⬇ PNGで保存</button>
   <button class="gen paperbtn" style="margin-left:10px" onclick="copyGuildScroll()">📜 受付嬢を召喚（巻物＋カードをコピー）</button>
@@ -387,13 +404,38 @@ function render(){
   art.onerror=()=>{art.style.display='none';artfb.style.display='';};
   art.src='bg/'+D.taiyou+'.'+D.char+'.png';
   // カード高さは内容から実測
-  requestAnimationFrame(fitSheetHeight);
+  requestAnimationFrame(()=>{fitSheetHeight();fitScale();});
 }
 function fitSheetHeight(){
   const foot=document.querySelector('.foot');
   if(!foot||document.getElementById('sheet').style.display==='none')return;
   document.getElementById('sheet').style.height=Math.ceil(foot.offsetTop+foot.offsetHeight+38)+'px';
 }
+/* ===== カードの向き（縦＝スマホ・共有用／横＝印刷・PC用） ===== */
+function getOrient(){const r=document.querySelector('input[name="f-orient"]:checked');return r?r.value:'portrait';}
+function applyOrient(){
+  const sheet=document.getElementById('sheet');
+  sheet.classList.toggle('portrait',getOrient()==='portrait');
+  if(INPUT&&sheet.style.display!=='none'){
+    sheet.style.height='';
+    requestAnimationFrame(()=>{fitSheetHeight();fitScale();});
+  }
+}
+/* 画面がカードより狭い時は縮小表示（PNG出力サイズは変えない） */
+function fitScale(){
+  const sheet=document.getElementById('sheet');
+  if(sheet.style.display==='none')return;
+  sheet.style.transform='';sheet.style.marginBottom='';
+  const vw=document.documentElement.clientWidth;
+  const w=sheet.offsetWidth;
+  if(vw-16<w){
+    const sc=(vw-16)/w;
+    sheet.style.transformOrigin='top left';
+    sheet.style.transform=`translateX(${Math.max(0,(vw-w*sc)/2)}px) scale(${sc})`;
+    sheet.style.marginBottom=-(sheet.offsetHeight*(1-sc))+'px';
+  }
+}
+window.addEventListener('resize',fitScale);
 function drawRadar(stats){
   const cx=150,cy=150,N=9,maxv=Math.max(8,Math.ceil(Math.max(...stats)/2)*2),R=120;
   const pt=(i,rad)=>{const a=(-90+i*360/N)*Math.PI/180;return[cx+rad*Math.cos(a),cy+rad*Math.sin(a)];};
@@ -428,7 +470,9 @@ function gen(){
   if(!HIRA.test(sei)||!HIRA.test(mei)){alert('姓・名はひらがなで入力してください（カタカナ・漢字・英字は不可）。');return;}
   INPUT={display:g('f-disp')||sei,sei,mei};
   saveHist(INPUT);
-  document.getElementById('sheet').style.display='block';
+  const sheet=document.getElementById('sheet');
+  sheet.style.display='block';
+  sheet.classList.toggle('portrait',getOrient()==='portrait');
   render();
   document.getElementById('sheet').scrollIntoView({behavior:'smooth'});
 }
@@ -642,19 +686,24 @@ async function savePNG(){
   const wasTool=tool?tool.style.display:'';
   const wasBodyMin=document.body.style.minWidth;
   const wasScrollX=window.scrollX, wasScrollY=window.scrollY;
+  const node=document.getElementById('sheet');
   try{
     if(tool) tool.style.display='none';
-    document.body.style.minWidth='1560px';
+    document.body.style.minWidth=node.classList.contains('portrait')?'960px':'1560px';
+    // 画面フィット用の縮小を一時解除（実寸で撮る）
+    node.style.transform='none';node.style.marginBottom='';
     window.scrollTo(0,0);
     await new Promise(r=>setTimeout(r,80));
-    const node=document.getElementById('sheet');
     const rect=node.getBoundingClientRect();
     const w=Math.round(rect.width), h=Math.round(rect.height);
     const dataUrl=await lib.toPng(node,{
       pixelRatio:2,width:w,height:h,
       canvasWidth:w*2,canvasHeight:h*2,
       backgroundColor:'#efe4c8',cacheBust:true,
-      style:{margin:'0',transform:'none'}
+      style:{margin:'0',transform:'none'},
+      // キャラ画像が未登録（読み込み失敗で非表示）の場合はPNGから除外する
+      filter:el=>!(el.id==='o-art'&&el.style&&el.style.display==='none'),
+      onImageErrorHandler:()=>{}
     });
     const a=document.createElement('a');
     a.download=`guild-card_${INPUT.display||'card'}.png`;
@@ -666,6 +715,7 @@ async function savePNG(){
     if(tool) tool.style.display=wasTool;
     document.body.style.minWidth=wasBodyMin;
     window.scrollTo(wasScrollX,wasScrollY);
+    fitScale();
     if(btn){btn.disabled=false;btn.textContent=old;}
   }
 }
