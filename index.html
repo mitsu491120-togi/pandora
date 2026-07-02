@@ -196,7 +196,7 @@ body.kinsho .sheet::before{
 /* 筆文字（毛筆楷書） */
 body.kinsho .name,body.kinsho .sec .jp,body.kinsho .bighero .big,body.kinsho .rl-big,
 body.kinsho .srow .nm,body.kinsho .memo-v,body.kinsho .slot-jp{font-family:'Yuji Syuku',serif;font-weight:400;}
-/* 墨絵レイヤー（太陽数に対応する sumie/N.png をフルブリードで乗算合成。
+/* 墨絵レイヤー（bg/太陽数.キャラ名.png をフルブリードで乗算合成。超数秘術本体アプリと同じフォルダ・命名。
    白背景は和紙に溶け、墨と朱のアクセントはそのまま残る） */
 body.kinsho .sumie{
   display:block;position:absolute;inset:0;width:100%;height:100%;
@@ -587,7 +587,7 @@ function render(){
   const sumie=document.getElementById('o-sumie');
   sumie.style.display='';
   sumie.onerror=()=>{sumie.style.display='none';};
-  sumie.src='sumie/'+D.taiyou+'.png';
+  sumie.src='bg/'+D.taiyou+'.'+D.char+'.png';
   // ネイタル：ホロ＝従来の大パネル／禁書＝小さな備考（両方に値を入れ、表示はCSSで分岐）
   document.body.classList.toggle('no-natal',!D.hasNatal);
   if(D.hasNatal){
