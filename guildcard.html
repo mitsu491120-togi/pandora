@@ -441,26 +441,28 @@ function saveHist(inp){
   h[inp.display]={display:inp.display,sei:inp.sei,mei:inp.mei,dom:prev.dom||null,t:Date.now()};
   setHist(h);renderHist();
 }
+let selectedHistKey=null;
 function renderHist(){
   const h=getHist();const keys=Object.keys(h).sort((a,b)=>(h[b].t||0)-(h[a].t||0));
   const fs=document.getElementById('hist-fs');const sel=document.getElementById('f-hist');
   if(!keys.length){fs.style.display='none';return;}
   fs.style.display='block';
   sel.innerHTML='<option value="">― 履歴から呼び出す ―</option>'+keys.map(k=>`<option value="${k.replace(/"/g,'&quot;')}">${k}</option>`).join('');
+  if(selectedHistKey&&keys.includes(selectedHistKey)) sel.value=selectedHistKey;
 }
 function loadHist(){
   const sel=document.getElementById('f-hist');const key=sel.value;if(!key)return;
+  selectedHistKey=key;
   const e=getHist()[key];if(!e)return;
   document.getElementById('f-disp').value=e.display||'';
   document.getElementById('f-sei').value=e.sei;
   document.getElementById('f-mei').value=e.mei;
   gen();
-  sel.value='';
 }
 function delHist(){
-  const sel=document.getElementById('f-hist');const key=sel.value;
+  const key=selectedHistKey||document.getElementById('f-hist').value;
   if(!key){alert('履歴を選択してください。');return;}
-  const h=getHist();delete h[key];setHist(h);renderHist();
+  const h=getHist();delete h[key];setHist(h);selectedHistKey=null;renderHist();
 }
 
 /* ===== カードデータブロック（ENGINE 1のみ） ===== */
