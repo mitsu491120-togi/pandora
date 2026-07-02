@@ -130,12 +130,12 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
 .srow .ev{font-size:10px;text-align:right;letter-spacing:.04em;color:var(--ink);}
 .scale{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;justify-content:center;}
 .scale span{font-size:8px;letter-spacing:.06em;padding:3px 9px;border:1px solid var(--line);color:var(--ink2);border-radius:2px;font-family:'Shippori Mincho B1',serif;}
-.foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:.2em;color:var(--ink2);}
+.foot{display:flex;justify-content:center;align-items:center;margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:.2em;color:var(--ink2);}
 .foot .mid{font-size:10px;letter-spacing:.4em;color:var(--shu);}
 
 /* ===== 縦型（スマホ・共有用）。上段：左＝キャラ・五行・ロール／右＝キャラ画像。下段：ステータス全幅 ===== */
 .sheet.portrait{width:900px;}
-.sheet.portrait .wrap{padding:30px 26px 20px;}
+.sheet.portrait .wrap{padding:48px 42px 24px;}
 .sheet.portrait .cardgrid{grid-template-columns:1fr 340px;grid-template-rows:auto auto 1fr auto;gap:14px;margin-top:2px;}
 .sheet.portrait .left{display:contents;}
 .sheet.portrait .sec{grid-area:1/1/2/2;margin:0;}
@@ -202,7 +202,7 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
     <div class="hr"></div>
     <div class="cardgrid">
       <div class="left">
-        <div class="sec"><span class="no" id="o-zoku"></span><span class="jp">超数秘術</span><span class="en">／ 名前・動かせない型</span><span class="ln"></span></div>
+        <div class="sec"><span class="no" id="o-zoku"></span><span class="jp">超数秘術</span><span class="en">／ 名前に秘められた魂の型</span><span class="ln"></span></div>
         <div class="e1top">
           <div class="panel">
             <div class="p-en">Character ／ 33キャラクター（太陽数）</div>
@@ -233,7 +233,7 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
         <img class="art" id="o-art" alt="">
       </div>
     </div>
-    <div class="foot"><div>SUPER NUMEROLOGY GUILD</div><div class="mid">◆ ◆ ◆</div><div id="o-foot"></div></div>
+    <div class="foot"><div class="mid">◆ ◆ ◆</div></div>
   </div>
 </div>
 
@@ -385,7 +385,7 @@ function compute(inp){
 /* ===== render ===== */
 function render(){
   const inp=INPUT,D=compute(inp),$=id=>document.getElementById(id);
-  $('o-name').textContent=inp.display;$('o-foot').textContent=inp.display;
+  $('o-name').textContent=inp.display;
   $('o-num').textContent=D.taiyou;$('o-char').textContent=D.char;$('o-cdesc').textContent=D.cdesc;
   $('o-traits').innerHTML=D.traits.map(t=>`<span>${t}</span>`).join('');
   const ec=GOGYO_INK[D.elem];
