@@ -481,8 +481,7 @@ function calcAll(seiRom,meiRom){
   const K20_mid=accumulate34([c1011,c1211,c1611,c1411,c1711]);
   const tsuki=accumulate34([c1011,c1211,c1411,c1711]);
   const tK20=get34(tsuki);
-  const mind=accumulate34([parseInt(H17[0]),parseInt(H18[0]),parseInt(H19[0])]);
-  return{taiyou:K19,tsuki:tK20,mind};
+  return{taiyou:K19,tsuki:tK20};
 }
 let sessionData=null,chatHistory=[],isLoading=false;
 document.getElementById('img-upload').addEventListener('change',function(){
@@ -516,8 +515,7 @@ function startSession(){
     traits:TRAITS[taiyouNum]||[],
     numStory:NUMEROLOGY_STORY[soulDigit===0?1:soulDigit]||'',
     soulType:SOUL_TYPES[soulDigit]||{jp:'',sub:''},
-    tsukiName:CHARS[vals.tsuki]||'?',
-    mindName:CHARS[vals.mind]||'?'
+    tsukiName:CHARS[vals.tsuki]||'?'
   };
   document.getElementById('form-section').style.display='none';
   document.getElementById('chat-divider').style.display='block';
@@ -557,7 +555,6 @@ function buildSystemPrompt(d){
 - この者の本質的な性質：${d.traits.join('、')}
 - この者の魂の在り方：${d.numStory}
 - 内なる感情・本音：${d.tsukiName}の性質を帯びている
-- 思考・意識の方向：${d.mindName}の性質を帯びている
 - 存在の役割：${d.soulType.jp}（${d.soulType.sub}）
 
 【語り方】
