@@ -1873,6 +1873,7 @@ function getNumberConversion(s){
 }
 
 function getNextplus(s){
+  if(s.length<=1) return s; // 1桁は畳み終わった値としてそのまま返す（1文字に潰れる名前の未定義動作の解消）
   let r='';
   for(let i=1;i<s.length;i++) r+=String(getMod9(parseInt(s[i-1])+parseInt(s[i])));
   return r.length>1?getNextplus(r):r;
