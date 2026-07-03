@@ -467,32 +467,43 @@ pg('人を読む', `
 
 /* ===== 図鑑 ===== */
 pg('図鑑', `
-<p class="big" style="margin-top:16vh;text-align:center;">33人の図鑑</p>
+<p class="big" style="margin-top:14vh;text-align:center;">33人の図鑑</p>
 <p class="soft" style="text-align:center;margin-top:26px;">
-ここからは、キャラクターたちの顔見せです。<br>
-自分を、家族を、友達を、探してみてください。<br><br>
+33人のキャラクターは、基本数秘1〜9の<strong>9つの族</strong>に分かれます。<br>
+足して同じ数に還る者たちは、同じ原理の一族です。<br>
+たとえば10・19・28は、どれも足すと1に還る——軍師と同じ、意志の一族。<br><br>
+自分の族を、家族を、友達を、探してみてください。<br><br>
 <span style="font-size:12px;color:var(--ink-dim);">太陽として現れるのは4〜33です。<br>1〜3（軍師・占い師・道化師）は太陽以外の席で出会います。</span>
 </p>`,1);
 
-// 1-3 は別枠で先頭ページに
-pg('図鑑', `
-<h2 style="margin-bottom:8px;">基本の三人 <span style="font-size:11px;color:var(--ink-dim);letter-spacing:.1em;">— 太陽以外の席で出会う</span></h2>
-<div class="zk"><div class="zk-head"><span class="zk-no">1</span><span class="zk-name">軍師</span></div>
-<div class="zk-desc">決断して、前向きに動いていく人</div>
-<div class="zk-tr">ストレートで負けず嫌い／常に本気で手加減が苦手</div></div>
-<div class="zk"><div class="zk-head"><span class="zk-no">2</span><span class="zk-name">占い師</span></div>
-<div class="zk-desc">一途な想いで、寄り添い支える人</div>
-<div class="zk-tr">繊細に共感して人を支える／人と人を繋ぐ仲介役となる</div></div>
-<div class="zk"><div class="zk-head"><span class="zk-no">3</span><span class="zk-name">道化師</span></div>
-<div class="zk-desc">素直に受け取り、純粋に遊ぶ人</div>
-<div class="zk-tr">無邪気、天真爛漫、パワフル／素直で学びに貪欲である</div></div>`);
-
-for(let i=0;i<ZUKAN.length;i+=3){
-  const rows=ZUKAN.slice(i,i+3).map(([n,name,desc,tr])=>`
-  <div class="zk"><div class="zk-head"><span class="zk-no">${n}</span><span class="zk-name">${name}</span></div>
+const ALL33=[
+[1,'軍師','決断して、前向きに動いていく人','ストレートで負けず嫌い／常に本気で手加減が苦手'],
+[2,'占い師','一途な想いで、寄り添い支える人','繊細に共感して人を支える／人と人を繋ぐ仲介役となる'],
+[3,'道化師','素直に受け取り、純粋に遊ぶ人','無邪気、天真爛漫、パワフル／素直で学びに貪欲である'],
+...ZUKAN];
+const FAM={
+1:['意志','真っ直ぐに始め、先頭で決断する一族'],
+2:['受信','共感し、あいだに立って支える一族'],
+3:['遊び','無邪気に受け取り、表現する一族'],
+4:['型','積み上げて、形にする一族'],
+5:['自由','変化と衝動で道をひらく一族'],
+6:['世話','場を守り、育む一族'],
+7:['感覚','探究して、専門に届く一族'],
+8:['結果','現実の中で、達成する一族'],
+9:['受容','受け容れて、統合する一族'],
+};
+function famOf(n){while(n>=10)n=Math.floor(n/10)+(n%10);return n;}
+for(let f=1;f<=9;f++){
+  const members=ALL33.filter(([n])=>famOf(n)===f);
+  const rows=members.map(([n,name,desc,tr])=>`
+  <div class="zk"><div class="zk-head"><span class="zk-no">${n}</span><span class="zk-name">${name}</span>${n<4?'<span style="font-size:10px;color:var(--ink-dim);letter-spacing:.1em;">太陽以外の席で</span>':''}</div>
   <div class="zk-desc">${desc}</div>
   <div class="zk-tr">${tr}</div></div>`).join('');
-  pg('図鑑', rows);
+  pg('図鑑', `
+<div class="knum">FAMILY ${f}</div>
+<h1 style="margin-bottom:6px;">数秘${f}族 <span style="font-size:14px;color:var(--gold);letter-spacing:.1em;">— ${FAM[f][0]}</span></h1>
+<p class="soft" style="font-size:13px;margin-bottom:10px;">${FAM[f][1]}</p>
+${rows}`);
 }
 
 /* ===== 終章 ===== */
