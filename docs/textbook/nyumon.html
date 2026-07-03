@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超数秘術 入門</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;700&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0a12;
+  --ink:#e8e4f0;
+  --ink-soft:#c4bdd8;
+  --ink-dim:#9991b0;
+  --accent:#a78bfa;
+  --gold:#d4b26a;
+  --line:rgba(167,139,250,0.22);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Shippori Mincho B1',serif;
+  line-height:2.1;
+  letter-spacing:.05em;
+  font-size:16px;
+}
+/* 星空 */
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, rgba(255,255,255,.5) 50%, transparent 51%),
+    radial-gradient(1px 1px at 78% 12%, rgba(255,255,255,.35) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 55% 45%, rgba(200,180,255,.4) 50%, transparent 51%),
+    radial-gradient(1px 1px at 30% 72%, rgba(255,255,255,.3) 50%, transparent 51%),
+    radial-gradient(1px 1px at 88% 62%, rgba(200,180,255,.35) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 8% 88%, rgba(255,255,255,.25) 50%, transparent 51%),
+    radial-gradient(1px 1px at 65% 85%, rgba(255,255,255,.3) 50%, transparent 51%);
+}
+.page{
+  position:relative;z-index:1;
+  max-width:620px;
+  margin:0 auto;
+  padding:0 28px;
+}
+/* 表紙 */
+.cover{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+}
+.cover-en{
+  font-family:'Cinzel',serif;
+  font-size:11px;letter-spacing:.6em;
+  color:var(--accent);opacity:.8;
+  margin-bottom:26px;
+}
+.cover-title{
+  font-size:44px;font-weight:700;
+  letter-spacing:.3em;
+  margin-bottom:10px;
+  text-indent:.3em;
+}
+.cover-sub{
+  font-size:20px;letter-spacing:.5em;
+  color:var(--gold);
+  text-indent:.5em;
+  margin-bottom:48px;
+}
+.cover-line{
+  width:1px;height:70px;
+  background:linear-gradient(to bottom,var(--accent),transparent);
+  margin-bottom:44px;
+}
+.cover-lead{
+  font-size:14px;color:var(--ink-soft);
+  line-height:2.6;letter-spacing:.12em;
+}
+.cover-hint{
+  margin-top:70px;font-size:11px;color:var(--ink-dim);
+  letter-spacing:.3em;
+  animation:float 2.6s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(6px);opacity:.9}}
+/* 章 */
+.chapter{padding:90px 0 30px}
+.ch-num{
+  font-family:'Cinzel',serif;
+  font-size:11px;letter-spacing:.5em;
+  color:var(--accent);opacity:.85;
+  margin-bottom:14px;
+}
+h1{
+  font-size:26px;font-weight:700;letter-spacing:.14em;
+  margin-bottom:44px;
+  padding-bottom:20px;
+  border-bottom:1px solid var(--line);
+}
+h2{
+  font-size:18px;font-weight:600;letter-spacing:.1em;
+  color:var(--accent);
+  margin:64px 0 24px;
+}
+p{margin-bottom:1.9em;color:var(--ink);}
+p.soft{color:var(--ink-soft)}
+strong{color:var(--gold);font-weight:600}
+em{font-style:normal;color:var(--accent)}
+.q{
+  margin:2.2em 0;
+  padding:4px 0 4px 22px;
+  border-left:2px solid var(--line);
+  color:var(--ink-soft);
+  font-size:15px;
+}
+.pause{
+  text-align:center;color:var(--accent);
+  letter-spacing:1.2em;text-indent:1.2em;
+  margin:70px 0;opacity:.55;font-size:12px;
+}
+.last{
+  text-align:center;
+  font-size:20px;letter-spacing:.14em;
+  margin:80px 0 30px;line-height:2.4;
+}
+.colophon{
+  text-align:center;
+  padding:80px 0 90px;
+  font-size:11px;color:var(--ink-dim);
+  letter-spacing:.25em;line-height:2.6;
+}
+@media(max-width:480px){
+  .cover-title{font-size:32px}
+  body{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- 表紙 -->
+  <div class="cover">
+    <div class="cover-en">SUPER NUMEROLOGY</div>
+    <div class="cover-title">超数秘術</div>
+    <div class="cover-sub">入門</div>
+    <div class="cover-line"></div>
+    <div class="cover-lead">
+      名前には、地図が刻まれている。<br>
+      本来の顔。機嫌の仕組み。いま、旅のどのあたりか。<br>
+      これは、それを読めるようになるための一冊。
+    </div>
+    <div class="cover-hint">▼</div>
+  </div>
+
+  <!-- 得られるもの -->
+  <div class="chapter">
+    <div class="ch-num">ABSTRACT</div>
+    <h1>この本で得られるもの</h1>
+
+    <p>超数秘術は、名前から人を読む体系です。ひらがなの名前ひとつから33の観測点を割り出し、生まれ持ったキャラクター、機嫌の仕組み、逃げ方の癖、そしていま人生のどの段階を歩いているのかを、一枚の地図にします。</p>
+
+    <p>この本を読み終えたとき、手元に残るのは知識ではなく、<strong>見る目</strong>です。</p>
+
+    <div class="q">
+      なぜ、ちゃんとやっているのに消耗する日があるのか。<br>
+      なぜ、同じ喧嘩を同じ相手と繰り返すのか。<br>
+      なぜ、欲しかったものを手に入れても満たされないのか。<br>
+      なぜ、頑張っているのに進んでいる気がしないのか。<br>
+      そして、なぜあの人はああなのか。
+    </div>
+
+    <p>これらすべてに、地図の上で場所が与えられます。場所がわかったものには、人は呑まれにくくなります。</p>
+
+    <p>最後まで歩けば、行き着く先は一つです。<br>
+    <strong>自分探しの終わり。</strong><br>
+    探していたものは外にはなく、最初からど真ん中にあったという発見。そこから先の人生を、自分の名前で、創造的に生きていくこと。</p>
+
+    <p class="soft">それがこの体系の、最終的な提供物です。</p>
+  </div>
+
+  <div class="pause">✦ ✦ ✦</div>
+
+  <!-- 序章 -->
+  <div class="chapter">
+    <div class="ch-num">PROLOGUE</div>
+    <h1>序章 — 超数秘術とは何か</h1>
+
+    <h2>どういう想いで作られたか</h2>
+
+    <p>数秘術は古い知恵です。名前や数に人の本質が響いているという見方は、何千年も前から世界中にありました。</p>
+
+    <p>ただ、既存の数秘術には限界がありました。<em>平面的</em>なのです。人をひとつの数に畳み込んで「あなたは3の人」と言う。それでは、人がいまどこにいて、これからどう変わっていくのかが読めません。人は止まった絵ではなく、動いている旅だからです。</p>
+
+    <p>超数秘術は、その平面に<strong>縦の軸</strong>を立てたものです。9つの基本数を土台に33のキャラクターを立ち上げ、それを生命の樹——人の意識が育っていく階層の地図——につなぎました。これで「あなたは何者か」だけでなく、「あなたはいま、旅のどのあたりにいるのか」が読めるようになります。</p>
+
+    <p>もうひとつ、大事な設計思想があります。<br>
+    <strong>この体系は、当てるための道具ではありません。導くための地図です。</strong></p>
+
+    <p>地図は現在地を断定しません。制作者にも断定はできません。あなたの盤面に何があるかは計算で確定しますが、あなたがいまどの席で生きているかは、あなたにしかわかりません。だからこの本は「あなたはこうです」とは言いません。「この席で生きているなら、こう見えるはずです」と言います。現在地を指すのは、いつもあなた自身です。</p>
+
+    <h2>どういう人に合うか</h2>
+
+    <p>この世界観は、すべての人のためのものではありません。</p>
+
+    <p>合うのは、柔軟な人です。「今まではこうだったけど、これからはこういう見方もありかもしれない」と思える人。何かを全面的に信じ込むのでもなく、自分の知っているもの以外を締め出すのでもない人。</p>
+
+    <p>占いに答えを出してほしい人には、向きません。この地図は答えを出さないからです。自分で歩く人の手に渡ったときにだけ、この地図は働きます。</p>
+
+    <p>もしいいと思ったなら、後悔せずについてきてください。<br>
+    それが、自分を信じるということです。</p>
+  </div>
+
+  <div class="pause">✦ ✦ ✦</div>
+
+  <!-- 中編 -->
+  <div class="chapter">
+    <div class="ch-num">THE JOURNEY</div>
+    <h1>中編 — 地図と歩く</h1>
+
+    <p class="soft">ここからは、超数秘術と歩きはじめた人に何が起きていくのかを、一つの流れとして描きます。これはあなたの物語の、先回りです。</p>
+
+    <h2>最初の日 — 顔ぶれに会う</h2>
+
+    <p>すべては、名前をひらがなで入れるところから始まります。</p>
+
+    <p>最初に会うのは<strong>太陽</strong>——あなたの本来の顔です。騎士、賢者、闘士、巫女、忍者……33人のうちの一人が、そこに立っています。</p>
+
+    <p>多くの人が、ここで最初の発見をします。「本来の顔でいられた日は、疲れていない」という発見です。ちゃんとやったのに妙に消耗した日は、たいてい、自分ではないキャラクターを演じていた日です。疲れの原因が「頑張りが足りない」から「配役が違う」に変わる——地図の最初の性能です。</p>
+
+    <p>そして名前には、太陽のほかにも住人たちがいます。33の席に、それぞれの顔ぶれ。ここから、一人ずつ会っていくことになります。</p>
+
+    <h2>見た目と中身 — パッケージの発見</h2>
+
+    <p>早い段階で、多くの人が長年の据わりの悪さを一つ解消します。</p>
+
+    <p>「あなたって、こういう人だよね」と言われるたびに感じていた、当たっているような、違うような、あの感じ。</p>
+
+    <p>正体は<strong>ASC</strong>——あなたのパッケージです。中身がどうであれ、外からはまずこの包装が見えます。そう見られるのは当たり前で、問題ではありません。大事なのは、<strong>そう見えることと、それが本体であることは同義ではない</strong>ということ。</p>
+
+    <p>ここを混同すると、人はパッケージを自分だと思い込み、見られ方に自分を寄せたり、磨いて「それ」になろうとします。順序は逆です。パッケージはなろうとしてなるものではなく、自然にしていたら、その見た目になっているもの。中身が先で、包装は後からついてくる。これがわかるだけで、無理な自分磨きが一つ、終わります。</p>
+
+    <h2>揺れの発見 — 月とSM</h2>
+
+    <p>旅の序盤でいちばん大きいのは、この発見です。</p>
+
+    <p>自分の中に、小さな子どもがいます。<strong>月</strong>です。わがままな願いを抱えていて、あと一歩で言葉にならない。本当は、ただ聞いてほしいだけの子です。</p>
+
+    <p>この子の願いが聞かれないままだと、人は逃げます。逃げ方は二つしかありません。しがみつくか、突き放すか。依存か、拒絶か。月と、その正反対の席にいる<strong>SM</strong>の軸です。</p>
+
+    <p>近づいては突き放す。我慢しては爆発する。同じ相手と同じ喧嘩を繰り返す。——多くの人が、この揺れの中で生きています。そして揺れの中にいる間は、揺れていることが見えません。</p>
+
+    <p>地図を持った人は、ここで初めて自分の揺れを外から見ます。「傷ついたとき、自分はしがみつく側か、ドアを閉める側か」。自分の癖の側に名前がつくと、揺れの最中に気づけるようになっていきます。呑まれなくなるのではありません。<strong>呑まれても、帰り道がわかる</strong>ようになるのです。</p>
+
+    <h2>引力の正体 — リリス</h2>
+
+    <p>揺れには、人を引きずり込む引力があります。</p>
+
+    <p>「これさえ手に入れば」と追いかけているのに、手に入れても思ったほど満たされず、もう次の「これさえあれば」を探している——あの終わらない買い物です。</p>
+
+    <p>正体は<strong>リリス</strong>。幻の空間です。見たくなかったもの、封じたものが、魅力的な姿に化けてそこに立っています。封じているほど引力は強くなり、現実から逃げる力になります。</p>
+
+    <p>ここからの脱却が、旅の前半でいちばん大事な仕事です。やり方は、拍子抜けするほど静かです。追いかけているものの正体を見に行き、「そこには、最初から何もなかった」と気づくこと。本当に気づいたとき、追いかけることそのものが終わります。執着は、頑張って手放すものではなく、何もなかったとわかったときに自然に薄れて落ちるものです。</p>
+
+    <h2>足場 — 自分に戻る四つの働き</h2>
+
+    <p>揺れから降りるには、足場が要ります。四つあります。</p>
+
+    <p>感じる(<strong>月</strong>)。選ぶ(<strong>金星</strong>)。考える(<strong>水星</strong>)。体験する(<strong>地球</strong>)。</p>
+
+    <p>願いを聞いてやる。小さなことを誰にも確認せずに選ぶ。外に答えを探す前に一度自分の頭を通す。うまくやるためではなく、やりたかったことをやってみる。</p>
+
+    <p>どれも小さなことです。完璧は要りません。四つに向き合う姿勢があるだけで、次の扉は開きます。「人に確認しないと決められない」が、このあたりで終わりはじめます。</p>
+
+    <h2>古い型から、新しい道へ — テイルとヘッド</h2>
+
+    <p>足場ができると、今度は停滞の正体が見えてきます。</p>
+
+    <p>器用にこなしているのに、人生が動いていない気がする——その正体はたいてい<strong>ドラゴンテイル</strong>、昔から得意な型です。なじみ深く、周りにも喜ばれる。財産です。ただ、得意な型の中にいる限り、人は同じ場所を上手に回るだけになります。</p>
+
+    <p>反対側に<strong>ドラゴンヘッド</strong>、今生の旅の方向があります。なじみがなく、ぎこちなく、最初はうまくできません。だから人はテイルに戻ります。上手にできるほうが気持ちいいからです。</p>
+
+    <p>地図を持った人は、ここで一つの逆説を覚えます。「得意なのに虚しい」と「下手なのに満ちる」。ぎこちなさは、道が間違っている印ではなく、<em>道が新しい印</em>だということ。</p>
+
+    <h2>分かれ目 — 土星と太陽</h2>
+
+    <p>新しい道を歩きはじめると、必ず壁に見えるものが来ます。<strong>土星</strong>です。</p>
+
+    <p>土星は試練の星と呼ばれますが、本当の仕事は違います。人は、自分の強い部分だけを見ていると脆く崩れる。だから土星は、弱くて未熟な自分を見るように促してくる、人生の指導者です。</p>
+
+    <p>しんどい時期の読み方が、ここで変わります。「運が悪い」ではなく、「いま、見ていない弱さを見せられている」。自分の人生の責任は自分でとる——それを引き受けた人にだけ、土星は達成感という報酬を渡します。</p>
+
+    <p>そしてここが、旅の分かれ目です。弱さから目をそらしたまま強がるのか。弱さを見た上で、それでも本来の顔で生きるのか。</p>
+
+    <p>後者を選んだとき、太陽が本領を出します。「何かやらなければ」と焦って取りに行くのではなく、本来の自分で生きていれば、やりたいことは勝手に湧いてくる。見分け方は一つです。<br>
+    <strong>湧いたものは、やっていて満ちる。代わりのものは、やっても足りない。</strong></p>
+
+    <h2>橋 — キロン</h2>
+
+    <p>ここまでの道のり全体に、静かにかかっているものがあります。<strong>キロン</strong>——土星と、その外側の星々のあいだの橋です。</p>
+
+    <p>キロンは、痛みを癒して光に反転させる働きです。深く痛んだ場所は、深く人を理解できる場所になります。月の願いを聞いたのも、弱さを認めたのも、振り返ればすべてこの癒しの一部でした。傷が「なかったことにしたいもの」から「使い道のあるもの」に変わります。</p>
+
+    <h2>流れに乗る — 天王星・海王星・冥王星</h2>
+
+    <p>橋の向こうは、もう頑張る場所ではありません。</p>
+
+    <p><strong>天王星</strong>は転換点を運びます。引っ越し、環境の変化、状況の一変。狙って起こすものではなく、流れに任せたときに向こうから来ます。<strong>海王星</strong>は境界を溶かし、理想と現実のあいだを埋めるインスピレーションを運びます。<strong>冥王星</strong>は破壊と再生。自然を見れば、壊れて生まれ変わるのはただの営みで、ずっとそのままであり続けることのほうが不自然です。</p>
+
+    <p>ここが読めるようになった人は、人生の激変期の意味が変わります。「なぜこんな目に」ではなく、「いま、入れ替えが起きている」。あるのは一つの姿勢だけです。<em>ただ、流れていくのみ。</em></p>
+
+    <h2>そして、統合</h2>
+
+    <p>最後の場所については、短くしか書きません。説明する場所ではなく、訪れる場所だからです。</p>
+
+    <p>自分がありながら、周りとも調和していく。受け取ることと与えることが、循環していく。派手なことは何も起こらず、気づいたらそうなっていた——静かに、その時は訪れます。</p>
+
+    <p>統合は目指すものではありません。ありのままに生きた結果として、自然に訪れるものです。</p>
+  </div>
+
+  <div class="pause">✦ ✦ ✦</div>
+
+  <!-- 終章 -->
+  <div class="chapter">
+    <div class="ch-num">EPILOGUE</div>
+    <h1>終章 — さあ、何を生み出しますか</h1>
+
+    <p>ここまでが、超数秘術の地図です。</p>
+
+    <p>これは新しい時代のパッケージです。古い知恵——数、名前、樹、星——を、いまを生きる人が実際に使える一枚に組み直したもの。</p>
+
+    <p>そして、名前から読むというこの体系の入口には、意味があります。あなたの名前は、あなたが一人で作ったものではありません。誰かが想いを込めてつけ、無数の人に呼ばれて、響いてきたものです。その名前に地図が刻まれているということは、あなたが最初から、<strong>ご縁の世界の一員</strong>だったということです。一人で生きているようで、一人ではなかったということです。</p>
+
+    <p>地図を手にした人の人生は、占いに従う人生ではありません。本来の顔で生き、揺れから降り、湧いてくるものと共に進む——それは、人生を<strong>創造するもの</strong>として生きるということです。</p>
+
+    <p>道具は渡しました。地図はあなたの手の中にあります。</p>
+
+    <div class="last">さあ、あなたは<br>何を生み出していきますか。</div>
+  </div>
+
+  <div class="colophon">
+    超数秘術 入門<br>
+    SUPER NUMEROLOGY — AN INTRODUCTION
+  </div>
+
+</div>
+
+</body>
+</html>
