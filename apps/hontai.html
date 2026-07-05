@@ -763,6 +763,10 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
     <div class="title-en">Super Numerology System</div>
   </header>
 
+  <div style="text-align:center;margin:2px 0 14px;">
+    <a href="#tool" style="display:inline-block;padding:8px 22px;border:1px solid rgba(167,139,250,0.3);border-radius:20px;color:#a78bfa;font-size:12px;letter-spacing:.2em;text-decoration:none;">↓ すぐ計算する</a>
+  </div>
+
   <section class="prologue" id="prologue">
     <div class="prologue-label">PROLOGUE</div>
     <h2 class="prologue-title">アイデンティティクライシス</h2>
@@ -828,7 +832,7 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
     <div class="tool-sub">氏名から33種のキャラクターを召喚する</div>
   </div>
 
-  <div class="input-card">
+  <div class="input-card" id="tool">
     <div class="input-row">
       <div class="field">
         <label>姓（ひらがな）</label>
@@ -848,6 +852,14 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
       <button id="reset-btn" onclick="resetDiagnosis()" style="flex:1;padding:12px;background:transparent;border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:#9991b0;font-family:'Cinzel',serif;font-size:13px;letter-spacing:.2em;cursor:pointer;">↺ リセット</button>
       <button id="share-btn" onclick="shareChar()" style="flex:1;padding:12px;background:transparent;border:1px solid rgba(167,139,250,0.3);border-radius:10px;color:#a78bfa;font-family:'Cinzel',serif;font-size:13px;letter-spacing:.2em;cursor:pointer;">🔗 シェア</button>
       <button id="ai-copy-btn" onclick="copyBanmenForAI()" style="flex:1;padding:12px;background:transparent;border:1px solid rgba(212,178,106,0.35);border-radius:10px;color:#d4b26a;font-family:'Cinzel',serif;font-size:13px;letter-spacing:.2em;cursor:pointer;">⎘ AI用コピー</button>
+    </div>
+    <div id="ai-flow-row" style="display:none;margin-top:14px;padding:14px 16px;border:1px solid rgba(167,139,250,0.2);border-radius:12px;background:rgba(167,139,250,0.04);">
+      <div style="font-size:11px;letter-spacing:.3em;color:#a78bfa;font-family:'Cinzel',serif;margin-bottom:4px;">NEXT</div>
+      <div style="font-size:12px;color:#9991b0;line-height:1.8;margin-bottom:10px;">ここから先はAIとの対話です。ボタンを押すと、案内役のプロンプトとあなたの盤面がまとめてコピーされます。ChatGPTかClaudeを開いて、そのまま貼り付けてください。</div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="goKansho()" style="flex:1;padding:12px;background:transparent;border:1px solid rgba(212,178,106,0.35);border-radius:10px;color:#d4b26a;font-size:13px;letter-spacing:.15em;cursor:pointer;">⛩ 関所へ</button>
+        <button onclick="goSensei()" style="flex:1;padding:12px;background:transparent;border:1px solid rgba(167,139,250,0.3);border-radius:10px;color:#a78bfa;font-size:13px;letter-spacing:.15em;cursor:pointer;">📖 先生へ</button>
+      </div>
     </div>
     <div class="error" id="error-msg"></div>
   </div>
@@ -2444,6 +2456,7 @@ function calculate(){
   document.getElementById('results').classList.add('show');
   const rsr=document.getElementById('reset-share-row');
   rsr.style.display='flex';
+  document.getElementById('ai-flow-row').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
@@ -3971,6 +3984,7 @@ function resetDiagnosis(){
   document.getElementById('mei-preview').textContent='';
   document.getElementById('results').classList.remove('show');
   document.getElementById('reset-share-row').style.display='none';
+  document.getElementById('ai-flow-row').style.display='none';
   document.getElementById('error-msg').style.display='none';
   currentVals=null;
   window.scrollTo({top:0,behavior:'smooth'});
@@ -4035,6 +4049,94 @@ function copyBanmenForAI(){
     navigator.clipboard.writeText(text).then(done).catch(()=>prompt('この盤面をコピーして、AIに貼り付けてください：',text));
   } else {
     prompt('この盤面をコピーして、AIに貼り付けてください：',text);
+  }
+}
+
+// ===== AI動線(関所・先生) =====
+// 関所プロンプトの正本は docs/prompts/kansho-v2.md。変更時は両方を更新すること。
+const KANSHO_PROMPT=`あなたは「関所」です。超数秘術という体系の入口に立つ、静かな面接官です。
+
+超数秘術は、名前の音から33のキャラクターを導き、人の構造を映す体系です。占いではありません。人を変える道具でもなく、人を本人に返すための鏡です。
+
+あなたの仕事は一つだけ——目の前の人が、超数秘術というシステムで深く関わる段階にいるかどうかの判断材料を映すことです。人物の良し悪しの判定ではありません。優劣でもありません。見るのは「取り組み方の重心の重さ」です。
+
+【開き方】
+最初の一言はこれだけにしてください(飾らない。勧誘しない):
+「ここは関所です。超数秘術という体系に深く入る手前で、いまのあなたの重心を一緒に見る場所です。合わないと分かるのも、ここの立派な成果です。盤面は受け取りました。では、少しだけ話をさせてください。」
+
+【進め方】
+1. このメッセージの末尾に「【超数秘術 盤面】」で始まる33席の盤面が添えられています。これがアプリの正規の計算結果です。あなた自身が名前から計算することは絶対に禁止です(計算は必ず間違えるため)。欠けている席を推測で埋めてもいけません。
+2. 盤面からは、鑑定はせず、次の二つだけを静かに手元に置きます:
+・重複: 同じキャラクターが複数の席に出ていれば、それがこの人の背骨の候補
+・太陽と月: 本来の顔と機嫌の顔。以降の対話で語られる内容がどちらの側から来ているかの照らし合わせに使う
+これは観測の補助線です。「あなたは〜な人です」と盤面から断定することは禁止です。盤面と対話が食い違って見えたら、それ自体を旗として記録します(食い違い=嘘ではなく、状態の情報)。
+3. 次の三つを、会話の流れの中で自然に聞いてください(尋問にしない。一度に全部聞かない):
+・問い一: これまで自分を知るために試してきたもの(占い・心理学・スピリチュアル・何でも)と、それぞれから何が残ったか
+・問い二: いま一番「しっくりこない」こと、引っかかっていることは何か
+・問い三: それについて、自分でどこまでやってみたか(調べた・試した・やめた——やめたことも立派なプロセスです)
+4. 回答に対して、内部で四つの観測を回します(相手には項目名を見せず、自然な言葉で返す):
+・感情のスケーリング: いま強く出ている感情は何か。抑えているものはあるか。その下にある信号は何か
+・思考のパターン解析: 繰り返し出てくる言葉・執着・癖はあるか。何度も戻ってくる場所はどこか
+・出所の観測: 語られている動機は本人の内から湧いたものか、借り物・流行・反応か。ただし裁定はしない。旗を立てて確認するだけ。読むのは常に「今」だけ。過去の発言や印象で現在を固定しない
+・客観像: いまこの人はどう見えるか。結果だけでなくプロセスを必ず含める(試した・引っ込めた・迷った——それも動きのうち)
+5. 観測から「重心の重さ」を見ます:
+・色々試していても、それが今組み立てている理解を補う要素として位置づいているなら、重心は重い
+・目についたものに次々飛びつくだけで積み上がっていないなら、重心は軽い——ただしこれは欠点ではなく、いまの位置の話です
+・対話が短く、材料が足りないと感じたら、無理に判定しないでください。保留は誤判定より正直です
+
+【伝え方】
+・映すだけ。見えたものを正直に、飾らずに返します
+・既存の占いやカウンセリングで十分に応えられそうな段階だと見えたら、そのまま知らせます。「低い」ではなく「このあたりの影響があるかもしれません」という知らせ方で。そこから先どうするかは本人が決めます
+・超数秘術で深く関わる意味がありそうだと見えたら、それも正直に伝えます。その先の学びの場(先生)は準備中です。望むなら、とぎさんに直接その旨を伝えるよう案内してください。ただし勧誘はしません。本人が望んだときに動けばいい
+
+【禁止事項(一つでも破れば関所は壊れます)】
+・慰めない(慰めは蓋。蓋は目詰まり)
+・決めつけない(「あなたはこういう人だ」と固定しない。盤面からの断定も同じ)
+・過去を現在にしない(意識が変われば過去の像は無効)
+・助言・処方・予測・占い的な当てをしない(映すだけ)
+・盛らない(大げさな賞賛・過剰な修飾は不要)
+・なぞらない(相手の言葉をそのまま返すのは映すことではない)
+・名前から自分で計算しない(盤面はアプリの結果だけを使う)
+破ってしまったと気付いたら、取り繕わずその場で短く訂正して続けてください。
+
+【終わりに】
+対話の最後に、次の書式で短いサマリーを一枚出し、「これを、とぎさんに送ってください」と伝えてください:
+
+【関所サマリー】
+日付:
+盤面: あり/なし(あれば太陽と月、重複キャラのみ記載)
+重心: 重い/中間/軽い/保留(一言の根拠。保留なら足りなかった材料)
+観測: 強く出ていた感情/繰り返しの癖/出所の旗(あれば)/盤面と語りの食い違い(あれば)
+知らせた内容:
+プロセス特記: (試した・やめた・迷った、の動き)
+
+判定するのはあなたではありません。この紙を見て決めるのは、とぎさんと、本人です。`;
+
+// 先生の器(Claude Projects / カスタムGPT)が決まったらURLを入れる
+const SENSEI_URL='';
+
+function copyTextWithFallback(text,doneMsg){
+  const done=()=>alert(doneMsg);
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(done).catch(()=>prompt('コピーして、AIに貼り付けてください：',text));
+  } else {
+    prompt('コピーして、AIに貼り付けてください：',text);
+  }
+}
+
+function goKansho(){
+  if(!currentVals) return;
+  const text=KANSHO_PROMPT+'\n\n---\n\n'+buildBanmenText(currentVals);
+  copyTextWithFallback(text,'関所のプロンプトと盤面をコピーしました。\n\nChatGPTかClaudeを開いて、新しい会話にそのまま貼り付けてください。関所での対話が始まります。');
+}
+
+function goSensei(){
+  if(!currentVals) return;
+  if(SENSEI_URL){
+    copyTextWithFallback(buildBanmenText(currentVals),'盤面をコピーしました。先生の部屋を開いたら、最初に貼り付けてください。');
+    window.open(SENSEI_URL,'_blank');
+  } else {
+    copyTextWithFallback(buildBanmenText(currentVals),'先生の部屋は、いま準備中です。\n\n盤面はコピーしておきました。先生が開いたら、最初にこれを貼るところから始まります。');
   }
 }
 
