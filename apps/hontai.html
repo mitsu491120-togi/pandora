@@ -763,10 +763,19 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
     <div class="title-en">Super Numerology System</div>
   </header>
 
-  <div style="text-align:center;margin:2px 0 14px;">
-    <a href="#tool" style="display:inline-block;padding:8px 22px;border:1px solid rgba(167,139,250,0.3);border-radius:20px;color:#a78bfa;font-size:12px;letter-spacing:.2em;text-decoration:none;">↓ すぐ計算する</a>
-  </div>
+  <nav id="mode-tabs" style="position:sticky;top:0;z-index:50;display:flex;gap:6px;justify-content:center;padding:10px 4px 12px;background:rgba(11,10,18,0.92);backdrop-filter:blur(8px);margin-bottom:14px;border-bottom:1px solid rgba(167,139,250,0.12);">
+    <button class="mode-tab" data-tab="shindan" onclick="switchTab('shindan')">✦ 診断</button>
+    <button class="mode-tab" data-tab="aisho" onclick="switchTab('aisho')">♡ 相性</button>
+    <button class="mode-tab" data-tab="manabi" onclick="switchTab('manabi')">📖 図鑑・書庫</button>
+    <button class="mode-tab" data-tab="story" onclick="switchTab('story')">🌙 物語</button>
+  </nav>
+  <style>
+  .mode-tab{padding:9px 14px;background:transparent;border:1px solid rgba(167,139,250,0.2);border-radius:20px;color:#9991b0;font-family:'Noto Serif JP',serif;font-size:12.5px;letter-spacing:.08em;cursor:pointer;transition:all .2s;}
+  .mode-tab.on{border-color:rgba(167,139,250,0.7);color:#e8e4f0;background:rgba(167,139,250,0.12);}
+  @media(max-width:420px){.mode-tab{padding:8px 10px;font-size:11.5px;}}
+  </style>
 
+<div data-pane="story">
   <section class="prologue" id="prologue">
     <div class="prologue-label">PROLOGUE</div>
     <h2 class="prologue-title">アイデンティティクライシス</h2>
@@ -827,6 +836,8 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
     </details>
   </section>
 
+</div>
+<div data-pane="shindan">
   <div class="tool-header">
     <div class="tool-label">— TOOL —</div>
     <div class="tool-sub">氏名から33種のキャラクターを召喚する</div>
@@ -856,6 +867,8 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
     <div class="error" id="error-msg"></div>
   </div>
 
+</div>
+<div data-pane="aisho">
   <!-- 相性診断 -->
   <div style="margin-top:24px;">
     <div class="group-header">
@@ -887,6 +900,8 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
     <div id="comp-result" style="display:none;"></div>
   </div>
 
+</div>
+<div data-pane="manabi">
   <!-- 図鑑 -->
   <div style="margin-top:16px;">
     <button onclick="toggleZukan()" id="zukan-btn" style="width:100%;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:'Noto Serif JP',serif;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:border-color .2s;">
@@ -1069,6 +1084,7 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
   }
   </script>
 
+</div>
   <!-- 数秘書庫たんモーダル -->
   <div id="shoko-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:200;overflow-y:auto;padding:24px 16px;" onclick="closeShoukoModal(event)">
     <div id="shoko-modal-inner" style="max-width:600px;margin:0 auto;background:var(--surface);border:1px solid rgba(167,139,250,0.3);border-radius:16px;overflow:hidden;" onclick="event.stopPropagation()">
@@ -1093,6 +1109,7 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
     </div>
   </div>
 
+<div data-pane="shindan">
   <div class="results" id="results">
     <!-- 太陽（無料） -->
     <div class="group-header">
@@ -1658,6 +1675,7 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
 
   </div>
 
+</div>
   <!-- フッター -->
   <footer style="margin-top:80px;padding:32px 0 48px;border-top:1px solid rgba(255,255,255,0.05);text-align:center;">
     <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.4em;color:var(--text2);opacity:.4;margin-bottom:20px;text-transform:uppercase;">Super Numerology System</div>
@@ -4529,6 +4547,18 @@ function goKansho(){
   copyTextWithFallback(text,'関所のプロンプトと盤面をコピーしました。\n\nChatGPTかClaudeを開いて、新しい会話にそのまま貼り付けてください。関所での対話が始まります。');
 }
 
+let currentTab='shindan';
+function switchTab(name){
+  currentTab=name;
+  document.querySelectorAll('[data-pane]').forEach(el=>{
+    el.style.display=(el.getAttribute('data-pane')===name)?'':'none';
+  });
+  document.querySelectorAll('.mode-tab').forEach(b=>{
+    b.classList.toggle('on',b.getAttribute('data-tab')===name);
+  });
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
 function updateSenseiBtn(){
   const btn=document.getElementById('sensei-btn');
   const note=document.getElementById('sensei-note');
@@ -4581,6 +4611,7 @@ function shareCompat(){
 
 // URLパラメータで結果を表示
 window.addEventListener('load',()=>{
+  switchTab('shindan');
   const params=new URLSearchParams(window.location.search);
   const char=params.get('char');
   const a=params.get('a');
