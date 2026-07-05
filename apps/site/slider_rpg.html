@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超数秘術 — 生命の樹 実践の声</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;
+  --surface:#111118;
+  --surface2:#1a1a24;
+  --border:rgba(180,160,255,0.15);
+  --accent:#a78bfa;
+  --accent2:#e879f9;
+  --gold:#f5c842;
+  --text:#e8e4f0;
+  --text2:#9991b0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Noto Serif JP',serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,.25) 0%,transparent 100%),
+    radial-gradient(1px 1px at 60% 10%,rgba(255,255,255,.18) 0%,transparent 100%),
+    radial-gradient(1px 1px at 80% 50%,rgba(255,255,255,.2) 0%,transparent 100%),
+    radial-gradient(1px 1px at 40% 70%,rgba(255,255,255,.18) 0%,transparent 100%),
+    radial-gradient(1px 1px at 90% 20%,rgba(255,255,255,.25) 0%,transparent 100%),
+    radial-gradient(1px 1px at 15% 80%,rgba(255,255,255,.18) 0%,transparent 100%),
+    radial-gradient(1px 1px at 70% 75%,rgba(255,255,255,.2) 0%,transparent 100%);
+  pointer-events:none;z-index:0;
+}
+
+/* ページヘッダー */
+.page-header{
+  text-align:center;
+  padding:36px 20px 24px;
+  position:relative;z-index:10;
+}
+.page-en{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:.5em;
+  color:var(--accent);opacity:.6;margin-bottom:10px;
+}
+.page-title{
+  font-family:'Cinzel',serif;font-size:clamp(18px,3.5vw,26px);font-weight:600;
+  background:linear-gradient(135deg,var(--accent),var(--accent2),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:.1em;margin-bottom:6px;
+}
+.page-sub{font-size:12px;color:var(--text2);letter-spacing:.12em;}
+
+/* 人物選択タブ */
+.person-tabs{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+  padding:20px 20px 0;
+  position:relative;z-index:10;
+}
+.person-tab{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:24px;
+  color:var(--text2);
+  font-family:'Noto Serif JP',serif;
+  font-size:12px;
+  padding:7px 18px;
+  cursor:pointer;
+  transition:all .25s;
+  letter-spacing:.05em;
+}
+.person-tab:hover{border-color:var(--accent);color:var(--accent);}
+.person-tab.active{
+  background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(232,121,249,0.2));
+  border-color:var(--accent);
+  color:var(--text);
+}
+.person-tab.add-btn{
+  border-style:dashed;
+  border-color:rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.25);
+  font-size:11px;
+}
+.person-tab.add-btn:hover{
+  border-color:rgba(167,139,250,0.4);
+  color:rgba(167,139,250,0.6);
+}
+
+/* スライダー全体 */
+.slider-wrap{
+  position:relative;
+  z-index:1;
+  padding:28px 0 0;
+}
+
+/* 星タブ（2段） */
+.star-tabs{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  padding:0 20px 16px;
+}
+.star-tab-row{
+  display:flex;
+  gap:6px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.star-tabs::-webkit-scrollbar{display:none;}
+.star-tab{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;
+  color:var(--text2);
+  font-family:'Noto Serif JP',serif;
+  font-size:11px;
+  padding:4px 12px;
+  cursor:pointer;
+  transition:all .2s;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.star-tab:hover{border-color:rgba(255,255,255,0.25);color:var(--text);}
+.star-tab.active{border-color:var(--accent);color:var(--accent);}
+
+/* スライドコンテナ */
+.slides-container{
+  overflow:hidden;
+  position:relative;
+}
+.slides-track{
+  display:flex;
+  transition:transform .4s cubic-bezier(.4,0,.2,1);
+}
+.slide{
+  min-width:100%;
+  padding:0 20px 40px;
+  display:flex;
+  justify-content:center;
+}
+
+/* カード */
+.card{
+  max-width:600px;
+  width:100%;
+  animation:fadeIn .4s ease both;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.card-header{text-align:center;margin-bottom:20px;}
+.star-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.4em;opacity:.65;margin-bottom:8px;}
+.star-number{font-family:'Cinzel',serif;font-size:72px;font-weight:700;line-height:1;margin-bottom:2px;}
+.star-name{font-size:24px;font-weight:500;color:var(--text);letter-spacing:.15em;margin-bottom:6px;}
+.star-desc{font-size:12px;color:var(--text2);letter-spacing:.06em;}
+
+/* 数字の層 */
+.layer-section{border-radius:12px;padding:16px 18px;margin-bottom:14px;}
+.layer-title{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.3em;opacity:.7;margin-bottom:12px;}
+.layer-nums{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.layer-num{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.layer-num-val{font-family:'Cinzel',serif;font-size:26px;font-weight:700;line-height:1;}
+.layer-num-desc{font-size:10px;color:var(--text2);text-align:center;line-height:1.3;}
+.layer-arrow{font-size:14px;color:rgba(255,255,255,0.2);margin-top:-4px;}
+.layer-result{display:flex;flex-direction:column;align-items:center;gap:3px;padding-left:10px;border-left:1px solid rgba(255,255,255,0.1);}
+.layer-result-val{
+  font-family:'Cinzel',serif;font-size:22px;font-weight:700;
+  background:linear-gradient(135deg,var(--gold),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.layer-result-desc{font-size:10px;color:var(--text2);text-align:center;}
+.layer-note{margin-top:12px;font-size:12px;color:#9991b0;line-height:1.8;padding-top:12px;border-top:1px solid rgba(255,255,255,0.05);}
+
+/* 実践の声 */
+.practice-section{border-radius:12px;padding:20px 22px;margin-bottom:14px;position:relative;overflow:hidden;}
+.practice-top-line{position:absolute;top:0;left:0;right:0;height:2px;}
+.practice-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.35em;opacity:.65;margin-bottom:4px;}
+.practice-sublabel{font-size:11px;color:var(--text2);margin-bottom:14px;letter-spacing:.04em;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.practice-text{font-size:14px;color:#ddd8ee;line-height:2;letter-spacing:.03em;font-style:italic;margin-bottom:14px;}
+.practice-result{background:rgba(255,255,255,0.03);border-radius:8px;padding:12px 14px;border-left:2px solid rgba(255,255,255,0.1);}
+.practice-result-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.2em;color:var(--text2);opacity:.6;margin-bottom:6px;}
+.practice-result-text{font-size:13px;color:#c4bdd8;line-height:1.85;}
+.practice-note{font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:14px;padding:10px 14px;background:rgba(167,139,250,0.06);border-radius:8px;border-left:2px solid rgba(167,139,250,0.25);}
+.voice-name{margin-top:12px;font-size:11px;color:var(--text2);letter-spacing:.1em;text-align:right;}
+
+/* あるある */
+.traits-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:14px;}
+.traits-title{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.3em;color:var(--gold);opacity:.8;margin-bottom:12px;}
+.trait-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;color:#d8d0ee;line-height:1.65;}
+.trait-item:last-child{border-bottom:none}
+.trait-dot{color:var(--gold);font-size:8px;margin-top:5px;flex-shrink:0;}
+
+/* ナビゲーション */
+.slide-nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  padding:8px 20px 24px;
+  position:relative;z-index:10;
+}
+.nav-arrow{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:50%;
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  font-size:16px;color:var(--text2);
+  transition:all .2s;
+  flex-shrink:0;
+}
+.nav-arrow:hover{border-color:var(--accent);color:var(--accent);}
+.nav-arrow:disabled{opacity:.25;cursor:default;}
+.dots{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:300px;}
+.dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.15);
+  cursor:pointer;transition:all .2s;
+  flex-shrink:0;
+}
+.dot.active{background:var(--accent);width:18px;border-radius:3px;}
+.slide-counter{
+  font-family:'Cinzel',serif;font-size:11px;color:var(--text2);
+  letter-spacing:.15em;opacity:.5;min-width:48px;text-align:center;
+}
+
+.card-footer{text-align:center;padding-top:8px;}
+.footer-tag{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.3em;color:var(--text2);opacity:.2;}
+
+/* RPGバッジ */
+.rpg-section{
+  border-radius:12px;
+  padding:16px 18px;
+  margin-bottom:14px;
+  position:relative;
+  overflow:hidden;
+}
+.rpg-section::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,currentColor,transparent);
+  opacity:0.4;
+}
+.rpg-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+.rpg-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 12px;
+  border-radius:20px;
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:.15em;
+  font-weight:600;
+  flex-shrink:0;
+}
+.rpg-slot-label{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:.3em;
+  opacity:.55;
+}
+.rpg-slot-name{
+  font-size:15px;
+  font-weight:500;
+  color:var(--text);
+  letter-spacing:.05em;
+  margin-bottom:6px;
+  line-height:1.4;
+}
+.rpg-slot-name em{
+  font-style:normal;
+  opacity:0.6;
+  font-size:13px;
+}
+.rpg-flavor{
+  font-size:12px;
+  color:#b0a8c8;
+  line-height:1.85;
+  border-top:1px solid rgba(255,255,255,0.05);
+  padding-top:10px;
+  margin-top:4px;
+}
+
+/* ===== 表紙 ===== */
+#cover{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:var(--bg);
+  overflow-y:auto;
+  transition:opacity .6s ease, visibility .6s ease;
+}
+#cover.hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+#main-content{
+  opacity:0;
+  transition:opacity .6s ease;
+}
+#main-content.visible{
+  opacity:1;
+}
+.cover-inner{
+  max-width:640px;
+  margin:0 auto;
+  padding:48px 24px 80px;
+  position:relative;
+  z-index:1;
+}
+.cover-en{
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:.5em;
+  color:var(--accent);
+  opacity:.6;
+  margin-bottom:12px;
+  text-align:center;
+}
+.cover-title{
+  font-family:'Cinzel',serif;
+  font-size:clamp(22px,5vw,34px);
+  font-weight:600;
+  background:linear-gradient(135deg,var(--accent),var(--accent2),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:.1em;
+  text-align:center;
+  margin-bottom:6px;
+  line-height:1.3;
+}
+.cover-sub{
+  font-size:12px;
+  color:var(--text2);
+  letter-spacing:.12em;
+  text-align:center;
+  margin-bottom:36px;
+}
+.cover-divider{
+  width:60px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  margin:0 auto 36px;
+}
+.cover-grid{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:40px;
+}
+.cover-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:12px;
+  padding:12px 16px;
+  transition:border-color .2s, background .2s;
+}
+.cover-row:hover{
+  background:rgba(255,255,255,0.045);
+  border-color:rgba(255,255,255,0.14);
+}
+.cover-planet-icon{
+  font-size:20px;
+  width:32px;
+  text-align:center;
+  flex-shrink:0;
+}
+.cover-planet-info{
+  flex:1;
+  min-width:0;
+}
+.cover-planet-name{
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:.25em;
+  margin-bottom:3px;
+}
+.cover-char-name{
+  font-size:14px;
+  color:var(--text);
+  font-weight:500;
+  letter-spacing:.04em;
+}
+.cover-rpg-tag{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:2px;
+  flex-shrink:0;
+}
+.cover-rpg-badge{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:.12em;
+  padding:3px 10px;
+  border-radius:12px;
+  white-space:nowrap;
+}
+.cover-rpg-slot{
+  font-size:11px;
+  color:var(--text2);
+  letter-spacing:.03em;
+  white-space:nowrap;
+  text-align:right;
+}
+.open-btn{
+  display:block;
+  width:auto;
+  max-width:320px;
+  margin:0 auto;
+  padding:12px 32px;
+  background:linear-gradient(135deg,rgba(167,139,250,0.15),rgba(232,121,249,0.15));
+  border:1px solid rgba(167,139,250,0.4);
+  border-radius:40px;
+  color:var(--text);
+  font-family:'Cinzel',serif;
+  font-size:12px;
+  letter-spacing:.25em;
+  text-align:center;
+  cursor:pointer;
+  transition:all .25s;
+  position:relative;
+  overflow:hidden;
+}
+.open-btn::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(232,121,249,0.2));
+  opacity:0;
+  transition:opacity .25s;
+}
+.open-btn:hover::before{ opacity:1; }
+.open-btn:hover{ border-color:rgba(167,139,250,0.8); transform:translateY(-2px); box-shadow:0 8px 32px rgba(167,139,250,0.2); }
+.open-btn:active{ transform:translateY(0); }
+.open-btn-sub{
+  display:block;
+  font-size:9px;
+  color:var(--text2);
+  letter-spacing:.15em;
+  margin-top:3px;
+  font-family:'Noto Serif JP',serif;
+}
+.back-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:20px;
+  color:var(--text2);
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:.2em;
+  padding:7px 16px;
+  cursor:pointer;
+  transition:all .2s;
+  margin-bottom:20px;
+}
+.back-btn:hover{ border-color:var(--accent); color:var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- ===== 表紙 ===== -->
+<div id="cover">
+  <div class="cover-inner">
+    <div class="cover-en">SUPER NUMEROLOGY SYSTEM</div>
+    <div class="cover-title">生命の樹</div>
+    <div class="cover-sub">Tree of Life — RPG Guide</div>
+    <div class="cover-divider"></div>
+    <button class="open-btn" onclick="openMain()" style="margin-bottom:28px;">
+      ▶ &nbsp; 実践の声を読む
+      <span class="open-btn-sub">それぞれの星をめくる</span>
+    </button>
+    <div id="cover-grid" class="cover-grid">
+      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.35em;color:var(--text2);opacity:.5;text-align:center;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.06);">
+        ✦ &nbsp; 生命の樹 — 各マスの役割 &nbsp; ✦
+      </div>
+    </div>
+
+    <!-- セフィロトの樹（月領域） -->
+    <div style="margin:0 auto 32px;max-width:320px;">
+      <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.3em;color:var(--accent);opacity:.6;text-align:center;margin-bottom:12px;">TREE OF LIFE — MOON DOMAIN</div>
+      <svg width="100%" viewBox="0 0 320 480" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="fade-top1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0a0a0f" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="#0a0a0f" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <!-- 上位パス -->
+        <g stroke="rgba(255,255,255,0.1)" stroke-width="0.8" fill="none">
+          <line x1="160" y1="28" x2="230" y2="70"/><line x1="160" y1="28" x2="90" y2="70"/>
+          <line x1="230" y1="70" x2="90" y2="70"/>
+          <line x1="230" y1="70" x2="160" y2="115"/><line x1="90" y1="70" x2="160" y2="115"/>
+          <line x1="160" y1="115" x2="230" y2="165"/><line x1="160" y1="115" x2="90" y2="165"/>
+          <line x1="230" y1="165" x2="90" y2="165"/>
+          <line x1="230" y1="165" x2="160" y2="210"/><line x1="90" y1="165" x2="160" y2="210"/>
+        </g>
+        <!-- 月領域パス -->
+        <g stroke="rgba(167,139,250,0.35)" stroke-width="0.8" fill="none">
+          <line x1="160" y1="210" x2="230" y2="255"/><line x1="160" y1="210" x2="90" y2="255"/>
+          <line x1="160" y1="210" x2="160" y2="310"/>
+          <line x1="230" y1="255" x2="90" y2="255"/>
+          <line x1="230" y1="255" x2="160" y2="310"/><line x1="90" y1="255" x2="160" y2="310"/>
+          <line x1="230" y1="255" x2="160" y2="390"/><line x1="90" y1="255" x2="160" y2="390"/>
+          <line x1="160" y1="310" x2="160" y2="390"/>
+        </g>
+        <!-- 上位ノード（霞む・うっすら見える） -->
+        <g opacity="0.45">
+          <circle cx="160" cy="28" r="16" fill="rgba(255,107,157,0.1)" stroke="#ff6b9d" stroke-width="0.8"/>
+          <text x="160" y="24" text-anchor="middle" font-family="serif" font-size="10" fill="#ff6b9d">♇</text>
+          <text x="160" y="35" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#ff6b9d">冥王星</text>
+          <circle cx="230" cy="70" r="16" fill="rgba(56,189,248,0.1)" stroke="#38bdf8" stroke-width="0.8"/>
+          <text x="230" y="66" text-anchor="middle" font-family="serif" font-size="10" fill="#38bdf8">⛢</text>
+          <text x="230" y="77" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#38bdf8">天王星</text>
+          <circle cx="90" cy="70" r="16" fill="rgba(99,102,241,0.1)" stroke="#6366f1" stroke-width="0.8"/>
+          <text x="90" y="66" text-anchor="middle" font-family="serif" font-size="10" fill="#6366f1">♆</text>
+          <text x="90" y="77" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#6366f1">海王星</text>
+          <circle cx="160" cy="115" r="12" fill="none" stroke="#c8b890" stroke-width="0.8" stroke-dasharray="2 2"/>
+          <text x="160" y="111" text-anchor="middle" font-family="serif" font-size="9" fill="#c8b890">♄</text>
+          <text x="160" y="121" text-anchor="middle" font-family="sans-serif" font-size="5.5" fill="#c8b890">土星</text>
+          <circle cx="230" cy="165" r="16" fill="rgba(34,197,94,0.1)" stroke="#22c55e" stroke-width="0.8"/>
+          <text x="230" y="161" text-anchor="middle" font-family="serif" font-size="10" fill="#22c55e">♃</text>
+          <text x="230" y="172" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#22c55e">木星</text>
+        </g>
+        <!-- フェードオーバーレイ（薄めに） -->
+        <rect x="30" y="0" width="260" height="185" fill="url(#fade-top1)" opacity="0.6"/>
+        <!-- 火星（月領域・鮮明） -->
+        <circle cx="90" cy="165" r="16" fill="rgba(239,68,68,0.18)" stroke="#ef4444" stroke-width="1.2"/>
+        <text x="90" y="161" text-anchor="middle" font-family="serif" font-size="10" fill="#ef4444">♂</text>
+        <text x="90" y="172" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#ef4444">火星</text>
+        <!-- 月領域ノード -->
+        <circle cx="160" cy="210" r="18" fill="rgba(249,115,22,0.18)" stroke="#f97316" stroke-width="1.2"/>
+        <text x="160" y="205" text-anchor="middle" font-family="serif" font-size="12" fill="#f97316">☉</text>
+        <text x="160" y="219" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#f97316">太陽</text>
+        <circle cx="230" cy="255" r="16" fill="rgba(245,200,66,0.18)" stroke="#f5c842" stroke-width="1.2"/>
+        <text x="230" y="250" text-anchor="middle" font-family="serif" font-size="11" fill="#f5c842">♀</text>
+        <text x="230" y="263" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#f5c842">金星</text>
+        <circle cx="90" cy="255" r="16" fill="rgba(72,219,173,0.18)" stroke="#48dbad" stroke-width="1.2"/>
+        <text x="90" y="250" text-anchor="middle" font-family="serif" font-size="11" fill="#48dbad">☿</text>
+        <text x="90" y="263" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#48dbad">水星</text>
+        <circle cx="160" cy="310" r="16" fill="rgba(59,130,246,0.18)" stroke="#3b82f6" stroke-width="1.2"/>
+        <text x="160" y="305" text-anchor="middle" font-family="serif" font-size="11" fill="#3b82f6">☽</text>
+        <text x="160" y="318" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#3b82f6">月</text>
+        <circle cx="160" cy="390" r="16" fill="rgba(232,121,249,0.18)" stroke="#e879f9" stroke-width="1.2"/>
+        <text x="160" y="385" text-anchor="middle" font-family="serif" font-size="11" fill="#e879f9">⊕</text>
+        <text x="160" y="398" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#e879f9">地球</text>
+        <!-- 月領域ラベル -->
+        <line x1="270" y1="200" x2="270" y2="408" stroke="rgba(167,139,250,0.2)" stroke-width="0.8" stroke-dasharray="2 2"/>
+        <text x="278" y="300" text-anchor="start" font-family="sans-serif" font-size="7" fill="rgba(167,139,250,0.5)" letter-spacing="1">MOON</text>
+        <text x="278" y="310" text-anchor="start" font-family="sans-serif" font-size="7" fill="rgba(167,139,250,0.5)" letter-spacing="1">DOMAIN</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 本編 ===== -->
+<div id="main-content">
+
+<div style="text-align:center;padding:24px 20px 0;position:relative;z-index:10;">
+  <button class="back-btn" onclick="closeCover()">← 生命の樹一覧へ戻る</button>
+</div>
+
+<div class="page-header">
+  <div class="page-en">SUPER NUMEROLOGY — LIFE TREE</div>
+  <div class="page-title">生命の樹 実践の声</div>
+  <div class="page-sub">キャラと星が、実生活でどう活きているか</div>
+</div>
+
+<!-- 人物選択タブ -->
+<div class="person-tabs" id="person-tabs">
+  <button class="person-tab active" onclick="selectPerson(0)">とぎや みつのぶ</button>
+  <button class="person-tab add-btn">＋ 追加予定</button>
+</div>
+
+<!-- スライダー -->
+<div class="slider-wrap">
+
+  <!-- 星タブ -->
+  <div class="star-tabs" id="star-tabs"></div>
+
+  <!-- ナビ -->
+  <div class="slide-nav">
+    <button class="nav-arrow" id="prev-btn" onclick="prevSlide()">←</button>
+    <div class="dots" id="dots"></div>
+    <button class="nav-arrow" id="next-btn" onclick="nextSlide()">→</button>
+  </div>
+
+  <!-- スライド -->
+  <div class="slides-container">
+    <div class="slides-track" id="slides-track"></div>
+  </div>
+
+</div>
+
+<script>
+// ===== データ =====
+const PERSONS = [
+  {
+    name: 'とぎや みつのぶ',
+    stars: [
+      {
+        planet: '太陽', planetEn: 'IDENTITY', icon: '☉',
+        num: 17, char: '闘士', desc: '心折れても、諦めず立ち上がる人',
+        color: '#f97316',
+        layer: { a:'1', aDesc:'意志\n先頭・開拓', b:'7', bDesc:'探究\n専門・内向き', result:'8', resultDesc:'統率\n結果・達成' },
+        layerNote: '自分の意志（1）で深く探究し（7）、実用的な結果を出す（8）。闘うのは相手ではなく、自分の限界と向き合い続けること。',
+        practiceLabel: '太陽＝核となるキャラクター・動機の源泉',
+        practiceText: 'やりたいと決めたら、寝食を忘れてそれだけをやり続けられる。結果がどうあれ、ストイックに向かうこと自体が喜びになっている。ゾーンに入る感覚、というのが一番近い。',
+        practiceResult: 'この超数秘術のシステム自体が、やりたいの果てに出来上がったもの。だから形はついてくる。本当にやりたいものであれば、エネルギーが尽きない。疲れるのはおかしい。疲れているなら、それは無理しているサイン。違うということ。',
+        traits: ['諦めず最前線で闘う。しんどい時ほどギアが上がる。','いきなり全力疾走する。助走がいらない。','出し惜しみせずに全て使う。手元に残さない。','逆境の火事場力がある。追い詰められてから本気になる。','何が実用的かを見極める。無駄に動かない。','目的達成を永久に繰り返す。ゴールしたら次のゴールへ。']
+      },
+      {
+        planet: '月', planetEn: 'EMOTION', icon: '☽',
+        num: 20, char: '僧侶', desc: '関係を調整して、場を調和する人',
+        color: '#3b82f6',
+        layer: { a:'2', aDesc:'調和\n仲介・寄り添い', b:'0', bDesc:'純化\n増幅', result:'2', resultDesc:'調整\n純粋な調和' },
+        layerNote: '0がつくことで2の性質が純化・増幅される。平和志向は意識してやっているというより、魂レベルで争いが苦手という感覚に近い。',
+        practiceLabel: '月＝感情・本音・プライベートの自分',
+        practiceText: '争いは好まない。周りがいがみ合っていたら、内心ずっと「仲良くしてほしい」と思っている。基本は友好的で、平和的でいたい。ただ向こうから仕掛けられたら、さすがに中立が揺らぐ時もある。',
+        practiceNote: '※ 下剋上してやろうという闘志は太陽17・闘士からくるもの。月20・僧侶はあくまで「平和でいたい」が本音。この二つが同じ人の中に共存しているのが、とぎやさんの星の面白さ。',
+        practiceResult: 'オブラートに包んだり、直接傷つけるような表現はしない。優しさと思いやり重視でいっている。追い込まれると人はおかしくなってしまう。安心できる何かであった方が、心の安寧を保てる。そういった気遣いを心がけている。',
+        traits: ['平穏で中庸の世界を望む。波風を立てたくない。','あまり表に感情を出さない。内心は豊かでも外には出にくい。','極度の忍耐強さがある。じっと待てる。','遅くても質の高さを求める。早さより丁寧さ。','友との共同創造に強い。一緒にやると力が出る。','利他の心を持っている。誰かのためが動機になりやすい。']
+      },
+      {
+        planet: '水星', planetEn: 'COMMUNICATION', icon: '☿',
+        num: 26, char: '秘書', desc: 'やるとそうでないを公平に仕分ける人',
+        color: '#48dbad',
+        layer: { a:'2', aDesc:'察する\n寄り添い', b:'6', bDesc:'整える\n場の判断', result:'8', resultDesc:'統率\n実用的に使う' },
+        layerNote: '場を読んで（2）、判断して（6）、必要なところだけ言葉を使う（8）。とぎやさんの場合、太陽17も同じ数秘8族。行動も言葉も、実用性で判断するという一貫したフィルターがこの人の中に流れている。',
+        practiceLabel: '水星＝思考・言葉・情報処理の仕方',
+        practiceText: '無駄なことは言わない。必要ないと思ったら沈黙でも全然かまわない。でも必要だと判断したら、とことん向き合うし話し合う。状況を見て使い分けている。',
+        practiceResult: '割り切ることで中身の厚みが出る。だらだらいくと全部が半端になって破綻する。着実に成立させる所を見極めることで、それ以外の時間に余裕が生まれてスムーズに事が運んでいく。休む時は休んで、動く時は動く。トータルの満足度が高い。',
+        traits: ['さり気ない気遣いができる。派手ではないが確実に気づいている。','裏で場の流れを把握する。表に出なくても全部見えている。','傾聴力があり、よく吸収する。喋るより聞く方が得意。','明確に公私混同しない。オンとオフの切り替えが明快。','不足を解消する能力が高い。何が足りないかを見抜く。','喋らないのは無関心じゃなく、精度を上げるための沈黙。']
+      },
+      {
+        planet: '金星', planetEn: 'BEAUTY & LOVE', icon: '♀',
+        num: 19, char: '賢者', desc: '未知へと踏み込んで、道にする人',
+        color: '#f5c842',
+        layer: { a:'1', aDesc:'独自\n先頭・革新', b:'9', bDesc:'成熟\n完結・包容', result:'1', resultDesc:'意志\n再び自分へ' },
+        layerNote: '完成されたもの（9）を、自分の角度（1）で再構築する美意識。完全な新しさよりも、温故知新的な工夫に惹かれる。',
+        practiceLabel: '金星＝好きなもの・美意識・惹かれるパターン',
+        practiceText: '斬新でちょっと変わった角度のものが好き。着こなしも少し崩してみたり、新しさの中に古さがあったり、工夫が凝らされているものに惹かれる。保守的で変わり映えのしないものは、興味の対象外。',
+        practiceResult: 'この世にありそうでなかったデザイン、世界を変えるような形を求めている。まだ見ぬ未来は自分の目で見ていき、作り出していく。既にあるものから選ぶのは二番煎じ。誰も知らないような、でもこの世界の核をつくようなところで生きたい。',
+        traits: ['知識と実践から知恵を導く。理論より体験で分かる。','完成像から物事を紐解く。最初にゴールが見える。','異なる事象に共通項を視る。バラバラなものを繋げる。','鋭い発言が核心をつく。余分なことを言わず刺さる。','逆をついて狙いを引き出す。普通の角度から入らない。','伏線や謎解きを好む。仕掛けのあるものが好き。']
+      },
+      {
+        planet: '火星', planetEn: 'ACTION', icon: '♂',
+        num: 25, char: '獣使い', desc: '奥深くの繊細な感覚を理解する人',
+        color: '#ef4444',
+        layer: { a:'2', aDesc:'察する\n感じる', b:'5', bDesc:'動く\n試す・変化', result:'7', resultDesc:'分析\n本質を掴む' },
+        layerNote: '感じて（2）、動いて（5）、本質に辿り着く（7）という行動の回路。理屈より先に体が感じていて、それを検証しながら動く。',
+        practiceLabel: '火星＝行動力・やる気の出どころ・動き方',
+        practiceText: '頭で考えないわけじゃないけど、最終的には嗅覚的な感覚を信じて動く。違和感やざわつきを感じることがあって、それが頭では説明できないことも多い。その感覚が何を示しているかで行動につながったり、逆に冷静にブレーキをかけてくれたりする。',
+        practiceResult: '内なる声を信頼して良かった場面はある。もし感覚がおかしい方向に動いた場合、火星なので衝突したり不調和が起こる。だからすぐに分かる。火星がエラーを教えてくれる。当たった時だけでなく、外れた時もすぐ反応が来るから信頼できる。',
+        traits: ['五感が鋭敏に発達している。細かいことに気づく。','予感や察知能力に長ける。来る前にわかる感じがある。','本能的に考えることが得意。頭より先に体が動く。','繊細すぎて騒音環境は苦手。場のノイズを拾いすぎる。','自然や動物と通じ合う。言葉より気配で伝わる。','本当は人が良く、根が優しい。見た目より柔らかい。']
+      },
+      {
+        planet: '地球', planetEn: 'MISSION', icon: '⊕',
+        num: 23, char: '魔術師', desc: '異なっても構わずで、成立させる人',
+        color: '#e879f9',
+        layer: { a:'2', aDesc:'つながり\n共存', b:'3', bDesc:'表現\n喜び・創造', result:'5', resultDesc:'自由\n変化・枠外' },
+        layerNote: '地球23の中に3が含まれている。とぎやさんの場合、土星で「表現しなくていい」と学びながら、地球では「表現を通って自由へ向かう」という螺旋になっている。これはこの人固有の星の構造から読めること。',
+        practiceLabel: '地球＝この人生でやること・現実での役割',
+        practiceText: '制限ある世界でも、ある程度は何でもできると思っている。だから思考をそこまで開いていく。限界を決めなくていい。周りと違っていることに惹かれるし、異なればむしろそれでいいとさえ思っている。誰かのモデルが参考にならない。でもそれでいい、そこを歩むのだと。変わり者が自分なんです。',
+        practiceResult: '概念が書き換わるブレイクスルーが来る。同じことは通用しなくなる。そうなった時、人に残されるのはその人としての可能性だけ。見た目も性格も何もかも違うのに、同じ人生でいいはずがない。違う個の可能性を活かして極めようというものを生み出し求めるのも、また人なんだと思う。',
+        traits: ['不可能が存在していない。できないという発想がない。','突飛で現実が追いつかない。発想が常に先を行っている。','柔軟に機転を利かせる。想定外でも何とかしてしまう。','留まり続けることが苦手。常に変化していたい。','掴み所のない所がある。一言では説明できない人と言われる。','常軌を逸し、新しい風となる。型破りが自然体。']
+      }
+    ]
+  }
+];
+
+// ===== 状態 =====
+let currentPerson = 0;
+let currentSlide = 0;
+
+// ===== レンダリング =====
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+// ===== RPGデータ =====
+const RPG_MAP = {
+  '太陽':  { badge:'⚔ MAIN WEAPON', slot:'メインウェポン / 武器', flavor:'人生の主人公としての「基本の戦い方」。ここを振らないと物語が始まらない。' },
+  '月':    { badge:'🌙 EMOTION CORE', slot:'本音 / 安全地帯', flavor:'疲れたとき、プライベートでどう回復するか。戦闘後に戻ってくる「拠点」の性質。' },
+  '水星':  { badge:'🧠 OS / STRATEGY', slot:'OS / 知略スキル', flavor:'状況をどう判断し、どう処理するか。戦場（現実）を最適化するための頭脳。' },
+  '金星':  { badge:'💛 HEALING MAGIC', slot:'回復魔法 / 美意識', flavor:'何を愛し、何に癒やされるか。自分と周りを「持続可能」にするための感性。' },
+  '火星':  { badge:'🔥 ATTACK BUFF', slot:'攻撃バフ / 突破力', flavor:'障害をぶち破る時のギア。ここが強いと「助走なし」で壁を壊せる。' },
+  '木星':  { badge:'🌐 AREA SKILL', slot:'広域スキル / 領土', flavor:'自分の力をどこまで広げ、誰を巻き込むか。社会的な影響力のサイズ。' },
+  '土星':  { badge:'⛓ CURSED ARMOR', slot:'縛りプレイ / 宿命', flavor:'神から与えられた「制限」。苦しいが、ここをクリアすると最強の防具になる。' },
+  '天王星':{ badge:'⚡ CHEAT CODE', slot:'チートコード / 変革', flavor:'常識を無視して盤面をひっくり返す力。突然のバグや覚醒はここから来る。' },
+  '海王星':{ badge:'🌊 GLOBAL SHARE', slot:'全マップ共有 / 祈り', flavor:'境界線を消し、目に見えない理（ことわり）と繋がる力。エゴを超えた視点。' },
+  '冥王星':{ badge:'💀 LAST SLASH', slot:'最後の一太刀 / 遺言', flavor:'全てを捨てても残る、究極の意志。死の淵で発動する、妥協なき決断。' },
+  '地球':  { badge:'🌍 MAIN QUEST', slot:'メインクエスト / 現実', flavor:'「現実という戦場」。すべての装備とスキルが試され、目に見える成果を出すべき場所。' },
+};
+
+function buildCard(star, personName) {
+  const c = star.color;
+  const ra = (a) => hexToRgba(c, a);
+  const rpg = RPG_MAP[star.planet] || null;
+
+  return `
+    <div class="card">
+      <div class="card-header">
+        <div class="star-label" style="color:${c}">${star.icon} ${star.planetEn} — ${star.planet}</div>
+        <div class="star-number" style="color:${c};filter:drop-shadow(0 0 20px ${ra(0.35)})">${star.num}</div>
+        <div class="star-name">${star.char}</div>
+        <div class="star-desc">${star.desc}</div>
+      </div>
+
+      ${rpg ? `
+      <div class="rpg-section" style="background:${ra(0.07)};border:1px solid ${ra(0.28)};color:${c};">
+        <div class="rpg-header">
+          <span class="rpg-badge" style="background:${ra(0.18)};border:1px solid ${ra(0.5)};color:${c};">${rpg.badge}</span>
+          <span class="rpg-slot-label">RPG で読む</span>
+        </div>
+        <div class="rpg-slot-name">${star.planet}（${star.num}・${star.char}）＝<em>${rpg.slot}</em></div>
+        <div class="rpg-flavor">${rpg.flavor}</div>
+      </div>
+      ` : ''}
+
+      <div class="layer-section" style="background:${ra(0.06)};border:1px solid ${ra(0.2)};">
+        <div class="layer-title" style="color:${c}">✦ 数字の層で読む　${star.layer.a}＋${star.layer.b}→${star.layer.result}</div>
+        <div class="layer-nums">
+          <div class="layer-num">
+            <div class="layer-num-val" style="color:${c}">${star.layer.a}</div>
+            <div class="layer-num-desc">${star.layer.aDesc.replace('\n','<br>')}</div>
+          </div>
+          <div class="layer-arrow">＋</div>
+          <div class="layer-num">
+            <div class="layer-num-val" style="color:${c}">${star.layer.b}</div>
+            <div class="layer-num-desc">${star.layer.bDesc.replace('\n','<br>')}</div>
+          </div>
+          <div class="layer-arrow">→</div>
+          <div class="layer-result">
+            <div class="layer-result-val">${star.layer.result}</div>
+            <div class="layer-result-desc">${star.layer.resultDesc.replace('\n','<br>')}</div>
+          </div>
+        </div>
+        <div class="layer-note">${star.layerNote}</div>
+      </div>
+
+      <div class="practice-section" style="background:var(--surface);border:1px solid ${ra(0.25)};">
+        <div class="practice-top-line" style="background:linear-gradient(90deg,transparent,${ra(0.5)},transparent);"></div>
+        <div class="practice-label" style="color:${c}">✦ ${personName} の場合</div>
+        <div class="practice-sublabel">${star.practiceLabel}</div>
+        <div class="practice-text">${star.practiceText}</div>
+        ${star.practiceNote ? `<div class="practice-note">${star.practiceNote}</div>` : ""}
+        <div class="practice-result" style="border-left-color:${ra(0.3)};">
+          <div class="practice-result-label">✦ 実践でどうなっているか</div>
+          <div class="practice-result-text">${star.practiceResult}</div>
+        </div>
+        <div class="voice-name">— ${personName}（${star.planet}${star.num}・${star.char}）</div>
+      </div>
+
+      <div class="traits-section">
+        <div class="traits-title">✦ ${star.char}（${star.num}）の人あるある</div>
+        ${star.traits.map(t=>`<div class="trait-item"><span class="trait-dot">✦</span>${t}</div>`).join('')}
+      </div>
+      <div class="card-footer"><div class="footer-tag">超数秘術 — SUPER NUMEROLOGY SYSTEM</div></div>
+    </div>
+  `;
+}
+
+function render() {
+  const person = PERSONS[currentPerson];
+  const track = document.getElementById('slides-track');
+  const starTabs = document.getElementById('star-tabs');
+  const dots = document.getElementById('dots');
+
+  // スライド生成
+  track.innerHTML = person.stars.map((star, i) =>
+    `<div class="slide">${buildCard(star, person.name)}</div>`
+  ).join('');
+
+  // 星タブ生成（1段）
+  const row1 = person.stars;
+  starTabs.innerHTML =
+    `<div class="star-tab-row">${row1.map((star,i) =>
+      `<button class="star-tab ${i===currentSlide?'active':''}" onclick="goToSlide(${i})">${star.icon} ${star.planet}${star.num}</button>`
+    ).join('')}</div>`;
+
+  // ドット生成
+  dots.innerHTML = person.stars.map((star, i) =>
+    `<div class="dot ${i===currentSlide?'active':''}" onclick="goToSlide(${i})"></div>`
+  ).join('');
+
+  updateSlide();
+}
+
+function updateSlide() {
+  const person = PERSONS[currentPerson];
+  const track = document.getElementById('slides-track');
+  const starTabs = document.querySelectorAll('.star-tab');
+  const dotEls = document.querySelectorAll('.dot');
+  const counter = document.getElementById('slide-counter');
+
+  track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+  starTabs.forEach((t,i) => t.classList.toggle('active', i===currentSlide));
+  dotEls.forEach((d,i) => d.classList.toggle('active', i===currentSlide));
+
+  document.getElementById('prev-btn').disabled = currentSlide === 0;
+  document.getElementById('next-btn').disabled = currentSlide === person.stars.length - 1;
+}
+
+function goToSlide(idx) {
+  currentSlide = idx;
+  updateSlide();
+  document.querySelector('.slides-container').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function prevSlide() {
+  if(currentSlide > 0) { currentSlide--; updateSlide(); }
+}
+
+function nextSlide() {
+  const person = PERSONS[currentPerson];
+  if(currentSlide < person.stars.length - 1) { currentSlide++; updateSlide(); }
+}
+
+function selectPerson(idx) {
+  currentPerson = idx;
+  currentSlide = 0;
+  document.querySelectorAll('.person-tab:not(.add-btn)').forEach((t,i) => t.classList.toggle('active', i===idx));
+  render();
+}
+
+// ===== 惑星日本語注釈 =====
+const PLANET_JA = {
+  '太陽': '核・アイデンティティ',
+  '月':   '感情・本音・プライベート',
+  '水星': '思考・言葉・情報処理',
+  '金星': '美意識・愛・惹かれるもの',
+  '火星': '行動力・突破・動き方',
+  '木星': '拡大・報酬・影響力',
+  '土星': '課題・制限・宿命',
+  '天王星':'変革・覚醒・予測不能',
+  '海王星':'境界消失・直感・祈り',
+  '冥王星':'変容・死と再生・魂の底',
+  '地球': '現実・使命・生き方',
+};
+
+// ===== 表紙グリッド =====
+function buildCoverGrid() {
+  const person = PERSONS[currentPerson];
+  const grid = document.getElementById('cover-grid');
+  if (!grid) return;
+
+  const label = `<div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.25em;color:var(--accent);text-align:center;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid rgba(167,139,250,0.2);">✦ &nbsp; 生命の樹 — 各マスの役割 &nbsp; ✦</div>`;
+
+  grid.innerHTML = label + person.stars.map(star => {
+    const rpg = RPG_MAP[star.planet] || { badge:'◆', slot:'—', flavor:'' };
+    const ja = PLANET_JA[star.planet] || '';
+    const c = star.color;
+    return `
+      <div class="cover-row" style="border-left:3px solid ${hexToRgba(c,0.5)};">
+        <div class="cover-planet-icon" style="color:${c}">${star.icon}</div>
+        <div class="cover-planet-info">
+          <div class="cover-planet-name" style="color:${c}">${star.planet} <span style="opacity:.5;font-size:9px;letter-spacing:.2em;">${star.planetEn}</span></div>
+          <div style="font-size:11px;color:#c4bdd8;letter-spacing:.04em;margin-top:1px;">${ja}</div>
+        </div>
+        <div class="cover-rpg-tag">
+          <div class="cover-rpg-badge" style="background:${hexToRgba(c,0.15)};border:1px solid ${hexToRgba(c,0.4)};color:${c};">${rpg.badge}</div>
+          <div class="cover-rpg-slot" style="color:#c4bdd8;">${rpg.slot}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function openMain() {
+  const cover = document.getElementById('cover');
+  const main = document.getElementById('main-content');
+  cover.classList.add('hidden');
+  main.classList.add('visible');
+  window.scrollTo(0, 0);
+}
+
+function closeCover() {
+  const cover = document.getElementById('cover');
+  const main = document.getElementById('main-content');
+  cover.classList.remove('hidden');
+  main.classList.remove('visible');
+  cover.scrollTo(0, 0);
+}
+
+// タッチスワイプ
+let touchStartX = 0;
+document.addEventListener('DOMContentLoaded', () => {
+  render();
+  buildCoverGrid();
+  const container = document.querySelector('.slides-container');
+  container.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+  container.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if(Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
+  }, {passive:true});
+});
+</script>
+</div><!-- /main-content -->
+
+<div style="text-align:center;padding:48px 24px 64px;border-top:1px solid rgba(255,255,255,0.06);margin-top:8px;">
+  <div style="font-size:13px;color:#9991b0;margin-bottom:8px;line-height:2;letter-spacing:.05em;">木星・土星・天王星・海王星・冥王星</div>
+  <div style="font-size:12px;color:rgba(245,200,66,0.5);margin-bottom:24px;letter-spacing:.08em;">上位領域の実践の声はこちら</div>
+  <a href="slider_rpg2.html" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,rgba(245,200,66,0.15),rgba(167,139,250,0.15));border:1px solid rgba(245,200,66,0.3);border-radius:10px;color:var(--gold);font-family:'Noto Serif JP',serif;font-size:14px;letter-spacing:.15em;text-decoration:none;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">上位領域へ →</a>
+  <div style="margin-top:48px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.04);">
+    <div style="font-size:13px;color:#9991b0;margin-bottom:20px;line-height:2;letter-spacing:.05em;">セッションを受けてみたい方へ</div>
+    <a href="price_list.html" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;color:#fff;font-family:'Noto Serif JP',serif;font-size:14px;letter-spacing:.15em;text-decoration:none;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">サービス案内を見る →</a>
+  </div>
+</div>
+
+</body>
+</html>

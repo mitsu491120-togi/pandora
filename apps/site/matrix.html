@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MATRIX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#0a0a0f;font-family:'Noto Sans JP',sans-serif;color:#e0e0e0;min-height:100vh}
+input{font-family:inherit}
+button{font-family:inherit}
+
+/* パスワード画面 */
+#pw-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;background:#0a0a0f}
+.pw-box{background:#111120;border:1px solid rgba(200,168,75,0.3);border-radius:16px;padding:40px 28px;width:100%;max-width:320px;box-shadow:0 4px 24px rgba(0,0,0,.1);text-align:center}
+.pw-title{font-family:'Cinzel',serif;font-size:14px;letter-spacing:.3em;color:#C8A84B;margin-bottom:6px}
+.pw-sub{font-size:11px;color:#666;margin-bottom:28px;letter-spacing:.05em}
+.pw-row{display:flex;gap:8px}
+.pw-input{flex:1;border:1.5px solid rgba(200,168,75,0.4);border-radius:8px;padding:11px 14px;font-size:14px;outline:none;color:#e0e0f0;background:#1a1a2e;transition:border-color .2s}
+.pw-input:focus{border-color:#C8A84B}
+.pw-btn{background:#C8A84B;border:none;color:#000;padding:11px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700}
+.pw-err{color:#ff6b6b;font-size:11px;margin-top:8px;display:none}
+
+/* メイン画面 */
+#main-screen{display:none}
+.top-bar{background:#111120;border-bottom:1px solid rgba(200,168,75,0.15);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.top-title{font-family:'Cinzel',serif;font-size:13px;font-weight:700;letter-spacing:.15em;color:#C8A84B}
+.top-actions{display:flex;gap:8px}
+.btn-sm{border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:#aaa;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:600}
+.btn-sm:active{background:rgba(255,255,255,0.1)}
+
+/* 入力エリア */
+.input-card{background:#111120;margin:12px;border-radius:12px;padding:16px;border:1px solid rgba(200,168,75,0.15)}
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.inp-label{font-size:10px;color:#cccccc;margin-bottom:4px;font-weight:600;letter-spacing:.05em}
+.inp-field{width:100%;border:1.5px solid rgba(167,139,250,0.3);border-radius:8px;padding:10px 12px;font-size:15px;color:#e0e0f0;outline:none;background:#0d0d20;transition:border-color .2s}
+.inp-field:focus{border-color:#a78bfa;background:#12122a}
+.rom-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.rom-box{background:#0a0a0f;border-radius:7px;padding:5px 10px;text-align:center}
+.rom-lbl{font-size:9px;color:#666;margin-bottom:1px}
+.rom-val{font-size:11px;color:#ffffff;font-weight:700}
+.calc-btn{width:100%;background:#E65100;color:#fff;border:none;border-radius:9px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.08em}
+.calc-btn:active{opacity:.85}
+
+/* カード共通 */
+.card{background:#111120;margin:0 12px 10px;border-radius:12px;border:1px solid rgba(255,255,255,0.07);overflow:hidden}
+.card-hdr{font-size:9px;color:#ffffff;text-align:center;padding:10px 0 0;letter-spacing:.15em;text-transform:uppercase;font-weight:700}
+
+/* ① 太陽・月カード */
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 12px 10px}
+.hero-card{background:#111120;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 10px;display:flex;align-items:center;gap:10px}
+.hero-icon{width:54px;height:54px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid rgba(255,255,255,0.2);background:#1a1a2e}
+.hero-icon img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.hero-body{flex:1;min-width:0}
+.hero-role{font-size:9px;font-weight:700;letter-spacing:.06em;margin-bottom:2px;color:#aaaaaa}
+.hero-num{font-size:22px;font-weight:900;line-height:1.1;color:#ffffff}
+.hero-name{font-size:12px;font-weight:700;color:#ffffff;margin-top:3px}
+
+/* ② 五行サークル */
+.gogyo-wrap{padding:12px 10px 14px}
+.gogyo-label{text-align:center;margin-top:10px}
+.gogyo-type-name{font-size:18px;font-weight:800;line-height:1;color:#ffffff}
+.gogyo-type-desc{font-size:11px;color:#dddddd;margin-top:4px;line-height:1.6}
+
+/* ③ ステータス */
+.status-wrap{padding:12px 14px}
+.status-note{font-size:9px;color:#aaaaaa;text-align:center;margin-bottom:10px;letter-spacing:.05em}
+.st-row{margin-bottom:9px}
+.st-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.st-left{display:flex;align-items:center;gap:6px}
+.st-num{font-size:12px;font-weight:900;min-width:16px;text-align:center}
+.st-name{font-size:13px;font-weight:700;color:#ffffff}
+.st-desc{font-size:10px;color:#aaaaaa}
+.st-pt{font-size:12px;font-weight:800}
+.st-track{background:rgba(255,255,255,0.08);border-radius:4px;height:7px;overflow:hidden}
+.st-bar{height:100%;border-radius:4px}
+.eval-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.eval-badge{font-size:10px;padding:3px 10px;border-radius:10px;border:1px solid;font-weight:600}
+
+/* ④ 生命の樹 */
+.tree-layout{display:flex;gap:8px;padding:10px 12px 12px;align-items:flex-start}
+.tree-main{flex:1}
+.tree-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-bottom:3px}
+.tree-cell{border-radius:7px;padding:6px 3px;text-align:center;border:1.5px solid}
+.tree-sym{font-size:11px;display:block;color:#ffffff}
+.tree-pname{font-size:7px;display:block;margin:1px 0;color:#ffffff}
+.tree-num{font-size:14px;font-weight:900;display:block;color:#ffffff}
+.tree-char{font-size:8px;display:block;font-weight:600;color:#ffffff}
+.tree-empty{background:transparent;border:none}
+.secrets-col{flex-shrink:0;width:76px;display:flex;flex-direction:column;gap:5px}
+.sec-cell{border-radius:8px;padding:8px 4px;text-align:center;border:1.5px solid}
+.sec-lbl{font-size:8px;font-weight:700;display:block;margin-bottom:3px;color:#ffffff}
+.sec-num{font-size:16px;font-weight:900;display:block;color:#ffffff;line-height:1}
+.sec-char{font-size:9px;display:block;font-weight:700;color:#ffffff;margin-top:2px}
+
+/* ⑤ BMS */
+.bms-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:10px 12px}
+.val-cell{border-radius:9px;padding:10px 6px;text-align:center;border:1.5px solid}
+.val-lbl{font-size:9px;font-weight:700;display:block;margin-bottom:4px;color:#ffffff}
+.val-num{font-size:20px;font-weight:900;display:block;color:#ffffff;line-height:1}
+.val-char{font-size:10px;display:block;font-weight:700;color:#ffffff;margin-top:3px}
+
+/* ⑥ アングル */
+.ang-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 12px}
+
+/* ⑦ 小惑星 */
+.misc-wrap{padding:8px 12px}
+.misc-row{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:5px}
+
+/* ⑧ キャラ一覧 */
+.char-toggle-btn{width:100%;background:#111120;border:none;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.07)}
+.char-toggle-title{font-size:11px;color:#ffffff;font-weight:700;letter-spacing:.08em}
+.char-toggle-arrow{font-size:11px;color:#ffffff}
+.char-body{display:none;padding:8px;background:#0d0d20}
+.char-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.char-item{border-radius:8px;overflow:hidden;border:1.5px solid rgba(255,255,255,0.1)}
+.char-item.sun-item{border-color:#f57c00;background:rgba(245,124,0,0.1)}
+.char-btn{width:100%;background:transparent;border:none;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;text-align:left}
+.char-btn-left{display:flex;align-items:center;gap:6px}
+.char-n{font-size:12px;font-weight:900;color:#ffffff;min-width:20px}
+.char-item.sun-item .char-n{color:#f57c00}
+.char-nm{font-size:12px;font-weight:700;color:#ffffff}
+.char-sun-badge{font-size:8px;background:#f57c00;color:#fff;padding:1px 5px;border-radius:6px;font-weight:700}
+.char-arr{font-size:10px;color:#ffffff}
+.char-traits{display:none;padding:0 10px 8px;background:#0a0a15;border-top:1px solid rgba(255,255,255,0.05)}
+.char-trait-item{font-size:10px;color:#ffffff;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.char-trait-item:last-child{border-bottom:none}
+
+/* ===== 全セル内テキスト強制白 ===== */
+.tree-cell *,
+.val-cell *,
+.sec-cell *,
+.misc-row .val-cell *,
+.hero-card .hero-num,
+.hero-card .hero-name,
+.hero-card .hero-role,
+.char-item .char-n,
+.char-item .char-nm,
+.char-item .char-arr,
+.char-traits .char-trait-item,
+.st-name, .st-desc,
+.gogyo-type-name, .gogyo-type-desc,
+.card-hdr,
+.rom-val,
+.status-note,
+.inp-label,
+.char-toggle-title,
+.char-toggle-arrow,
+.eval-badge {
+  color: #ffffff !important;
+}
+</style>
+</head>
+<body>
+
+<!-- パスワード画面 -->
+<div id="pw-screen">
+  <div class="pw-box">
+    <div class="pw-title">MATRIX</div>
+    <div class="pw-sub">開発者専用ツール</div>
+    <div class="pw-row">
+      <input type="password" id="pw" class="pw-input" placeholder="パスワード" onkeydown="if(event.key==='Enter')checkPw()">
+      <button class="pw-btn" onclick="checkPw()">入る</button>
+    </div>
+    <div class="pw-err" id="pw-err">パスワードが違います</div>
+  </div>
+</div>
+
+<!-- メイン画面 -->
+<div id="main-screen">
+  <div class="top-bar">
+    <div class="top-title">MATRIX</div>
+    <div class="top-actions">
+      <button class="btn-sm" id="reset-btn" style="display:none" onclick="doReset()">↺ リセット</button>
+      <a href="index.html" class="btn-sm" style="text-decoration:none;">⌂ ホーム</a>
+    </div>
+  </div>
+
+  <!-- 入力 -->
+  <div class="input-card">
+    <div class="input-grid">
+      <div>
+        <div class="inp-label">姓（せい）</div>
+        <input class="inp-field" id="sei" placeholder="とぎや"
+          oninput="updateRom()"
+          onkeydown="if(event.key==='Enter')document.getElementById('mei').focus()">
+      </div>
+      <div>
+        <div class="inp-label">名（なまえ）</div>
+        <input class="inp-field" id="mei" placeholder="みつのぶ"
+          oninput="updateRom()"
+          onkeydown="if(event.key==='Enter')doCalc()">
+      </div>
+    </div>
+    <div class="rom-row">
+      <div class="rom-box"><div class="rom-lbl">ローマ字（姓）</div><div class="rom-val" id="rs">—</div></div>
+      <div class="rom-box"><div class="rom-lbl">ローマ字（名）</div><div class="rom-val" id="rm">—</div></div>
+    </div>
+    <button class="calc-btn" onclick="doCalc()">▶ 算出する</button>
+  </div>
+
+  <!-- 結果 -->
+  <div id="result" style="display:none">
+
+    <!-- ① 太陽・月 -->
+    <div class="hero-grid">
+      <div class="hero-card">
+        <div class="hero-icon" id="sun-img"></div>
+        <div class="hero-body">
+          <div class="hero-role">☀ 太陽 / メイン</div>
+          <div class="hero-num" id="sun-num"></div>
+          <div class="hero-name" id="sun-name"></div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-icon" id="mon-img"></div>
+        <div class="hero-body">
+          <div class="hero-role">☽ 月 / 子ども</div>
+          <div class="hero-num" id="mon-num"></div>
+          <div class="hero-name" id="mon-name"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② 五行サークル -->
+    <div class="card">
+      <div class="card-hdr">五行タイプ</div>
+      <div class="gogyo-wrap">
+        <div id="gogyo-svg"></div>
+        <div class="gogyo-label">
+          <div class="gogyo-type-name" id="gogyo-name"></div>
+          <div class="gogyo-type-desc" id="gogyo-desc"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ 33ステータス -->
+    <div class="card">
+      <div class="card-hdr">33 Status</div>
+      <div class="status-wrap">
+        <div class="status-note">0:無理　1-2:苦手　3-4:普通　5-6:得意　7-8:天才　9以上:神</div>
+        <div id="status-bars"></div>
+        <div class="eval-row" id="eval-row"></div>
+      </div>
+    </div>
+
+    <!-- ④ 生命の樹 + S1〜S4 -->
+    <div class="card">
+      <div class="card-hdr">生命の樹</div>
+      <div class="tree-layout">
+        <div class="tree-main" id="tree"></div>
+        <div class="secrets-col" id="secrets-col"></div>
+      </div>
+    </div>
+
+    <!-- ⑤ 肉体・精神・魂 -->
+    <div class="card">
+      <div class="card-hdr">Body / Mind / Soul</div>
+      <div class="bms-grid" id="bms"></div>
+    </div>
+
+    <!-- ⑥ アングル -->
+    <div class="card">
+      <div class="card-hdr">Angle</div>
+      <div class="ang-grid" id="angles"></div>
+    </div>
+
+    <!-- ⑦ 小惑星・ノード・特殊天体 -->
+    <div class="card">
+      <div class="card-hdr">Asteroid / Node / Special</div>
+      <div class="misc-wrap" id="misc"></div>
+    </div>
+
+    <!-- ⑧ 33キャラ全一覧 -->
+    <div class="card" style="margin-bottom:40px">
+      <button class="char-toggle-btn" onclick="toggleChars()">
+        <span class="char-toggle-title">33キャラクター 全一覧</span>
+        <span class="char-toggle-arrow" id="char-arrow">▼</span>
+      </button>
+      <div class="char-body" id="char-body">
+        <div class="char-grid" id="char-grid"></div>
+      </div>
+    </div>
+
+  </div><!-- /result -->
+</div><!-- /main-screen -->
+
+<script>
+// ===================== 計算ロジック =====================
+var T2={'にゃ':'NYA','にゅ':'NYU','にょ':'NYO','びゃ':'BYA','びゅ':'BYU','びょ':'BYO','みゃ':'MYA','みゅ':'MYU','みょ':'MYO','ぎゃ':'GYA','ぎゅ':'GYU','ぎょ':'GYO','じゃ':'JA','じゅ':'JU','じょ':'JO','りゃ':'RYA','りゅ':'RYU','りょ':'RYO','ひゃ':'HYA','ひゅ':'HYU','ひょ':'HYO','ぴゃ':'PYA','ぴゅ':'PYU','ぴょ':'PYO','きゃ':'KYA','きゅ':'KYU','きょ':'KYO','ちゃ':'CHA','ちゅ':'CHU','ちょ':'CHO','しゃ':'SHA','しゅ':'SHU','しょ':'SHO'};
+var T1={'あ':'A','い':'I','う':'U','え':'E','お':'O','か':'KA','き':'KI','く':'KU','け':'KE','こ':'KO','さ':'SA','し':'SHI','す':'SU','せ':'SE','そ':'SO','た':'TA','ち':'CHI','つ':'TSU','て':'TE','と':'TO','な':'NA','に':'NI','ぬ':'NU','ね':'NE','の':'NO','は':'HA','ひ':'HI','ふ':'FU','へ':'HE','ほ':'HO','ま':'MA','み':'MI','む':'MU','め':'ME','も':'MO','や':'YA','ゆ':'YU','よ':'YO','ら':'RA','り':'RI','る':'RU','れ':'RE','ろ':'RO','わ':'WA','を':'WO','ん':'N','が':'GA','ぎ':'GI','ぐ':'GU','げ':'GE','ご':'GO','ざ':'ZA','じ':'JI','ず':'ZU','ぜ':'ZE','ぞ':'ZO','だ':'DA','ぢ':'JI','づ':'ZU','で':'DE','ど':'DO','ば':'BA','び':'BI','ぶ':'BU','べ':'BE','ぼ':'BO','ぱ':'PA','ぴ':'PI','ぷ':'PU','ぺ':'PE','ぽ':'PO'};
+var AL={};'abcdefghijklmnopqrstuvwxyz'.split('').forEach(function(c,i){AL[c]=String((i%9)+1);});
+
+function imgErr(el){el.parentNode.style.backgroundColor="#f0f0f0";el.style.display="none";}
+function k2h(s){return s.replace(/[\u30A1-\u30F6]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-0x60);});}
+function toRom(inp){
+  var s=k2h(inp),r='',i=0;
+  while(i<s.length){
+    if(i+1<s.length&&T2[s[i]+s[i+1]]){r+=T2[s[i]+s[i+1]];i+=2;continue;}
+    if(s[i]==='っ'){
+      var nx='';
+      if(i+1<s.length){if(i+2<s.length&&T2[s[i+1]+s[i+2]])nx=T2[s[i+1]+s[i+2]];else if(T1[s[i+1]])nx=T1[s[i+1]];}
+      r+=(nx.startsWith('CH')?'T':(nx[0]||''));i++;continue;
+    }
+    if(T1[s[i]]){r+=T1[s[i]];i++;continue;}
+    r+=s[i].toUpperCase();i++;
+  }
+  r=r.replace(/NB/g,'MB').replace(/NM/g,'MM').replace(/NP/g,'MP');
+  r=r.replace(/OO(?=.)/g,'O').replace(/OU/g,'O').replace(/UU/g,'U').replace(/AA/g,'A').replace(/EE/g,'E').replace(/II/g,'I');
+  return r;
+}
+function an(s,p){
+  var r=s.toLowerCase(),v={'a':1,'e':1,'i':1,'o':1,'u':1};
+  for(var c in AL){if(p==='1')r=r.split(c).join(AL[c]);else if(p==='2')r=r.split(c).join(v[c]?AL[c]:'');else if(p==='3')r=r.split(c).join(!v[c]?AL[c]:'');}
+  return r;
+}
+function m9(n){n=parseInt(n);if(n<1)n+=9;if(n>9){var r=n%9;return r===0?9:r;}return n;}
+function sp(s){return String(s).split('').reduce(function(a,c){return isNaN(c)?a:a+parseInt(c);},0);}
+function sd(n){while(n>=10){var s=0;while(n>0){s+=n%10;n=Math.floor(n/10);}n=s;}return n;}
+function g34(n){n=parseInt(n);return n>=34?sd(n):n;}
+function a34(arr){var r=0;for(var i=0;i<arr.length;i++){r+=arr[i];while(r>=34)r=sd(r);}return r;}
+function nc(s){var d1=+s[0],d2=+s[1],d3=+s[2];return ''+m9(d1+(5-d2))+m9(d2+(5-d3))+m9(d3+(5-d1));}
+function np(s){while(s.length>1){var r='';for(var i=1;i<s.length;i++)r+=String(m9(+s[i-1]+ +s[i]));s=r;}return s;}
+function dv(ns){var r=0;for(var i=0;i<String(ns).length;i++){var c=String(ns)[i];if(!/\d/.test(c))continue;r+=parseInt(c);while(r>=34)r=sd(r);}return r;}
+function m33(n){var r=n%33;return r===0?33:r;}
+function av(c){var i=c.charCodeAt(0)-65;return(i<0||i>25)?0:(i%9)+1;}
+function dGD(n){while(n>=10)n=Math.floor(n/10)+(n%10);return n||9;}
+
+function getSoulDigit(n){
+  if(n===10||n===20||n===30)return 0;
+  while(n>=10)n=Math.floor(n/10)+(n%10);
+  return n;
+}
+
+function calcAll(sR,mR){
+  var ln=an(sR,'1'),fn=an(mR,'1'),jn=ln+fn;
+  var pd=[];
+  for(var col=0;col<6;col++){var raw=0,row=0;while(col+row*6<jn.length){raw+=parseInt(jn[col+row*6]);row++;}pd.push(String(m9(sp(String(raw)))))}
+  var D21=g34(sp(pd.join('')));
+  var G16=''+m9(sp(ln))+m9(sp(fn))+m9(sp(jn));
+  var G17=''+m9(sp(an(sR+mR,'3')))+m9(sp(an(sR+mR,'2')))+m9(sp(an(sR+mR,'1')));
+  var G18=pd[2]+pd[1]+pd[0],G19=pd[5]+pd[4]+pd[3];
+  var H16=nc(G16),H17=nc(G17),H18=nc(G18),H19=nc(G19);
+  var F21=a34([+H16[0],+H17[0],+H18[0],+H19[0]]);
+  var G21=a34([+H16[1],+H17[1],+H18[1],+H19[1]]);
+  var H21=a34([+H16[2],+H17[2],+H18[2],+H19[2]]);
+  var c10=+H17[0],c12=+H17[1],c11=+H17[2];
+  var c13=+pd[0],c15=+pd[1],c16=+pd[2],c51=+pd[3],c31=+pd[4],c21=+pd[5];
+  var c41=m9(sp(String(D21))),c71=+H16[2];
+  var K19=a34([c11,c16,c41,c71]);
+  var K20=a34([c11,c21,c16,c41,c71]);
+  var tK20=a34([c11,c21,c41,c71]);
+  var l21=sd(sd(a34([c10,c51,c31]))+sd(a34([c12,c13,c15])));
+  var K21=a34([K20,l21]);
+  var G24=np(ln)+np(fn)+np(jn),H24=nc(G24);
+  var F25=a34([+H16[0],+H17[0],+H18[0],+H19[0],+H24[0]]);
+  var G25=a34([+H16[1],+H17[1],+H18[1],+H19[1],+H24[1]]);
+  var H25=a34([+H16[2],+H17[2],+H18[2],+H19[2],+H24[2]]);
+  var l27=sd(sd(a34([+H16[0],c51,c31]))+sd(a34([+H16[1],c13,c15])));
+  var H27=a34([K20,l27]);
+  var fr=(sR+mR).toUpperCase();
+  var pallas=a34([c10,c51,c31,+H16[1]]);
+  var juno=a34([c12,c13,c15,+H16[0]]);
+  var vH16=H17,vH17=H16;
+  var vc10=+vH17[0],vc12=+vH17[1],vc11=+vH17[2],vc16=+vH16[2];
+  var vK20mid=g34(vc11+c16+c41+c21+vc16);
+  var vleft21=sd(sd(a34([vc10,c51,c31]))+sd(a34([vc12,c13,c15])));
+  var vesta=g34(vleft21+vK20mid);
+  var ceresRom=fr;var ceresLen=ceresRom.length;
+  var ceresPos=[0,0,1,2,4,7,12,20];var ceres=0;
+  for(var ci=0;ci<ceresPos.length;ci++){var cp=ceresPos[ci]%ceresLen;var cidx=ceresRom[cp].charCodeAt(0)-65;var cv=(cidx<0||cidx>25)?0:cidx%9+1;ceres+=cv;while(ceres>=34)ceres=sd(ceres);}
+  // 肉体
+  var bl=0,br=fr.length-1,bres=0;
+  while(bl<=br){var lv=av(fr[bl]);if(bl===br)bres+=lv;else{var rv=av(fr[br]);var df=Math.abs(lv-rv);bres+=df===0?lv:df;}if(bres>=34)bres=sd(bres);bl++;br--;}
+  // 精神
+  var mr=0;for(var i=0;i<fr.length;i++){mr+=Math.abs(10-av(fr[i]));while(mr>=34)mr=sd(mr);}
+  // 魂
+  var sr=0;for(i=0;i<fr.length;i++){var vv=av(fr[i]);sr+=vv===5?5:Math.abs(5-vv);while(sr>=34)sr=sd(sr);}
+  // ASC
+  var ar=0;for(i=0;i<fr.length;i++){ar+=av(fr[i]);while(ar>=34)ar=sd(ar);}
+  // DSC
+  var dpr=av(fr[0]),dr=0;for(i=1;i<fr.length;i++){var dd=Math.abs(dpr-av(fr[i]));dr+=dd;while(dr>=34)dr=sd(dr);dpr=dd;}
+  // MC/IC
+  var vals=fr.split('').map(function(c){return av(c);});
+  var yang={1:1,3:1,6:1,8:1},yin={2:1,4:1,7:1,9:1};
+  function gtype(idx){if(yang[vals[idx]])return'y';if(yin[vals[idx]])return'n';for(var j=idx-1;j>=0;j--){if(yang[vals[j]])return'y';if(yin[vals[j]])return'n';}return'y';}
+  var mc=0,ic=0;
+  for(i=0;i<vals.length;i++){if(gtype(i)==='y'){mc+=vals[i];while(mc>=34)mc=sd(mc);}else{ic+=vals[i];while(ic>=34)ic=sd(ic);}}
+  var dH=dv(fn),dT=dv(ln);
+  var chiron=dv(an(sR+mR,'2')),lilith=dv(an(sR+mR,'3'));
+  var smN=tK20===33?27:33-tK20;
+  var s1=m33(tK20+F25+F21+K20),s2=m33(K19+H27+G25+G21);
+  var s3=m33(H25+H21+K21),s4=m33(tK20+F25+F21+K20+K19+H27+G25+G21+H25+H21+K21);
+  var vtx=m33(tK20+G25+F25),avt=m33(G21+F21+H27);
+  return{meiousei:K21,tennosei:H25,kaiousei:H21,dosei:H27,kasei:G25,moksei:G21,taiyou:K19,suisei:F25,kinsei:F21,tsuki:tK20,chikyuu:K20,dragonHead:dH,dragonTail:dT,chiron:chiron,lilith:lilith,sm:smN,secret1:s1,secret2:s2,secret3:s3,secret4:s4,vertex:vtx,avertex:avt,ceres:ceres,juno:juno,pallas:pallas,vesta:vesta,body:bres,mind:mr,soulNum:sr,ascNum:ar,dsc:dr,mc:mc,ic:ic};
+}
+
+// ===================== データ定義 =====================
+var CD={1:'軍師',2:'占い師',3:'道化師',4:'騎士',5:'冒険者',6:'村人',7:'弓使い',8:'親方',9:'聖職者',10:'開拓者',11:'詩人',12:'踊り子',13:'錬金術師',14:'海賊',15:'保護官',16:'考古学者',17:'闘士',18:'勇者',19:'賢者',20:'僧侶',21:'夢使い',22:'王様',23:'魔術師',24:'教師',25:'獣使い',26:'秘書',27:'侍',28:'将軍',29:'巫女',30:'発明家',31:'職人',32:'忍者',33:'召喚士'};
+
+var TRAITS={
+1:['ストレートで負けず嫌い','せっかちに先読みする','絶対的な存在である','不器用だが、決断力がある','常に本気で手加減が苦手','褒めると照れ、調子に乗る','場の影響を気にしない'],
+2:['白黒付かず流されやすい','叶うまで夢を信じている','一歩引いて協力する','我慢して背負う程に優しい','相対的な存在である','繊細に共感して人を支える','人と人を繋ぐ仲介役となる'],
+3:['楽しいことが大好き','感情・表情の表現が豊か','不機嫌になるとすねる','興味があると首を突っ込む','無邪気,天真爛漫,パワフル','ハマりやすく飽きやすい','素直で学びに貪欲である'],
+4:['基本に忠実で型に安心する','無理せず着実に計画を運ぶ','逆説的で論理的に考える','急がば回れの精神を持つ','勤勉だが,自己犠牲もある','冷静沈着で自制心が強い','頑固でゆずれない個性がある'],
+5:['幅広い知識と好奇心がある','衝動的に動く時は速い','場をあおり巻き込む','破壊による創造をする','無数の選択肢を持つ','拡散からの収集が付かない','気まぐれで愛嬌がある'],
+6:['安全や規則で命を守る','情が深く,お世話焼き','育成したり,原石を磨く','案内役の丁寧な解説をする','集合的な意識を大切にする','場の管理,標準の設定をする','備えあれば憂いなし'],
+7:['肉体の感覚が鋭い','自分特有のコツがある','道具を扱う技術が高い','ツンデレで神秘的で奥深い','研究気質で専門性に繋がる','静寂でないと気が散る','共感が困難で理解が難しい'],
+8:['能力の限界を把握している','現実的で理想を追わない','効率的に時間を使う','結果主義で達成度が高い','影で努力する野心家である','成功する事への執念が強い','子分には大盤振る舞いする'],
+9:['回復や治癒を得意とする','柔らかい雰囲気を持つ','観察した後に場を処理する','巨視で細かさを気にしない','非日常に没頭するのが好き','規格外の話を望んでいる','泰然自若で成熟している'],
+10:['再生力から現状打破する','生涯に一片の悔いなし','決断力と集中力がある','完璧な自分の世界がある','新進気鋭の創造者である','0か1で唯一無二でもある','全て自分の責任である'],
+11:['今という一瞬を捉える','情景から多くの情報を得る','想像力があり抽象度が高い','遠く果てしない理想がある','屈しない信念の強さがある','感受性が強く,閃きに優れる','高度な意図が可能である'],
+12:['躍動する楽しさを体現する','アイドルで注目されたい','表舞台で派手に振る舞う','色彩と修飾のセンスがある','話術を持ち,説得力がある','悪戯好きで天邪鬼でもある','反応が良く感情が隠せない'],
+13:['がらくたに価値を与える','工程の改善能力が高い','ユニークな技法を用いる','内部の構成に興味がある','自己研鑚をして熟練する','真実を求め,生死を考える','噛み合わぬ歯車は気付く'],
+14:['果てしないロマンを求める','生きていると肌で感じたい','恐怖よりも知りたいが勝る','大胆で刺激的で自由である','自立心旺盛で,視野が広い','旅が好きで,束縛を嫌う','実際の臨場感を大切にする'],
+15:['護る対象を定めると強い','手の届く範囲を大切にする','故郷や伝統を重んじる','熱血指導して正義を貫く','体を張って助けに行く','空回るほどの情熱がある','快適で健康な暮らしをする'],
+16:['凝り性で変な趣味がある','温故知新で歴史を活用する','周囲にも変人が集まる','専門的な分析が凄まじい','奇想天外に多く遭遇する','頼られるとお人好しになる','人生とは何かを追い求める'],
+17:['諦めず最前線で闘う','いきなり全力疾走する','出し惜しみせずに全て使う','逆境の火事場力がある','自身と結果を上手く結ぶ','何が実用的かを見極める','目的達成を永久に繰り返す'],
+18:['大志で多くを成し遂げる','経営者気質の視点を持つ','仲間想いで懐が深い','状況把握を得意とする','行動しながら考えている','開放的で,大体卒なくこなす','気さくだが,食わず嫌いする'],
+19:['知識と実践から知恵を導く','完成像から物事を紐解く','異なる事象に共通項を視る','伏線や謎解きを好む','予感は自分の目で検証する','鋭い発言が核心をつく','逆をついて狙いを引き出す'],
+20:['平穏で中庸の世界を望む','あまり表に感情を出さない','極度の忍耐強さがある','異なる環境でも息が長い','遅くても質の高さを求める','利他の心を持っている','友との共同創造に強い'],
+21:['理想と現実の境があいまい','効果より面白さをとる','サービス精神旺盛である','前向きで陽気で元気になる','シリアスな空気が苦手','誰とでも交流出来る','褒められると成長する'],
+22:['両極端を有する変態である','するしないの差が激しい','葛藤から自己矛盾が生じる','物事の裏表を捉える','退屈を嫌い,波乱万丈を歩む','敢えて狂気の選択をする','欲深くなかなか満足しない'],
+23:['不可能が存在していない','突飛で現実が追い付かない','柔軟に機転を利かせる','留まり続けることが苦手','多彩な引き出しを持つ','掴み所のない所がある','常軌を逸し,新しい風となる'],
+24:['教えることが好きである','要約が得意である','細かい所まで手が届く','絆を大切にする','愛情深く,好き嫌いが激しい','商才があり,美と健康に強い','見極めと育成の感覚が鋭い'],
+25:['五感が鋭敏に発達している','予感や察知能力に長ける','繊細すぎて騒音環境は苦手','色鮮やかに世界を捉える','本能的に考えることが得意','自然や動物と通じ合う','本当は人が良く,根が優しい'],
+26:['さり気ない気遣いが出来る','裏で場の流れを把握する','不足を解消する能力が高い','傾聴力があり,良く吸収する','依頼には協力を惜しまない','明確に公私混同しない','洗練の為に気が休まらない'],
+27:['独自の空間を展開する','求道者で修業はいとわない','礼儀正しく振る舞う','義理堅く恩を返す所がある','誠実に筋を通し,嘘を嫌う','覚悟すると一歩も引かない','個の力を人助けに使う'],
+28:['想いをまとめ,場を統率する','身の丈に合った役割をする','高い理想を現実に落とす','顔が利き,幅広い人脈を築く','行動や言動が最小限である','誇り高く,綺麗な華が好き','推測からの予想外に弱い'],
+29:['気付きを促すメッセンジャー','不可視の領域を捉える','他人をコピーして再現する','無意識に事が運んでいる','自我を通さずに直感する','エネルギーの流れを感じる','闇を光に変えることが可能'],
+30:['ハプニングを誘発する','予想外の仕上がりになる','爆発的な化学反応を起こす','本よりも動画の方が好き','興味の有無が明確である','一生懸命であり,強運を引く','多芸で飽きることがない'],
+31:['作品に愛着がある','組み合わせの相性が天才','型を追求して,型を超越する','建設物を分解して考える','階段状に基礎から積む','熟考している時間が好き','製作者の意図を大切にする'],
+32:['秘密を知る能力がある','読心術に長ける','新しさを感覚的に生み出す','自由自在に役を演じる','抜け道,裏技を見つけていく','偶然の縁が必然の様に来る','再現不可能な奇跡が多い'],
+33:['全存在と一緒に進んでいる','博愛主義で仲間外れを嫌う','全体像の大枠を捉えている','自分の軸が何か迷いやすい','理解を超えた体感がある','困難にすぐ助けが入る','愛し,愛され自然と徳を積む']
+};
+
+var SOUL_TYPES={0:{type:'木',en:'EVENT',jp:'出来事・変化',sub:'発展',subdesc:'既存の枠を超え、次の段階へ進む人',color:'#4caf7d'},1:{type:'火',en:'CHARACTER',jp:'登場人物・主役',sub:'人物',subdesc:'物語の中で意志を持ち、注目を集める人',color:'#e85d4a'},2:{type:'土',en:'SYSTEM',jp:'土台作り',sub:'詳細',subdesc:'細かい要素を付け加え、形を整えていく人',color:'#b8860b'},3:{type:'金',en:'PLAYER',jp:'使い手',sub:'遊び',subdesc:'好奇心のままに、あれこれ試してみる人',color:'#d4a017'},4:{type:'水',en:'MAJORITY',jp:'普及・広め役',sub:'理性',subdesc:'物事を整理し、判断の基準をつくる人',color:'#4a90d9'},5:{type:'木',en:'EVENT',jp:'出来事・変化',sub:'拡張',subdesc:'変化を起こし、可能性を広げていく人',color:'#4caf7d'},6:{type:'水',en:'MAJORITY',jp:'普及・広め役',sub:'感性',subdesc:'感覚や共感の喜びを周囲に伝えていく人',color:'#4a90d9'},7:{type:'金',en:'PLAYER',jp:'使い手',sub:'研究',subdesc:'仕組みや本質を深く掘り下げていく人',color:'#d4a017'},8:{type:'土',en:'SYSTEM',jp:'土台作り',sub:'機能',subdesc:'使えるかを見極め、無駄を削ぎ落とす人',color:'#b8860b'},9:{type:'火',en:'CHARACTER',jp:'登場人物・主役',sub:'物語',subdesc:'人生に光を当て、生き方をまとめる人',color:'#e85d4a'}};
+
+var PCD={meiousei:'#E53935',tennosei:'#0097A7',kaiousei:'#3949AB',dosei:'#7B1FA2',kasei:'#D32F2F',moksei:'#388E3C',taiyou:'#F57C00',suisei:'#1976D2',kinsei:'#C2185B',tsuki:'#5E35B1',chikyuu:'#558B2F'};
+var PKD=[['冥王星','meiousei','♇'],['天王星','tennosei','♅'],['海王星','kaiousei','♆'],['土星','dosei','♄'],['火星','kasei','♂'],['木星','moksei','♃'],['太陽','taiyou','☀'],['水星','suisei','☿'],['金星','kinsei','♀'],['月','tsuki','☽'],['地球','chikyuu','⊕']];
+var TRD=[{r:0,g:1,p:0},{r:1,g:0,p:1},{r:1,g:2,p:2},{r:2,g:1,p:3},{r:3,g:0,p:4},{r:3,g:2,p:5},{r:4,g:1,p:6},{r:5,g:0,p:7},{r:5,g:2,p:8},{r:6,g:1,p:9},{r:7,g:1,p:10}];
+var STD={1:{name:'意志',desc:'自分からはじめる',color:'#e53935'},2:{name:'調整',desc:'関係のバランスをとる',color:'#f57c00'},3:{name:'表現',desc:'感じたまま素直に出す',color:'#c8a000'},4:{name:'安定',desc:'基本の仕組みを作る',color:'#388e3c'},5:{name:'自由',desc:'枠にとらわれず変化する',color:'#0097a7'},6:{name:'奉仕',desc:'場に合った役を果たす',color:'#1976d2'},7:{name:'分析',desc:'考えて本質を見抜く',color:'#7b1fa2'},8:{name:'統率',desc:'管理して現実を回す',color:'#795548'},9:{name:'包容',desc:'ゆるして人生を流す',color:'#e91e8c'}};
+
+// ===================== UI制御 =====================
+function checkPw(){
+  if(document.getElementById('pw').value==='togi1120'){
+    document.getElementById('pw-screen').style.display='none';
+    document.getElementById('main-screen').style.display='block';
+    document.getElementById('sei').focus();
+  }else{
+    document.getElementById('pw-err').style.display='block';
+    document.getElementById('pw').value='';
+  }
+}
+document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')checkPw();});
+
+function updateRom(){
+  var sv=document.getElementById('sei').value.trim();
+  var mv=document.getElementById('mei').value.trim();
+  document.getElementById('rs').textContent=sv?toRom(sv):'—';
+  document.getElementById('rm').textContent=mv?toRom(mv):'—';
+}
+
+function doReset(){
+  document.getElementById('sei').value='';
+  document.getElementById('mei').value='';
+  document.getElementById('rs').textContent='—';
+  document.getElementById('rm').textContent='—';
+  document.getElementById('result').style.display='none';
+  document.getElementById('reset-btn').style.display='none';
+  document.getElementById('sei').focus();
+}
+
+function toggleChars(){
+  var b=document.getElementById('char-body');
+  var a=document.getElementById('char-arrow');
+  var open=b.style.display!=='none';
+  b.style.display=open?'none':'block';
+  a.textContent=open?'▼':'▲';
+}
+function toggleChar(n){
+  var b=document.getElementById('ct-'+n);
+  var a=document.getElementById('ca-'+n);
+  if(!b)return;
+  var open=b.style.display!=='none';
+  b.style.display=open?'none':'block';
+  a.textContent=open?'▼':'▲';
+}
+
+function valCell(v,c,l,cls){
+  cls=cls||'val-cell';
+  return '<div class="'+cls+'" style="background:'+c+'10;border-color:'+c+'50;">'+
+    '<span class="val-lbl" style="color:#ffffff">'+l+'</span>'+
+    '<span class="val-num" style="color:#ffffff">'+v+'</span>'+
+    '<span class="val-char" style="color:#ffffff">'+(CD[v]||'?')+'</span>'+
+  '</div>';
+}
+
+function doCalc(){
+  var sei=document.getElementById('sei').value.trim();
+  var mei=document.getElementById('mei').value.trim();
+  if(!sei||!mei){alert('姓と名を入力してください');return;}
+  var sR=toRom(sei),mR=toRom(mei);
+  document.getElementById('rs').textContent=sR;
+  document.getElementById('rm').textContent=mR;
+  var V=calcAll(sR,mR);
+  render(V);
+  document.getElementById('result').style.display='block';
+  document.getElementById('reset-btn').style.display='block';
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function render(V){
+  var sunN=V.taiyou,monN=V.tsuki;
+
+  // ① 太陽・月 画像カード
+  var sunPath='bg/'+sunN+'.'+CD[sunN]+'.png';
+  var monPath='child/'+monN+'.png';
+  document.getElementById('sun-img').innerHTML='<img src="'+sunPath+'" style="width:100%;height:100%;object-fit:cover;object-position:top center" onload="" onerror="imgErr(this)">';
+  document.getElementById('sun-num').textContent=sunN;
+  document.getElementById('sun-name').textContent=CD[sunN]||'?';
+  document.getElementById('mon-img').innerHTML='<img src="'+monPath+'" style="width:100%;height:100%;object-fit:cover;object-position:top center" onload="" onerror="imgErr(this)">';
+  document.getElementById('mon-num').textContent=monN;
+  document.getElementById('mon-name').textContent=CD[monN]||'?';
+
+  // ② 五行サークル（index.htmlのrenderSoulTypeSvg準拠）
+  var digit=getSoulDigit(sunN);
+  var st=SOUL_TYPES[digit];
+  var typeOrder=['木','火','土','金','水'];
+  var angles=[-90,-18,54,126,198];
+  var typeData={'木':{en:'EVENT',jp:'出来事・変化',color:'#5dc47a'},'火':{en:'CHARACTER',jp:'登場人物・主役',color:'#ff6b52'},'土':{en:'SYSTEM',jp:'土台作り',color:'#c8a456'},'金':{en:'PLAYER',jp:'使い手',color:'#e8d44d'},'水':{en:'MAJORITY',jp:'普及・広め役',color:'#5aaae8'}};
+  var subPairs={'火':['人物','物語'],'土':['詳細','機能'],'金':['遊び','研究'],'水':['理性','感性'],'木':['拡張','発展']};
+  var cx=160,cy=160,R=70;
+  var svg='<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;width:100%;max-width:320px;">';
+  svg+='<defs><filter id="gf"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+  svg+='<circle cx="'+cx+'" cy="'+cy+'" r="24" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>';
+  svg+='<text x="'+cx+'" y="'+(cy+6)+'" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="18" font-family="serif">☀</text>';
+  typeOrder.forEach(function(type,i){
+    var ang=angles[i]*Math.PI/180;
+    var gap=8,rx=42,ry=28;
+    var px=cx+(R+gap)*Math.cos(ang);
+    var py=cy+(R+gap)*Math.sin(ang);
+    var td=typeData[type];
+    var isActive=(type===st.type);
+    svg+='<ellipse cx="'+px+'" cy="'+py+'" rx="'+rx+'" ry="'+ry+'" fill="'+td.color+'" fill-opacity="'+(isActive?1:0.13)+'" stroke="'+td.color+'" stroke-opacity="'+(isActive?0:0.35)+'" stroke-width="1" transform="rotate('+(angles[i]+90)+','+px+','+py+')"'+(isActive?' filter="url(#gf)"':'')+'/>';
+    svg+='<text x="'+px+'" y="'+(py+5)+'" text-anchor="middle" fill="'+(isActive?'#fff':'#999')+'" font-size="'+(isActive?16:12)+'" font-weight="bold" font-family="\'Noto Sans JP\',sans-serif" opacity="'+(isActive?1:0.6)+'">'+type+'</text>';
+    var lx=cx+(R+rx+gap+24)*Math.cos(ang);
+    var ly=cy+(R+rx+gap+24)*Math.sin(ang);
+    svg+='<text x="'+lx+'" y="'+(ly-5)+'" text-anchor="middle" fill="'+(isActive?td.color:'#ccc')+'" font-size="'+(isActive?9:7)+'" font-weight="'+(isActive?'bold':'normal')+'" font-family="Cinzel,serif" opacity="'+(isActive?1:0.5)+'">'+td.en+'</text>';
+    svg+='<text x="'+lx+'" y="'+(ly+7)+'" text-anchor="middle" fill="'+(isActive?'#ffffff':'#bbb')+'" font-size="'+(isActive?8:6)+'" font-family="\'Noto Sans JP\',sans-serif" opacity="'+(isActive?0.9:0.4)+'">'+td.jp+'</text>';
+  });
+  svg+='</svg>';
+  document.getElementById('gogyo-svg').innerHTML=svg;
+  var gc=typeData[st.type].color;
+  var pair=subPairs[st.type]||[];
+  var subHtml=pair.map(function(s){
+    return s===st.sub
+      ?'<span style="background:'+gc+';color:#fff;font-weight:800;font-size:13px;padding:3px 12px;border-radius:16px;margin:0 3px;">'+s+' ✦</span>'
+      :'<span style="color:#aaa;font-size:12px;padding:3px 10px;border:1px solid #ddd;border-radius:16px;margin:0 3px;">'+s+'</span>';
+  }).join('');
+  document.getElementById('gogyo-name').innerHTML='<span style="color:'+gc+';font-size:20px;font-weight:900;">'+st.type+'タイプ</span> <span style="font-size:11px;color:#999;font-weight:400;">'+st.en+' / '+st.jp+'</span>';
+  document.getElementById('gogyo-desc').innerHTML='<div style="margin-bottom:8px;">'+subHtml+'</div><div style="font-size:12px;color:#555;line-height:1.7;">'+st.subdesc+'</div>';
+
+  // ③ 33ステータス
+  var a33=[V.meiousei,V.tennosei,V.kaiousei,V.dosei,V.kasei,V.moksei,V.taiyou,V.suisei,V.kinsei,V.tsuki,V.chikyuu,V.dragonHead,V.dragonTail,V.chiron,V.lilith,V.sm,V.secret1,V.secret2,V.secret3,V.secret4,V.vertex,V.avertex,V.ceres,V.juno,V.pallas,V.vesta,V.body,V.mind,V.soulNum,V.ascNum,V.dsc,V.mc,V.ic];
+  var pts={1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
+  a33.forEach(function(n){var d=dGD(n);pts[d]=(pts[d]||0)+1;});
+  var mp=Math.max.apply(null,[pts[1],pts[2],pts[3],pts[4],pts[5],pts[6],pts[7],pts[8],pts[9]]);
+  var sh='';
+  for(var i=1;i<=9;i++){
+    var sl=STD[i],pt=pts[i]||0,bw=mp>0?Math.round(pt/mp*100):0;
+    sh+='<div class="st-row">'+
+      '<div class="st-head">'+
+      '<div class="st-left">'+
+      '<span class="st-num" style="color:'+sl.color+'">'+i+'</span>'+
+      '<span class="st-name">'+sl.name+'</span>'+
+      '<span class="st-desc">'+sl.desc+'</span>'+
+      '</div><span class="st-pt" style="color:'+sl.color+'">'+pt+'pt</span></div>'+
+      '<div class="st-track"><div class="st-bar" style="width:'+bw+'%;background:'+sl.color+'"></div></div>'+
+    '</div>';
+  }
+  document.getElementById('status-bars').innerHTML=sh;
+  var z=a33.filter(function(n){return n===10||n===20||n===30;}).length;
+  var el=a33.filter(function(n){return n===11||n===22||n===29||n===33;}).length;
+  var o3=a33.filter(function(n){return n>=30&&n<=33;}).length;
+  document.getElementById('eval-row').innerHTML=[{l:'0系×'+z,c:'#666'},{l:'11系×'+el,c:'#9c27b0'},{l:'30超×'+o3,c:'#c8a000'}].map(function(x){return '<span class="eval-badge" style="color:'+x.c+';border-color:'+x.c+'">'+x.l+'</span>';}).join('');
+
+  // ④ 生命の樹
+  var rows={};
+  TRD.forEach(function(t){if(!rows[t.r])rows[t.r]=[null,null,null];rows[t.r][t.g]=t.p;});
+  var th='';
+  for(var r=0;r<=7;r++){
+    var row=rows[r]||[null,null,null];
+    th+='<div class="tree-row">';
+    for(var g=0;g<3;g++){
+      var pi=row[g];
+      if(pi!=null){
+        var nm=PKD[pi][0],key=PKD[pi][1],sym=PKD[pi][2],c=PCD[key],val=V[key];
+        th+='<div class="tree-cell" style="background:'+c+'12;border-color:'+c+'50;">'+
+          '<span class="tree-sym" style="color:#ffffff">'+sym+'</span>'+
+          '<span class="tree-pname" style="color:#ffffff">'+nm+'</span>'+
+          '<span class="tree-num" style="color:#ffffff">'+val+'</span>'+
+          '<span class="tree-char" style="color:#ffffff">'+(CD[val]||'?')+'</span>'+
+        '</div>';
+      }else{th+='<div class="tree-empty"></div>';}
+    }
+    th+='</div>';
+  }
+  document.getElementById('tree').innerHTML=th;
+
+  // S1〜S4 右側縦並び
+  var secs=[{k:'S4',key:'secret4',c:'#ad1457'},{k:'S3',key:'secret3',c:'#9c27b0'},{k:'S2',key:'secret2',c:'#7b1fa2'},{k:'S1',key:'secret1',c:'#5c35c8'}];
+  document.getElementById('secrets-col').innerHTML=secs.map(function(x){
+    return '<div class="sec-cell" style="background:'+x.c+'10;border-color:'+x.c+'50;">'+
+      '<span class="sec-lbl" style="color:#ffffff">'+x.k+'</span>'+
+      '<span class="sec-num" style="color:#ffffff">'+V[x.key]+'</span>'+
+      '<span class="sec-char" style="color:#ffffff">'+(CD[V[x.key]]||'?')+'</span>'+
+    '</div>';
+  }).join('');
+
+  // ⑤ 肉体・精神・魂
+  document.getElementById('bms').innerHTML=[{k:'肉体',key:'body',c:'#C8A84B'},{k:'精神',key:'mind',c:'#C8A84B'},{k:'魂',key:'soulNum',c:'#C8A84B'}].map(function(x){return valCell(V[x.key],x.c,x.k);}).join('');
+
+  // ⑥ アングル
+  document.getElementById('angles').innerHTML=[{k:'ASC',key:'ascNum',c:'#2e9d52'},{k:'DSC',key:'dsc',c:'#2e9d52'},{k:'MC',key:'mc',c:'#2e9d52'},{k:'IC',key:'ic',c:'#2e9d52'}].map(function(x){return valCell(V[x.key],x.c,x.k);}).join('');
+
+  // ⑦ 小惑星・ノード・特殊天体
+  var mgs=[
+    [{k:'セレス',key:'ceres',c:'#e91e8c'},{k:'ジュノー',key:'juno',c:'#e91e8c'},{k:'パラス',key:'pallas',c:'#e91e8c'},{k:'ベスタ',key:'vesta',c:'#e91e8c'}],
+    [{k:'ヘッド',key:'dragonHead',c:'#1565c0'},{k:'テイル',key:'dragonTail',c:'#0277bd'},{k:'キロン',key:'chiron',c:'#e53935'},{k:'リリス',key:'lilith',c:'#e53935'}],
+    [{k:'Vt',key:'vertex',c:'#f57c00'},{k:'AVt',key:'avertex',c:'#f57c00'},{k:'SM(月の影)',key:'sm',c:'#29b6f6'}]
+  ];
+  document.getElementById('misc').innerHTML=mgs.map(function(grp){
+    return '<div class="misc-row">'+grp.map(function(x){return valCell(V[x.key],x.c,x.k,'val-cell');}).join('')+'</div>';
+  }).join('');
+
+  // ⑧ 33キャラ全一覧（開閉・特徴付き）
+  document.getElementById('char-grid').innerHTML=Array.from({length:33},function(_,i){
+    var n=i+1,s=n===sunN;
+    var traits=TRAITS[n]||[];
+    return '<div class="char-item'+(s?' sun-item':'')+'">' +
+      '<button class="char-btn" onclick="toggleChar('+n+')">' +
+        '<div class="char-btn-left">' +
+          '<span class="char-n">'+n+'</span>' +
+          '<span class="char-nm">'+CD[n]+'</span>' +
+          (s?'<span class="char-sun-badge">太陽</span>':'') +
+        '</div>' +
+        '<span class="char-arr" id="ca-'+n+'">▼</span>' +
+      '</button>' +
+      '<div class="char-traits" id="ct-'+n+'">' +
+        traits.map(function(t){return '<div class="char-trait-item">・'+t+'</div>';}).join('') +
+      '</div>' +
+    '</div>';
+  }).join('');
+  // キャラ一覧は最初は閉じておく
+  document.getElementById('char-body').style.display='none';
+  document.getElementById('char-arrow').textContent='▼';
+}
+</script>
+</body>
+</html>
