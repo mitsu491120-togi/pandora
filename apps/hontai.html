@@ -855,11 +855,12 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
     </div>
     <div id="ai-flow-row" style="display:none;margin-top:14px;padding:14px 16px;border:1px solid rgba(167,139,250,0.2);border-radius:12px;background:rgba(167,139,250,0.04);">
       <div style="font-size:11px;letter-spacing:.3em;color:#a78bfa;font-family:'Cinzel',serif;margin-bottom:4px;">NEXT</div>
-      <div style="font-size:12px;color:#9991b0;line-height:1.8;margin-bottom:10px;">ここから先はAIとの対話です。ボタンを押すと、案内役のプロンプトとあなたの盤面がまとめてコピーされます。ChatGPTかClaudeを開いて、そのまま貼り付けてください。先生が教えるのは入門の範囲(太陽・ASC・月・SM)まで。地図の続きは、セッションの領域です。</div>
-      <div style="display:flex;gap:8px;">
-        <button onclick="goKansho()" style="flex:1;padding:12px;background:transparent;border:1px solid rgba(212,178,106,0.35);border-radius:10px;color:#d4b26a;font-size:13px;letter-spacing:.15em;cursor:pointer;">⛩ 関所へ</button>
-        <button onclick="goSensei()" style="flex:1;padding:12px;background:transparent;border:1px solid rgba(167,139,250,0.3);border-radius:10px;color:#a78bfa;font-size:13px;letter-spacing:.15em;cursor:pointer;">📖 先生へ</button>
+      <div style="font-size:12px;color:#9991b0;line-height:1.8;margin-bottom:10px;">ここから先はAIとの対話です。ボタンを押すと、案内役のプロンプトとあなたの盤面がまとめてコピーされます。ChatGPTかClaudeを開いて、そのまま貼り付けてください。</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button onclick="goSensei()" style="width:100%;padding:13px;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.4);border-radius:10px;color:#a78bfa;font-size:13px;letter-spacing:.1em;cursor:pointer;">📖 先生へ — 地図の読み方を学ぶ(入門・無料)</button>
+        <button onclick="goKansho()" style="width:100%;padding:13px;background:transparent;border:1px solid rgba(212,178,106,0.3);border-radius:10px;color:#d4b26a;font-size:13px;letter-spacing:.1em;cursor:pointer;">⛩ 関所へ — もっと深く関わりたくなったら</button>
       </div>
+      <div style="font-size:11px;color:#665f7a;line-height:1.7;margin-top:8px;">先生が読み解くのは入門の範囲(太陽・ASC・月・SM)まで。その先の地図——読み解きの続きは、関所の向こうのセッションの領域です。</div>
     </div>
     <div class="error" id="error-msg"></div>
   </div>
