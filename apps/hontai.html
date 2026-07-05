@@ -1174,10 +1174,10 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
       <div style="font-size:11px;letter-spacing:.3em;color:#a78bfa;font-family:'Cinzel',serif;margin-bottom:4px;">NEXT</div>
       <div style="font-size:12px;color:#9991b0;line-height:1.8;margin-bottom:10px;">ここから先はAIとの対話です。ボタンを押すと、案内役のプロンプトとあなたの盤面がまとめてコピーされます。ChatGPTかClaudeを開いて、そのまま貼り付けてください。</div>
       <div style="display:flex;flex-direction:column;gap:8px;">
-        <button onclick="goSensei()" style="width:100%;padding:13px;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.4);border-radius:10px;color:#a78bfa;font-size:13px;letter-spacing:.1em;cursor:pointer;">📖 先生へ — 地図の読み方を学ぶ(入門・無料)</button>
+        <button id="sensei-btn" onclick="goSensei()" style="width:100%;padding:13px;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.4);border-radius:10px;color:#a78bfa;font-size:13px;letter-spacing:.1em;cursor:pointer;">📖 先生へ — 地図の読み方を学ぶ(入門・無料)</button>
         <button onclick="goKansho()" style="width:100%;padding:13px;background:transparent;border:1px solid rgba(212,178,106,0.3);border-radius:10px;color:#d4b26a;font-size:13px;letter-spacing:.1em;cursor:pointer;">⛩ 関所へ — もっと深く関わりたくなったら</button>
       </div>
-      <div style="font-size:11px;color:#665f7a;line-height:1.7;margin-top:8px;">先生が読み解くのは入門の範囲(太陽・ASC・月・SM)まで。その先の地図——読み解きの続きは、関所の向こうのセッションの領域です。</div>
+      <div id="sensei-note" style="font-size:11px;color:#665f7a;line-height:1.7;margin-top:8px;">先生が読み解くのは入門の範囲(太陽・ASC・月・SM)まで。その先の地図——読み解きの続きは、関所の向こうのセッションの領域です。</div>
     </div>
 
     <div id="session-cta" style="margin-bottom:16px;padding:28px;background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(232,121,249,0.05));border:1px solid rgba(167,139,250,0.25);border-radius:16px;text-align:center;">
@@ -2459,6 +2459,7 @@ function calculate(){
   const rsr=document.getElementById('reset-share-row');
   rsr.style.display='flex';
   document.getElementById('ai-flow-row').style.display='block';
+  updateSenseiBtn();
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
@@ -2467,6 +2468,7 @@ function checkPassword(){
   const errEl=document.getElementById('pw-error');
   if(pw===PASSWORD){
     paidUnlocked=true;
+    updateSenseiBtn();
     document.getElementById('lock-section').style.display='none';
     document.getElementById('paid-section').style.display='block';
     if(currentVals){
@@ -2521,6 +2523,7 @@ function checkDeepPassword(){
   const errEl=document.getElementById('deep-pw-error');
   if(pw===PASSWORD_DEEP){
     deepUnlocked=true;
+    updateSenseiBtn();
     document.getElementById('deep-lock-section').style.display='none';
     document.getElementById('deep-section').style.display='block';
     document.getElementById('deep-grid-wrap').style.display='block';
@@ -4524,6 +4527,23 @@ function goKansho(){
   if(!currentVals) return;
   const text=KANSHO_PROMPT+'\n\n---\n\n'+buildBanmenText(currentVals);
   copyTextWithFallback(text,'関所のプロンプトと盤面をコピーしました。\n\nChatGPTかClaudeを開いて、新しい会話にそのまま貼り付けてください。関所での対話が始まります。');
+}
+
+function updateSenseiBtn(){
+  const btn=document.getElementById('sensei-btn');
+  const note=document.getElementById('sensei-note');
+  if(!btn) return;
+  const full=(typeof paidUnlocked!=='undefined'&&paidUnlocked)||(typeof deepUnlocked!=='undefined'&&deepUnlocked);
+  if(full){
+    btn.textContent='📖 先生へ — 全編(解錠済み・外付け脳つき)';
+    btn.style.borderColor='rgba(212,178,106,0.6)';
+    btn.style.color='#d4b26a';
+    btn.style.background='rgba(212,178,106,0.08)';
+    if(note) note.textContent='解錠済みのため、先生は全編(33席の読み解き・正典つき)で立ち上がります。';
+  } else {
+    btn.textContent='📖 先生へ — 地図の読み方を学ぶ(入門・無料)';
+    if(note) note.textContent='先生が読み解くのは入門の範囲(太陽・ASC・月・SM)まで。その先の地図——読み解きの続きは、関所の向こうのセッションの領域です。';
+  }
 }
 
 function goSensei(){
