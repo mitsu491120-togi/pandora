@@ -1699,8 +1699,8 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
       <a href="session/price_list.html" style="font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:.1em;color:var(--text2);text-decoration:none;opacity:.5;transition:opacity .2s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='.5'">サービス案内</a>
       <span style="color:rgba(255,255,255,0.1);">／</span>
       <a href="team.html" style="font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:.1em;color:var(--text2);text-decoration:none;opacity:.5;transition:opacity .2s;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='.5'">チームビルディング</a>
-      <span style="color:rgba(255,255,255,0.1);">／</span>
-      <a href="matrix.html" style="font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:.1em;color:var(--text2);text-decoration:none;opacity:.25;transition:opacity .2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='.25'">管理</a>
+      <span id="ops-sep" style="display:none;color:rgba(255,255,255,0.1);">／</span>
+      <a id="ops-link" href="matrix.html" style="display:none;font-family:'Noto Serif JP',serif;font-size:12px;letter-spacing:.1em;color:var(--text2);text-decoration:none;opacity:.25;transition:opacity .2s;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='.25'">管理</a>
     </nav>
 
     <!-- 超数秘術について -->
@@ -4639,6 +4639,12 @@ function shareCompat(){
 // URLパラメータで結果を表示
 window.addEventListener('load',()=>{
   switchTab('shindan');
+  // 運営用: #ops付きで開いたときだけ管理リンクを表示
+  if(location.hash==='#ops'){
+    const l=document.getElementById('ops-link'),sp=document.getElementById('ops-sep');
+    if(l){l.style.display='';}
+    if(sp){sp.style.display='';}
+  }
   const params=new URLSearchParams(window.location.search);
   const char=params.get('char');
   const a=params.get('a');
