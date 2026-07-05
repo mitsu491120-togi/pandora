@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lilith — 知識のかけら</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+JP:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;--surface:#111118;--surface2:#1a1a24;--border:rgba(180,160,255,0.15);
+  --accent:#a78bfa;--accent2:#e879f9;--gold:#f5c842;--text:#e8e4f0;--text2:#9991b0;
+  --lilith:#9060a0;--moon:#c8d8f0;--saturn:#c8b890;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Noto Serif JP',serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(1px 1px at 18% 14%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 44% 6%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 72% 20%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 90% 8%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 6% 42%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 52% 38%,rgba(255,255,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 80% 48%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 28% 68%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 65% 75%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 88% 72%,rgba(255,255,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 40% 90%,rgba(255,255,255,.3) 0%,transparent 100%);pointer-events:none;z-index:0}
+
+.container{max-width:720px;margin:0 auto;padding:60px 24px 120px;position:relative;z-index:1}
+.nav{display:flex;align-items:center;gap:8px;margin-bottom:60px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.3em;color:var(--text2)}
+.nav a{color:var(--accent);text-decoration:none;opacity:.7;transition:opacity .2s}.nav a:hover{opacity:1}
+.nav-sep{opacity:.3}
+
+header{text-align:center;padding-bottom:72px;border-bottom:1px solid rgba(255,255,255,0.04);margin-bottom:72px}
+.frag-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;opacity:.7}
+h1{font-family:'Cinzel',serif;font-size:clamp(22px,4vw,34px);font-weight:400;color:var(--text);letter-spacing:.15em;margin-bottom:8px}
+.h1-sub{font-family:'EB Garamond',serif;font-style:italic;font-size:17px;color:var(--text2);letter-spacing:.1em;margin-bottom:32px}
+.header-desc{font-size:14px;color:#9991b0;line-height:2.2;letter-spacing:.06em;max-width:500px;margin:0 auto}
+
+.section{margin-bottom:88px}
+.section-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:28px;opacity:.7;display:flex;align-items:center;gap:12px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.prose{font-size:14px;color:#c4bdd8;line-height:2.6;letter-spacing:.07em;margin-bottom:24px}
+.prose em{font-style:normal;color:var(--text)}
+
+/* 消化と昇華の図 */
+.digestion-flow{
+  display:flex;
+  align-items:center;
+  gap:0;
+  margin:40px 0;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.07);
+}
+.digestion-step{
+  flex:1;
+  padding:24px 16px;
+  text-align:center;
+  position:relative;
+}
+.digestion-step-1{background:rgba(200,112,144,0.06)}
+.digestion-step-2{background:rgba(167,139,250,0.06)}
+.digestion-step-3{background:rgba(100,200,150,0.06)}
+.digestion-arrow{
+  font-size:16px;
+  color:rgba(255,255,255,0.15);
+  flex-shrink:0;
+  padding:0 4px;
+}
+.digestion-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px;opacity:.7}
+.digestion-label-1{color:#c87090}
+.digestion-label-2{color:var(--accent)}
+.digestion-label-3{color:#64c896}
+.digestion-word{font-size:15px;color:var(--text);letter-spacing:.08em;margin-bottom:8px}
+.digestion-desc{font-size:11px;color:#9991b0;line-height:1.8;letter-spacing:.04em}
+
+/* 感情の速度 */
+.velocity-box{
+  background:rgba(200,216,240,0.05);
+  border:1px solid rgba(200,216,240,0.18);
+  border-radius:12px;
+  padding:28px;
+  margin:32px 0;
+}
+.velocity-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.25em;color:var(--moon);text-transform:uppercase;margin-bottom:16px}
+.velocity-text{font-size:13px;color:#c4bdd8;line-height:2.2;letter-spacing:.06em}
+.velocity-text em{font-style:normal;color:var(--moon)}
+
+/* 月とリリスの関係図 */
+.moon-lilith{
+  display:grid;
+  grid-template-columns:1fr 48px 1fr;
+  gap:0;
+  align-items:start;
+  margin:40px 0;
+}
+.ml-box{border-radius:12px;padding:24px 20px}
+.ml-box-moon{background:rgba(200,216,240,0.06);border:1px solid rgba(200,216,240,0.2)}
+.ml-box-lilith{background:rgba(144,96,160,0.06);border:1px solid rgba(144,96,160,0.2)}
+.ml-arrow{display:flex;align-items:center;justify-content:center;padding-top:32px;color:rgba(255,255,255,0.2);font-size:20px}
+.ml-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.25em;text-transform:uppercase;margin-bottom:12px}
+.ml-label-moon{color:var(--moon)}
+.ml-label-lilith{color:var(--lilith)}
+.ml-title{font-size:15px;color:var(--text);letter-spacing:.08em;margin-bottom:12px}
+.ml-desc{font-size:12px;color:#9991b0;line-height:1.9;letter-spacing:.05em}
+
+/* 逃避パターン */
+.escape-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin:32px 0;
+}
+@media(max-width:500px){.escape-grid{grid-template-columns:1fr}}
+
+.escape-box{border-radius:12px;padding:22px 18px}
+.escape-box-depend{background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2)}
+.escape-box-reject{background:rgba(232,120,100,0.06);border:1px solid rgba(232,120,100,0.2)}
+.escape-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
+.escape-label-depend{color:var(--accent)}
+.escape-label-reject{color:#e87a64}
+.escape-title{font-size:14px;color:var(--text);letter-spacing:.08em;margin-bottom:12px}
+.escape-items{list-style:none}
+.escape-items li{font-size:12px;color:#c4bdd8;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);line-height:1.8;display:flex;gap:8px;align-items:flex-start}
+.escape-items li:last-child{border-bottom:none}
+.escape-items li::before{font-size:8px;margin-top:4px;flex-shrink:0}
+.escape-box-depend .escape-items li::before{content:'●';color:var(--accent)}
+.escape-box-reject .escape-items li::before{content:'●';color:#e87a64}
+
+/* 泥沼ブロック */
+.swamp-block{
+  background:rgba(60,40,80,0.4);
+  border:1px solid rgba(144,96,160,0.25);
+  border-radius:14px;
+  padding:32px;
+  margin:40px 0;
+  position:relative;
+  overflow:hidden;
+}
+.swamp-block::before{
+  content:'';
+  position:absolute;
+  bottom:-30px;left:-30px;
+  width:120px;height:120px;
+  background:radial-gradient(circle,rgba(144,96,160,0.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+.swamp-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.3em;color:var(--lilith);text-transform:uppercase;margin-bottom:16px;opacity:.8}
+.swamp-text{font-size:14px;color:#b8a8c8;line-height:2.5;letter-spacing:.06em}
+.swamp-text em{font-style:normal;color:#d4c0e0}
+
+/* 時間の幻想 */
+.illusion-block{
+  margin:40px 0;
+  border-left:2px solid rgba(245,200,66,0.3);
+  padding-left:24px;
+}
+.illusion-quote{
+  font-family:'EB Garamond',serif;
+  font-style:italic;
+  font-size:18px;
+  color:#d8d0a0;
+  line-height:2;
+  letter-spacing:.08em;
+  margin-bottom:16px;
+}
+.illusion-text{font-size:13px;color:#9991b0;line-height:2.1;letter-spacing:.06em}
+
+/* 核心ブロック */
+.core-block{
+  background:rgba(245,200,66,0.04);
+  border:1px solid rgba(245,200,66,0.18);
+  border-radius:16px;
+  padding:36px 32px;
+  margin:48px 0;
+}
+.core-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;margin-bottom:20px;opacity:.7}
+.core-text{font-size:14px;color:#d8d0ee;line-height:2.6;letter-spacing:.07em}
+.core-text em{font-style:normal;color:var(--gold)}
+
+/* 光のブロック */
+.light-block{
+  text-align:center;
+  padding:40px 32px;
+  background:rgba(144,96,160,0.04);
+  border:1px solid rgba(144,96,160,0.15);
+  border-radius:16px;
+  margin:40px 0;
+}
+.light-symbol{font-size:32px;margin-bottom:20px;opacity:.6;color:var(--lilith)}
+.light-title{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.25em;color:var(--lilith);text-transform:uppercase;margin-bottom:20px}
+.light-text{font-size:14px;color:#c4bdd8;line-height:2.5;letter-spacing:.07em;max-width:480px;margin:0 auto}
+.light-text em{font-style:normal;color:#d4b8e0}
+
+.closing{text-align:center;padding:56px 0 0;border-top:1px solid rgba(255,255,255,0.04)}
+.closing-text{font-family:'EB Garamond',serif;font-style:italic;font-size:19px;color:var(--text2);line-height:2.2;letter-spacing:.08em}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <nav class="nav">
+    <a href="index.html">超数秘術</a>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--text2);">知識のかけら</span>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--text);">Lilith</span>
+  </nav>
+
+  <header>
+    <div class="frag-label">Fragments — Knowledge IV</div>
+    <h1>Lilith</h1>
+    <div class="h1-sub">消化と昇華、逃避の迷宮、そして出口</div>
+    <div class="header-desc">
+      感情は流れるものだ。ただし、見て見ぬふりをした分だけ、どこかに溜まっていく。リリスはその溜まり場だ。
+    </div>
+  </header>
+
+  <!-- Prologueからの橋渡し -->
+  <div style="margin-bottom:72px;padding:28px 32px;background:rgba(167,139,250,0.04);border:1px solid rgba(167,139,250,0.12);border-radius:14px;">
+    <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.35em;color:var(--accent);text-transform:uppercase;margin-bottom:16px;opacity:.6">← Prologueから来た人へ</div>
+    <div style="font-size:14px;color:#b8b0d0;line-height:2.4;letter-spacing:.07em;">
+      建前の自分と、本音の自分が分離しているかもしれない——そう認めた先にあるのが、ここだ。<br>
+      リリスは、見て見ぬふりをしてきたものが溜まっていく場所だ。
+    </div>
+  </div>
+
+  <!-- 消化と昇華 -->
+  <div class="section">
+    <div class="section-label">消化は昇華</div>
+
+    <div class="prose">感情は本来、移ろいゆくものだ。波のように来て、去っていく。それ自体に意志はなく、ただそこを通り過ぎようとしている。</div>
+    <div class="prose">問題は、通り過ぎさせないときに起きる。見て見ぬふりをする、蓋をする、忙しさで紛らわす。そうすると感情は消えず、消化されないまま体の中に残る。消化不良だ。</div>
+
+    <div class="digestion-flow">
+      <div class="digestion-step digestion-step-1">
+        <div class="digestion-label digestion-label-1">感じきる</div>
+        <div class="digestion-word">体内で受け取る</div>
+        <div class="digestion-desc">中途半端にせず、その感情をそのまま感じる。否定せず、逃げず、ただそこにある</div>
+      </div>
+      <div class="digestion-arrow">→</div>
+      <div class="digestion-step digestion-step-2">
+        <div class="digestion-label digestion-label-2">消化</div>
+        <div class="digestion-word">処理される</div>
+        <div class="digestion-desc">感じきることで自然に処理が起きる。そこにあったものが薄れていく</div>
+      </div>
+      <div class="digestion-arrow">→</div>
+      <div class="digestion-step digestion-step-3">
+        <div class="digestion-label digestion-label-3">昇華</div>
+        <div class="digestion-word">引っかかりが消える</div>
+        <div class="digestion-desc">同じ出来事があっても感情的に揺れない。または揺れてもすぐに戻る</div>
+      </div>
+    </div>
+
+    <div class="prose">感じきることと消化することは同じだ。そして消化することで、想いは昇華する。忘れるのではない。そこに対する引っかかりがなくなる。強烈な好き嫌い、激しい反応が薄れる。出来事があっても、感情的になることがなくなっていく。</div>
+
+    <div class="velocity-box">
+      <div class="velocity-label">昇華の指標</div>
+      <div class="velocity-text">昇華が進むと、<em>揺れてもフラットに戻るまでの速さが変わる。</em>完全に揺れなくなるのではなく、戻ってくるまでの時間が異常に短くなる。それが消化されているかどうかの、ひとつの目安になる。</div>
+    </div>
+  </div>
+
+  <!-- 月とリリス -->
+  <div class="section">
+    <div class="section-label">月とリリス</div>
+
+    <div class="prose">リリスは月と切り離せない。月が逃避した先、抑圧した先がリリスだ。土星が内なる光と影の「影」であるとすれば、リリスは本体から切り離された分離した自分の残影だ。同じ影でも、質が違う。</div>
+
+    <div class="moon-lilith">
+      <div class="ml-box ml-box-moon">
+        <div class="ml-label ml-label-moon">☽ Moon</div>
+        <div class="ml-title">感情の本体</div>
+        <div class="ml-desc">安全と安心を求める。満たされないとき、その痛みから逃げようとする。逃げた先がリリスになる。</div>
+      </div>
+      <div class="ml-arrow">→</div>
+      <div class="ml-box ml-box-lilith">
+        <div class="ml-label ml-label-lilith">⚸ Lilith</div>
+        <div class="ml-title">逃避した先の残影</div>
+        <div class="ml-desc">切り離された自分の一部。見たくないもの、認めたくないものが流れ着く場所。放置すると泥沼化する。</div>
+      </div>
+    </div>
+
+    <div class="prose">リリスに流れ着いたものは、二つのパターンで現れる。依存と拒絶だ。</div>
+
+    <div class="escape-grid">
+      <div class="escape-box escape-box-depend">
+        <div class="escape-label escape-label-depend">依存パターン</div>
+        <div class="escape-title">ぬるい場所に留まる</div>
+        <ul class="escape-items">
+          <li>同じ傷を持つ者同士で傷をなめ合う</li>
+          <li>自分の程度を恥じなくていい環境を選ぶ</li>
+          <li>プライドは守られるが、成長はない</li>
+          <li>感覚が麻痺していき、違和感すら感じなくなる</li>
+          <li>堕落が習慣になり、習慣が正常になる</li>
+        </ul>
+      </div>
+      <div class="escape-box escape-box-reject">
+        <div class="escape-label escape-label-reject">拒絶パターン</div>
+        <div class="escape-title">上書きして隠す</div>
+        <ul class="escape-items">
+          <li>無理やり克服しようとして別の自分を作る</li>
+          <li>建前の自分、フェイクの自分が表に出る</li>
+          <li>本命ではないので何をしても満たされない</li>
+          <li>虚しさが慢性化するが原因が見えない</li>
+          <li>隠すためにさらに別のことをし続ける</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="prose">どちらも完全な悪ではない。依存には繋がりがある。拒絶には意志がある。ただ、それが本来の自分への道になっていないとき、リリスは迷宮になる。</div>
+  </div>
+
+  <!-- 泥沼 -->
+  <div class="section">
+    <div class="section-label">迷宮化する前に</div>
+
+    <div class="swamp-block">
+      <div class="swamp-label">リリスの深部</div>
+      <div class="swamp-text">
+        放置したリリスは、時間とともに複雑化する。依存と拒絶が入り混じり、本当の動機が見えなくなる。感じなくなる。何が問題だったかすら、わからなくなる。<br><br>
+        <em>これは意志の弱さではない。</em>構造の話だ。長く積み重なったものは、それ自体が一つの現実として機能し始める。その中にいる人間には、外側が見えない。<br><br>
+        目をそむけたくなるような真実がそこにある。でも、その奥底のグロテスクなものに向き合うことこそが、本来の自分へ戻る道筋だ。無明の闇の中に、一筋の光がある。
+      </div>
+    </div>
+
+    <div class="prose">では手遅れはあるのか。それはわからない。ただ言えることがある。手遅れかどうかより、<em>今この瞬間に気づけるかどうか</em>だ。過去の長さは、今向き合えるかどうかとは別の話だ。</div>
+  </div>
+
+  <!-- 時間の幻想 -->
+  <div class="section">
+    <div class="section-label">時間という幻想</div>
+
+    <div class="illusion-block">
+      <div class="illusion-quote">「ずっと続けてきたから、今更やめられない。」</div>
+      <div class="illusion-text">これは強力な信念だ。しかし信念であって、事実ではない。続けてきた時間の長さは、今この瞬間に変われるかどうかとは無関係だ。</div>
+    </div>
+
+    <div class="prose">2020年以降、地の時代から風の時代へ移行した。大きなリセットが起きた。しかしそれは、ある意味で毎年・毎月・毎日・毎瞬間起きていることの、スケールの大きな版に過ぎない。本当はいつでも変われる可能性がある。</div>
+    <div class="prose">ただし、長く浸かっているほど、変われないという幻想の密度が上がる。その幻想自体がリリスの泥沼の一部だ。幻想は強烈に感じられる。まるで現実のように。だからこそ、そこから出るには相当の何かが必要になる。</div>
+
+    <div class="core-block">
+      <div class="core-label">諦めという出口</div>
+      <div class="core-text">
+        出口の一つは、諦めだ。ただし自暴自棄の諦めではない。<em>底まで行った、という意味での諦め。</em><br><br>
+        これ以上の底はない。抵抗し続けることに意味がない。そう知ったとき、人は初めて手を下ろせる。サレンダーと同じ構造だ。日本語の「諦め」の語源は「明らめ」——現実をそのまま明らかに見ること。<br><br>
+        開き直りでも逃げでもなく、<em>ただ、今ここにある現実を見ること。</em>それが、リリスの迷宮を出るための最初の一歩かもしれない。
+      </div>
+    </div>
+  </div>
+
+  <!-- 光 -->
+  <div class="section">
+    <div class="section-label">残影を受け入れる</div>
+
+    <div class="prose">リリスは切り離された自分の残影だ。見たくなかったもの、認めたくなかったもの。でもそれも自分の一部だ。</div>
+    <div class="prose">完全な逃避でもなく、完全な孤立でもなく。揺れている自分がいることを認める。そんな自分にも居場所がある。その許容、その赦しこそが、闇を直視するための本物の強さだ。</div>
+
+    <div class="light-block">
+      <div class="light-symbol">⚸</div>
+      <div class="light-title">無明の闇の中の一筋の光</div>
+      <div class="light-text">
+        蜘蛛の糸のように細いかもしれない。でもそれを掴めたとき、それは強靭な綱になる。<br><br>
+        <em>光は外から来るのではない。闇の中に向き合い続けた先に、もともとそこにあったものが見えてくる。</em><br><br>
+        リリスは問題ではない。まだ統合されていない自分だ。<br><br>
+        そしてここはもう一つの意味を持つ。依存も拒絶も、建前も虚構も——それらはすべてリリスの領域で起きている。だからリリスと向き合うことは、虚構から現実へ戻るための、最後の砦だ。
+      </div>
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="closing-text">
+      見たくないものの中に、<br>
+      本来の自分がいる。
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

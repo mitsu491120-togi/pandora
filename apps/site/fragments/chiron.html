@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chiron — 知識のかけら</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+JP:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;--surface:#111118;--surface2:#1a1a24;--border:rgba(180,160,255,0.15);
+  --accent:#a78bfa;--accent2:#e879f9;--gold:#f5c842;--text:#e8e4f0;--text2:#9991b0;--glow:rgba(167,139,250,0.2);
+  --taiyo:#e87a64;--shoin:#c8b890;--shoyo:#a0c8f0;--taiin:#c8a0f0;--chiron-color:#f5c842;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Noto Serif JP',serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(1px 1px at 12% 18%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 38% 6%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 62% 14%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 82% 8%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 94% 32%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 6% 48%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 45% 42%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 25% 76%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 58% 72%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 78% 86%,rgba(255,255,255,.4) 0%,transparent 100%);pointer-events:none;z-index:0}
+.container{max-width:760px;margin:0 auto;padding:60px 24px 120px;position:relative;z-index:1}
+.nav{display:flex;align-items:center;gap:8px;margin-bottom:60px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.3em;color:var(--text2)}
+.nav a{color:var(--accent);text-decoration:none;opacity:.7;transition:opacity .2s}.nav a:hover{opacity:1}
+.nav-sep{opacity:.3}
+header{text-align:center;padding-bottom:64px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:64px}
+.frag-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;opacity:.7}
+h1{font-family:'Cinzel',serif;font-size:clamp(22px,4vw,34px);font-weight:400;color:var(--text);letter-spacing:.15em;margin-bottom:8px}
+.h1-sub{font-family:'EB Garamond',serif;font-style:italic;font-size:17px;color:var(--text2);letter-spacing:.1em;margin-bottom:32px}
+.header-desc{font-size:14px;color:#9991b0;line-height:2.2;letter-spacing:.06em;max-width:520px;margin:0 auto}
+.section{margin-bottom:80px}
+.section-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:24px;opacity:.7;display:flex;align-items:center;gap:12px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.prose{font-size:14px;color:#c4bdd8;line-height:2.4;letter-spacing:.06em;margin-bottom:20px}
+
+/* 図 */
+.chiron-diagram{margin:40px 0 56px}
+.chiron-diagram svg{width:100%;height:auto;display:block}
+
+/* 四象カード */
+.symbol-card{border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.07);margin-bottom:6px;cursor:pointer;transition:border-color .25s,box-shadow .25s}
+.symbol-card:hover{border-color:rgba(255,255,255,0.15)}
+.symbol-card.open{box-shadow:0 4px 32px rgba(0,0,0,0.5);margin-bottom:16px}
+.symbol-card-header{display:grid;grid-template-columns:6px 1fr}
+.symbol-bar{width:6px;flex-shrink:0}
+.symbol-header-inner{display:flex;align-items:center;gap:16px;padding:18px 20px;background:rgba(255,255,255,0.02)}
+.symbol-yinyang{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;opacity:.6;flex-shrink:0;width:44px;line-height:1.5;text-align:center}
+.symbol-name-block{flex:1}
+.symbol-name-ja{font-size:15px;color:var(--text);letter-spacing:.1em;margin-bottom:3px}
+.symbol-name-en{font-family:'EB Garamond',serif;font-style:italic;font-size:12px;color:var(--text2);letter-spacing:.1em}
+.symbol-tags{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.symbol-tag{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.15em;padding:3px 8px;border-radius:20px;text-transform:uppercase;white-space:nowrap}
+.gender-male{background:rgba(160,200,240,0.1);border:1px solid rgba(160,200,240,0.25);color:#a0c8f0}
+.gender-female{background:rgba(240,160,200,0.1);border:1px solid rgba(240,160,200,0.25);color:#f0a0c8}
+.symbol-arrow{font-size:10px;color:var(--text2);margin-left:8px;transition:transform .25s;flex-shrink:0}
+.symbol-card.open .symbol-arrow{transform:rotate(180deg)}
+.symbol-body{display:none;padding:24px 24px 28px;background:rgba(0,0,0,0.2);border-top:1px solid rgba(255,255,255,0.05)}
+.symbol-card.open .symbol-body{display:block}
+.symbol-desc{font-size:13px;color:#b8b0d0;line-height:2.3;letter-spacing:.06em;margin-bottom:20px}
+.symbol-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+@media(max-width:500px){.symbol-grid{grid-template-columns:1fr}}
+.symbol-box{border-radius:8px;padding:14px;margin-bottom:10px}
+.box-asteroid{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);grid-column:1/-1}
+.box-fear{background:rgba(232,120,100,0.06);border:1px solid rgba(232,120,100,0.18)}
+.box-bug{background:rgba(232,120,100,0.06);border:1px solid rgba(232,120,100,0.18)}
+.box-restore{background:rgba(100,200,150,0.06);border:1px solid rgba(100,200,150,0.18)}
+.box-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.25em;margin-bottom:10px;text-transform:uppercase}
+.box-label-gold{color:var(--gold)}.box-label-red{color:#e87a64}.box-label-green{color:#64c896}
+.box-text{font-size:13px;color:#c4bdd8;line-height:2;letter-spacing:.05em}
+.box-items{list-style:none}
+.box-items li{font-size:12px;color:#c4bdd8;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:flex-start;gap:6px;line-height:1.7}
+.box-items li:last-child{border-bottom:none}
+.box-items li::before{font-size:8px;margin-top:4px;flex-shrink:0}
+.box-fear .box-items li::before,.box-bug .box-items li::before{content:'●';color:#e87a64}
+.box-restore .box-items li::before{content:'✦';color:#64c896}
+
+/* キロン核心 */
+.chiron-core{background:rgba(245,200,66,0.04);border:1px solid rgba(245,200,66,0.2);border-radius:16px;padding:32px;text-align:center;margin:40px 0}
+.chiron-core-symbol{font-size:32px;margin-bottom:16px;color:var(--gold);font-family:'Cinzel',serif;letter-spacing:.1em}
+.chiron-core-title{font-family:'Cinzel',serif;font-size:13px;letter-spacing:.2em;color:var(--gold);margin-bottom:20px;text-transform:uppercase}
+.chiron-core-text{font-size:14px;color:#c4bdd8;line-height:2.4;letter-spacing:.06em;max-width:520px;margin:0 auto}
+.chiron-core-text em{font-style:normal;color:var(--gold)}
+.emotion-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;margin-bottom:16px}
+.emotion-badge-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.2em;color:var(--text2);text-transform:uppercase}
+.emotion-badge-value{font-size:13px;color:var(--text);letter-spacing:.08em}
+.closing{text-align:center;padding:48px 0 0;border-top:1px solid rgba(255,255,255,0.06)}
+.closing-text{font-family:'EB Garamond',serif;font-style:italic;font-size:18px;color:var(--text2);line-height:2;letter-spacing:.08em}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <nav class="nav">
+    <a href="index.html">超数秘術</a>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--text2);">知識のかけら</span>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--text);">Chiron</span>
+  </nav>
+
+  <header>
+    <div class="frag-label">Fragments — Knowledge II</div>
+    <h1>Chiron</h1>
+    <div class="h1-sub">根源の恐れと四象の統合</div>
+    <div class="header-desc">
+      傷は個人のものではない。<br>
+      キロンが長く留まった星座には、人類が積み重ねてきた<br>
+      集合的な恐れが宿っている。<br>
+      四象と小惑星は、その恐れがどこに現れるかを示す地図だ。
+    </div>
+  </header>
+
+  <div class="section">
+    <div class="section-label">キロンとは</div>
+    <div class="prose">キロンは約50年で太陽を一周する小惑星だが、その軌道は均等ではない。魚座、水瓶座、牡羊座、牡牛座——この4つの星座に特に長く留まり、他では短期間しか滞在しない。</div>
+    <div class="prose">長く留まるほど、その場所のエネルギーが人類の集合意識に刻み込まれていく。世代を超えて積み重なった恐れ。人類の歴史はとんでもなく長い。その分だけ、ここに蓄積されたものも分厚い。</div>
+    <div class="prose">重要なのはここだ。これは個人の傷の話ではない。</div>
+    <div class="prose">その人が個人的にその恐れを経験していなくても関係ない。四象のどこかが弱っているとき、集合意識に蓄積された該当する恐れの周波数と共鳴が起きる。まるで自分の傷のように感じるが、それは個人のものではなく、人類が長い歴史の中で積み上げてきた集合的なネガティブな意識が、その人の四象の弱い部分に流れ込んでくるものだ。</div>
+    <div class="prose">アンテナが立っているところに電波が入るように。個人レベルでいくら努力しても解決しきれない感じがするのは、そのためだ。相手は個人の問題ではなく、人類の歴史の重さだから。</div>
+    <div class="prose">キロンの本質は「傷を持つ癒し手」だ。この星は、その集合的な恐れを個人が引き受けて通り抜けるための鍵を示している。</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">四象への派生</div>
+    <div class="prose">易の四象——太陽・少陰・少陽・太陰——は、陰と陽が分化した最初の形だ。キロンはその分化の大元、陰陽が統合される場所に位置している。四象はキロンから派生し、それぞれが男性性・女性性の陰陽の側面を担う。</div>
+
+    <div class="chiron-diagram">
+      <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow-gold"><feGaussianBlur stdDeviation="4" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glow-soft"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <radialGradient id="bg-grad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(245,200,66,0.06)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/></radialGradient>
+        </defs>
+        <ellipse cx="350" cy="210" rx="200" ry="160" fill="url(#bg-grad)"/>
+        <line x1="350" y1="185" x2="530" y2="95" stroke="rgba(232,122,100,0.35)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <line x1="350" y1="235" x2="530" y2="325" stroke="rgba(200,184,144,0.35)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <line x1="350" y1="185" x2="170" y2="95" stroke="rgba(160,200,240,0.35)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <line x1="350" y1="235" x2="170" y2="325" stroke="rgba(200,160,240,0.35)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <text x="630" y="210" font-size="9" fill="rgba(160,200,240,0.45)" font-family="Cinzel,serif" letter-spacing="2" text-anchor="middle" transform="rotate(90,630,210)">MASCULINE</text>
+        <text x="70" y="210" font-size="9" fill="rgba(240,160,200,0.45)" font-family="Cinzel,serif" letter-spacing="2" text-anchor="middle" transform="rotate(-90,70,210)">FEMININE</text>
+
+        <!-- 太陽 右上 -->
+        <g filter="url(#glow-soft)"><circle cx="535" cy="90" r="52" fill="rgba(232,122,100,0.1)" stroke="rgba(232,122,100,0.4)" stroke-width="1"/></g>
+        <text x="535" y="72" font-size="11" fill="#e87a64" font-family="Cinzel,serif" letter-spacing="2" text-anchor="middle">太陽</text>
+        <text x="535" y="88" font-size="9" fill="rgba(232,122,100,0.6)" font-family="Cinzel,serif" text-anchor="middle">陽の陽</text>
+        <text x="535" y="106" font-size="12" fill="#e87a64" font-family="serif" text-anchor="middle">Vesta</text>
+        <text x="535" y="122" font-size="9" fill="rgba(232,122,100,0.5)" font-family="Cinzel,serif" letter-spacing="1" text-anchor="middle">♈ ARIES</text>
+
+        <!-- 少陰 右下 -->
+        <g filter="url(#glow-soft)"><circle cx="535" cy="330" r="52" fill="rgba(200,184,144,0.1)" stroke="rgba(200,184,144,0.4)" stroke-width="1"/></g>
+        <text x="535" y="312" font-size="11" fill="#c8b890" font-family="Cinzel,serif" letter-spacing="2" text-anchor="middle">少陰</text>
+        <text x="535" y="328" font-size="9" fill="rgba(200,184,144,0.6)" font-family="Cinzel,serif" text-anchor="middle">陽の陰</text>
+        <text x="535" y="346" font-size="12" fill="#c8b890" font-family="serif" text-anchor="middle">Pallas</text>
+        <text x="535" y="362" font-size="9" fill="rgba(200,184,144,0.5)" font-family="Cinzel,serif" letter-spacing="1" text-anchor="middle">♉ TAURUS</text>
+
+        <!-- 少陽 左上 -->
+        <g filter="url(#glow-soft)"><circle cx="165" cy="90" r="52" fill="rgba(160,200,240,0.1)" stroke="rgba(160,200,240,0.4)" stroke-width="1"/></g>
+        <text x="165" y="72" font-size="11" fill="#a0c8f0" font-family="Cinzel,serif" letter-spacing="2" text-anchor="middle">少陽</text>
+        <text x="165" y="88" font-size="9" fill="rgba(160,200,240,0.6)" font-family="Cinzel,serif" text-anchor="middle">陰の陽</text>
+        <text x="165" y="106" font-size="12" fill="#a0c8f0" font-family="serif" text-anchor="middle">Juno</text>
+        <text x="165" y="122" font-size="9" fill="rgba(160,200,240,0.5)" font-family="Cinzel,serif" letter-spacing="1" text-anchor="middle">♒ AQUARIUS</text>
+
+        <!-- 太陰 左下 -->
+        <g filter="url(#glow-soft)"><circle cx="165" cy="330" r="52" fill="rgba(200,160,240,0.1)" stroke="rgba(200,160,240,0.4)" stroke-width="1"/></g>
+        <text x="165" y="312" font-size="11" fill="#c8a0f0" font-family="Cinzel,serif" letter-spacing="2" text-anchor="middle">太陰</text>
+        <text x="165" y="328" font-size="9" fill="rgba(200,160,240,0.6)" font-family="Cinzel,serif" text-anchor="middle">陰の陰</text>
+        <text x="165" y="346" font-size="12" fill="#c8a0f0" font-family="serif" text-anchor="middle">Ceres</text>
+        <text x="165" y="362" font-size="9" fill="rgba(200,160,240,0.5)" font-family="Cinzel,serif" letter-spacing="1" text-anchor="middle">♓ PISCES</text>
+
+        <!-- キロン 中央 -->
+        <g filter="url(#glow-gold)">
+          <circle cx="350" cy="210" r="64" fill="rgba(245,200,66,0.07)" stroke="rgba(245,200,66,0.5)" stroke-width="1.5"/>
+          <circle cx="350" cy="210" r="56" fill="none" stroke="rgba(245,200,66,0.12)" stroke-width="1" stroke-dasharray="3,6"/>
+        </g>
+        <text x="350" y="196" font-size="13" fill="#f5c842" font-family="Cinzel,serif" letter-spacing="3" text-anchor="middle">CHIRON</text>
+        <text x="350" y="218" font-size="18" fill="rgba(245,200,66,0.7)" text-anchor="middle">⚷</text>
+        <text x="350" y="236" font-size="9" fill="rgba(245,200,66,0.5)" font-family="Cinzel,serif" letter-spacing="2" text-anchor="middle">陰陽統合</text>
+
+        <line x1="220" y1="28" x2="480" y2="28" stroke="rgba(255,200,100,0.15)" stroke-width="1"/>
+        <text x="350" y="22" font-size="9" fill="rgba(255,200,100,0.35)" font-family="Cinzel,serif" letter-spacing="3" text-anchor="middle">陽</text>
+        <line x1="220" y1="392" x2="480" y2="392" stroke="rgba(160,140,200,0.15)" stroke-width="1"/>
+        <text x="350" y="410" font-size="9" fill="rgba(160,140,200,0.35)" font-family="Cinzel,serif" letter-spacing="3" text-anchor="middle">陰</text>
+      </svg>
+    </div>
+
+    <div class="prose">右側の二象（太陽・少陰）が男性性、左側の二象（少陽・太陰）が女性性に対応する。それぞれの象に4大小惑星が配置され、キロンの長期滞在星座が根源の傷として対応している。</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">四象それぞれの読み方</div>
+    <div class="prose" style="margin-bottom:32px;">どの恐れが自分に響くか。それを手がかりに、どの象に集合意識の共鳴が起きているかがわかる。個人的にその恐れを抱えているかどうかは関係ない。今その感情のトーンを醸し出しているなら、それがサインだ。小惑星の性質は、その象の本来の機能——まだ取り戻されていないもの——を示している。</div>
+
+    <!-- 太陽 -->
+    <div class="symbol-card" id="sym-taiyo" onclick="toggleSymbol('taiyo')">
+      <div class="symbol-card-header">
+        <div class="symbol-bar" style="background:var(--taiyo)"></div>
+        <div class="symbol-header-inner">
+          <div class="symbol-yinyang" style="color:var(--taiyo)">陽<br>の<br>陽</div>
+          <div class="symbol-name-block">
+            <div class="symbol-name-ja" style="color:var(--taiyo)">太陽</div>
+            <div class="symbol-name-en">The Greater Yang</div>
+          </div>
+          <div class="symbol-tags">
+            <span class="symbol-tag" style="background:rgba(232,122,100,0.1);border:1px solid rgba(232,122,100,0.3);color:var(--taiyo)">Vesta ♈</span>
+            <span class="symbol-tag gender-male">Masculine</span>
+          </div>
+          <div class="symbol-arrow">▼</div>
+        </div>
+      </div>
+      <div class="symbol-body">
+        <div class="symbol-desc">最も陽の強い象。牡羊座にキロンが長く留まった場所だ。牡羊座は存在の最初の一歩、「私はここにいる」という宣言の星座だ。本来は圧倒的な力と自信を持っている。ゆえにその傷の裏側として、「何かが決定的に足りない」という感覚が生まれる。存在そのものへの根源的な疑いだ。<br><br>ベスタは聖なる炎を守る女神。献身、集中、揺るぎない目的意識。太陽の象がバグっているとき、この炎が外に向かわず、自己批判として内に向く。</div>
+        <div class="symbol-box box-asteroid">
+          <div class="box-label box-label-gold">✦ Vesta — 小惑星の性質</div>
+          <div class="box-text">聖なる炎を守る。目的への純粋な献身。自分が何のために燃えているかを知っている状態。ベスタが機能しているとき、人は外からの評価なしに自分の軸を持てる。</div>
+        </div>
+        <div class="emotion-badge">
+          <span class="emotion-badge-label">感情スケールの共鳴</span>
+          <span class="emotion-badge-value" style="color:var(--taiyo)">自信喪失</span>
+        </div>
+        <div class="symbol-grid">
+          <div class="symbol-box box-fear">
+            <div class="box-label box-label-red">● 根源的な恐れ</div>
+            <ul class="box-items">
+              <li>自分には何か決定的に欠けている</li>
+              <li>このままの自分では不十分だ</li>
+              <li>存在を証明し続けなければならない</li>
+            </ul>
+          </div>
+          <div class="symbol-box box-bug">
+            <div class="box-label box-label-red">● バグとして現れる形</div>
+            <ul class="box-items">
+              <li>完璧主義・強迫的な努力</li>
+              <li>自己批判が止まらない</li>
+              <li>他者の欠点に過敏になる</li>
+            </ul>
+          </div>
+        </div>
+        <div class="symbol-box box-restore">
+          <div class="box-label box-label-green">✦ 本来の機能を取り戻すとき</div>
+          <ul class="box-items">
+            <li>不完全なままで完全であることに気づく</li>
+            <li>証明ではなく、ただ燃えることを選ぶ</li>
+            <li>ベスタの炎が外に向かい始める</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 少陰 -->
+    <div class="symbol-card" id="sym-shoin" onclick="toggleSymbol('shoin')">
+      <div class="symbol-card-header">
+        <div class="symbol-bar" style="background:var(--shoin)"></div>
+        <div class="symbol-header-inner">
+          <div class="symbol-yinyang" style="color:var(--shoin)">陽<br>の<br>陰</div>
+          <div class="symbol-name-block">
+            <div class="symbol-name-ja" style="color:var(--shoin)">少陰</div>
+            <div class="symbol-name-en">The Lesser Yin</div>
+          </div>
+          <div class="symbol-tags">
+            <span class="symbol-tag" style="background:rgba(200,184,144,0.1);border:1px solid rgba(200,184,144,0.3);color:var(--shoin)">Pallas ♉</span>
+            <span class="symbol-tag gender-male">Masculine</span>
+          </div>
+          <div class="symbol-arrow">▼</div>
+        </div>
+      </div>
+      <div class="symbol-body">
+        <div class="symbol-desc">陽の中の陰。牡牛座にキロンが長く留まった場所だ。牡牛座は価値と豊かさの星座、「私はここに根ざしている」という安定の象徴だ。本来は誰よりも豊かさの感覚を持っているがゆえに、失うことへの恐れも深い。自分の価値を外から確認し続けなければならない状態として現れる。<br><br>パラスは知恵と戦略の女神。パターンを見抜き、本質を捉える。少陰の象がバグっているとき、この知恵が自己防衛のために使われる。</div>
+        <div class="symbol-box box-asteroid">
+          <div class="box-label box-label-gold">✦ Pallas — 小惑星の性質</div>
+          <div class="box-text">知恵と創造的な戦略。本質を見抜く力。パラスが機能しているとき、人は自分の価値を外に証明する必要がなく、ただ在ることで豊かさを体現できる。</div>
+        </div>
+        <div class="emotion-badge">
+          <span class="emotion-badge-label">感情スケールの共鳴</span>
+          <span class="emotion-badge-value" style="color:var(--shoin)">無価値感</span>
+        </div>
+        <div class="symbol-grid">
+          <div class="symbol-box box-fear">
+            <div class="box-label box-label-red">● 根源的な恐れ</div>
+            <ul class="box-items">
+              <li>自分には本質的な価値がない</li>
+              <li>何かを成さなければ存在できない</li>
+              <li>豊かさはいつか奪われる</li>
+            </ul>
+          </div>
+          <div class="symbol-box box-bug">
+            <div class="box-label box-label-red">● バグとして現れる形</div>
+            <ul class="box-items">
+              <li>物質的安定への過剰な執着</li>
+              <li>与えることで価値を示そうとする</li>
+              <li>変化・手放しへの強い抵抗</li>
+            </ul>
+          </div>
+        </div>
+        <div class="symbol-box box-restore">
+          <div class="box-label box-label-green">✦ 本来の機能を取り戻すとき</div>
+          <ul class="box-items">
+            <li>価値は行為ではなく存在そのものにあると知る</li>
+            <li>パラスの知恵が防衛ではなく創造に向かう</li>
+            <li>豊かさを受け取ることができるようになる</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 少陽 -->
+    <div class="symbol-card" id="sym-shoyo" onclick="toggleSymbol('shoyo')">
+      <div class="symbol-card-header">
+        <div class="symbol-bar" style="background:var(--shoyo)"></div>
+        <div class="symbol-header-inner">
+          <div class="symbol-yinyang" style="color:var(--shoyo)">陰<br>の<br>陽</div>
+          <div class="symbol-name-block">
+            <div class="symbol-name-ja" style="color:var(--shoyo)">少陽</div>
+            <div class="symbol-name-en">The Lesser Yang</div>
+          </div>
+          <div class="symbol-tags">
+            <span class="symbol-tag" style="background:rgba(160,200,240,0.1);border:1px solid rgba(160,200,240,0.3);color:var(--shoyo)">Juno ♒</span>
+            <span class="symbol-tag gender-female">Feminine</span>
+          </div>
+          <div class="symbol-arrow">▼</div>
+        </div>
+      </div>
+      <div class="symbol-body">
+        <div class="symbol-desc">陰の中の陽。水瓶座にキロンが長く留まった場所だ。水瓶座は個と集合、独立と繋がりの星座だ。本来、誰よりも自立しながら全体と繋がれる。その力があるがゆえに、孤立の痛みも深い。繋がりを諦めるか、逆に依存的になるかという形で現れる。<br><br>ジュノーはパートナーシップと契約の女神。対等な関係、相互の尊重。少陽の象がバグっているとき、本当の意味での繋がりが成立しない。</div>
+        <div class="symbol-box box-asteroid">
+          <div class="box-label box-label-gold">✦ Juno — 小惑星の性質</div>
+          <div class="box-text">対等なパートナーシップ。互いを尊重した関係。ジュノーが機能しているとき、人は孤立への恐れなしに、個として自立しながら深く繋がることができる。</div>
+        </div>
+        <div class="emotion-badge">
+          <span class="emotion-badge-label">感情スケールの共鳴</span>
+          <span class="emotion-badge-value" style="color:var(--shoyo)">絶望</span>
+        </div>
+        <div class="symbol-grid">
+          <div class="symbol-box box-fear">
+            <div class="box-label box-label-red">● 根源的な恐れ</div>
+            <ul class="box-items">
+              <li>私は所詮ひとりで、誰とも本当に繋がれない</li>
+              <li>理解されることはない</li>
+              <li>繋がろうとすると自由を失う</li>
+            </ul>
+          </div>
+          <div class="symbol-box box-bug">
+            <div class="box-label box-label-red">● バグとして現れる形</div>
+            <ul class="box-items">
+              <li>関係に深く入ることを避ける</li>
+              <li>パートナーシップが長続きしない</li>
+              <li>孤立を選びながら寂しさを抱える</li>
+            </ul>
+          </div>
+        </div>
+        <div class="symbol-box box-restore">
+          <div class="box-label box-label-green">✦ 本来の機能を取り戻すとき</div>
+          <ul class="box-items">
+            <li>個として立ちながら、繋がることが怖くなくなる</li>
+            <li>ジュノーが示す対等な関係を実現できる</li>
+            <li>孤独と孤立の違いがわかるようになる</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 太陰 -->
+    <div class="symbol-card" id="sym-taiin" onclick="toggleSymbol('taiin')">
+      <div class="symbol-card-header">
+        <div class="symbol-bar" style="background:var(--taiin)"></div>
+        <div class="symbol-header-inner">
+          <div class="symbol-yinyang" style="color:var(--taiin)">陰<br>の<br>陰</div>
+          <div class="symbol-name-block">
+            <div class="symbol-name-ja" style="color:var(--taiin)">太陰</div>
+            <div class="symbol-name-en">The Greater Yin</div>
+          </div>
+          <div class="symbol-tags">
+            <span class="symbol-tag" style="background:rgba(200,160,240,0.1);border:1px solid rgba(200,160,240,0.3);color:var(--taiin)">Ceres ♓</span>
+            <span class="symbol-tag gender-female">Feminine</span>
+          </div>
+          <div class="symbol-arrow">▼</div>
+        </div>
+      </div>
+      <div class="symbol-body">
+        <div class="symbol-desc">最も陰の強い象。魚座にキロンが最も長く留まった場所だ。魚座は溶け合いと無条件の愛、境界を超えた一体感の星座だ。本来、すべてと繋がる愛の感覚を持っている。その深さがあるがゆえに、愛を失う痛みも最も深い。愛されることへの根本的な不信として現れる。<br><br>セレスは大地の母、無条件に育み与える女神だ。太陰の象がバグっているとき、この無条件の愛を受け取ることができなくなる。与えることはできても、受け取れない形で現れることが多い。</div>
+        <div class="symbol-box box-asteroid">
+          <div class="box-label box-label-gold">✦ Ceres — 小惑星の性質</div>
+          <div class="box-text">無条件の愛と養育。大地のように与え続ける力。セレスが機能しているとき、人は愛されることを条件なしに受け取れる。与えることと受け取ることが自然に循環する。</div>
+        </div>
+        <div class="emotion-badge">
+          <span class="emotion-badge-label">感情スケールの共鳴</span>
+          <span class="emotion-badge-value" style="color:var(--taiin)">恐れ</span>
+        </div>
+        <div class="symbol-grid">
+          <div class="symbol-box box-fear">
+            <div class="box-label box-label-red">● 根源的な恐れ</div>
+            <ul class="box-items">
+              <li>私は愛されない、愛される資格がない</li>
+              <li>ありのままの自分では受け入れられない</li>
+              <li>愛は条件付きのものだ</li>
+            </ul>
+          </div>
+          <div class="symbol-box box-bug">
+            <div class="box-label box-label-red">● バグとして現れる形</div>
+            <ul class="box-items">
+              <li>愛されるために演じ続ける</li>
+              <li>与えすぎて疲弊する共依存</li>
+              <li>境界が曖昧になり自分を失う</li>
+            </ul>
+          </div>
+        </div>
+        <div class="symbol-box box-restore">
+          <div class="box-label box-label-green">✦ 本来の機能を取り戻すとき</div>
+          <ul class="box-items">
+            <li>ありのままで愛されていることに気づく</li>
+            <li>セレスの愛が条件なしに流れ始める</li>
+            <li>与えることと受け取ることが同じになる</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">キロンが統合する</div>
+    <div class="chiron-core">
+      <div class="chiron-core-symbol">⚷</div>
+      <div class="chiron-core-title">傷は分離の記憶、癒しは統合への帰還</div>
+      <div class="chiron-core-text">
+        四象の恐れはバラバラではない。陽と陰が分化したところに生まれた傷だ。キロンはその分化の大元、陰陽がまだひとつだった場所に位置している。<br><br>
+        だから4つの恐れはすべて、キロンという一つの傷の異なる顔に過ぎない。<em>分離の痛み</em>だ。完全であったものが分かれたことの痛み。<br><br>
+        キロンの個人的な星座は、その人がどの経路で統合へ向かうかの色合いを示す。しかしどの経路を通っても、向かう場所は同じだ。陰陽が再びひとつになる場所、傷を通り抜けた先にある癒し。<br><br>
+        <em>傷を消すことが目的ではない。傷を通して、自分の本来の大きさを思い出すことだ。</em>
+      </div>
+    </div>
+    <div class="prose">この地図の使い方は単純だ。今、どの感情のトーンを自分が醸し出しているかを眺める。それがどの象への集合的な共鳴かを知る。そしてその小惑星の本来の性質——まだ機能していない状態——を思い出す。</div>
+    <div class="prose">それは自分だけの問題ではない。人類が長い時間をかけて積み上げてきたものが、今この瞬間あなたを通して表れている。個人で背負う必要はない。ただ、気づくこと。それが通り抜けるための最初の一歩だ。</div>
+  </div>
+
+  <div class="closing">
+    <div class="closing-text">
+      傷のない癒し手はいない。<br>
+      傷があるから、道を知っている。
+    </div>
+  </div>
+
+</div>
+<script>
+function toggleSymbol(id){
+  document.getElementById('sym-'+id).classList.toggle('open');
+}
+</script>
+</body>
+</html>

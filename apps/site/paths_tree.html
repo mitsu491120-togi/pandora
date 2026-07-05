@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生命の樹＋ — 22のパス</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;
+  --surface:#111118;
+  --surface2:#1a1a24;
+  --border:rgba(180,160,255,0.15);
+  --accent:#a78bfa;
+  --accent2:#e879f9;
+  --gold:#f5c842;
+  --text:#e8e4f0;
+  --text2:#9991b0;
+  --glow:rgba(167,139,250,0.2);
+  --node-size:48px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Noto Serif JP',serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:
+  radial-gradient(1px 1px at 15% 25%,rgba(255,255,255,.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 55% 8%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 78% 45%,rgba(255,255,255,.35) 0%,transparent 100%),
+  radial-gradient(1px 1px at 35% 65%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 88% 18%,rgba(255,255,255,.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 50% 88%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 65% 72%,rgba(255,255,255,.35) 0%,transparent 100%),
+  radial-gradient(1px 1px at 22% 48%,rgba(255,255,255,.25) 0%,transparent 100%),
+  radial-gradient(1px 1px at 92% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 8% 82%,rgba(255,255,255,.25) 0%,transparent 100%);
+  pointer-events:none;z-index:0}
+.container{max-width:980px;margin:0 auto;padding:30px 24px 80px;position:relative;z-index:1}
+header{text-align:center;padding:36px 0 28px}
+.title-en{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:12px;opacity:.8}
+h1{font-family:'Cinzel',serif;font-size:clamp(24px,4vw,36px);font-weight:600;background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.1em;margin-bottom:10px}
+.subtitle{font-size:13px;color:var(--text2);letter-spacing:.15em;margin-bottom:8px}
+.back-link{display:inline-block;margin-top:16px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.2em;color:var(--text2);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:2px;transition:color .2s,border-color .2s}
+.back-link:hover{color:var(--text);border-color:rgba(255,255,255,0.4)}
+
+/* 生命の樹SVGラッパー */
+.tree-wrap{
+  display:flex;
+  justify-content:center;
+  margin:40px auto;
+  max-width:520px;
+  position:relative;
+}
+.tree-svg{width:100%;height:auto;overflow:visible}
+
+/* ノード */
+.sephira{cursor:default}
+.sephira circle{transition:filter .3s}
+.sephira text{pointer-events:none;font-family:'Cinzel',serif}
+
+/* パスライン */
+.path-line{
+  cursor:pointer;
+  stroke-width:6;
+  stroke-linecap:round;
+  transition:stroke .2s,stroke-width .2s,filter .2s;
+  opacity:0.55;
+}
+.path-line:hover{stroke-width:9;opacity:1;filter:drop-shadow(0 0 6px currentColor)}
+.path-line.active{stroke-width:9;opacity:1;filter:drop-shadow(0 0 8px currentColor)}
+
+/* パスラベル（ヘブライ文字） */
+.path-label{
+  cursor:pointer;
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  fill:rgba(255,255,255,0.5);
+  pointer-events:none;
+  transition:fill .2s;
+}
+.path-label.active{fill:rgba(255,255,255,0.95)}
+
+/* 詳細パネル */
+.detail-panel{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:0;
+  margin-top:8px;
+  overflow:hidden;
+  box-shadow:0 0 40px var(--glow);
+  display:none;
+}
+.detail-panel.show{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.panel-header{
+  padding:24px 28px 20px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(167,139,250,0.05),rgba(232,121,249,0.03));
+}
+.panel-path-name{
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  letter-spacing:.35em;
+  color:var(--accent);
+  text-transform:uppercase;
+  margin-bottom:8px;
+  opacity:.8;
+}
+.panel-title{
+  font-size:20px;
+  color:var(--text);
+  letter-spacing:.08em;
+  margin-bottom:6px;
+}
+.panel-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+.meta-tag{
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:.15em;
+  padding:4px 12px;
+  border-radius:20px;
+  border:1px solid;
+}
+.meta-planet{border-color:rgba(167,139,250,0.4);color:#c4b5fd;background:rgba(167,139,250,0.08)}
+.meta-hebrew{border-color:rgba(245,200,66,0.4);color:#f5c842;background:rgba(245,200,66,0.06)}
+.meta-tarot{border-color:rgba(232,121,249,0.4);color:#f0abfc;background:rgba(232,121,249,0.06)}
+
+.panel-body{padding:24px 28px}
+
+.section-label{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:.35em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:currentColor;opacity:.2}
+
+.in-section .section-label{color:#f0a080}
+.yo-section .section-label{color:#a0d4a0}
+.summary-section .section-label{color:var(--text2)}
+
+.section-text{
+  font-size:14px;
+  line-height:2;
+  letter-spacing:.05em;
+  color:#c4bdd8;
+  margin-bottom:24px;
+}
+.in-section .section-text{color:#e8cfc0}
+.yo-section .section-text{color:#c0e0c0}
+
+.close-btn{
+  display:block;
+  width:100%;
+  padding:14px;
+  background:transparent;
+  border:none;
+  border-top:1px solid var(--border);
+  color:var(--text2);
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  letter-spacing:.2em;
+  cursor:pointer;
+  transition:background .2s,color .2s;
+}
+.close-btn:hover{background:rgba(255,255,255,0.03);color:var(--text)}
+
+/* 凡例 */
+.legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  justify-content:center;
+  margin-bottom:32px;
+}
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:11px;
+  color:var(--text2);
+  letter-spacing:.08em;
+}
+.legend-line{width:24px;height:3px;border-radius:2px}
+
+/* パス一覧（モバイル補助） */
+.path-list{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:40px;
+}
+@media(max-width:600px){.path-list{grid-template-columns:1fr}}
+.path-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 16px;
+  cursor:pointer;
+  transition:border-color .2s,box-shadow .2s;
+}
+.path-card:hover{border-color:rgba(167,139,250,0.4);box-shadow:0 0 16px rgba(167,139,250,0.08)}
+.path-card.active{border-color:var(--accent);box-shadow:0 0 20px rgba(167,139,250,0.15)}
+.pc-name{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.2em;color:var(--accent);margin-bottom:4px}
+.pc-title{font-size:13px;color:var(--text);letter-spacing:.04em;margin-bottom:4px}
+.pc-meta{font-size:11px;color:var(--text2)}
+
+.section-title{
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  letter-spacing:.3em;
+  color:var(--text2);
+  text-align:center;
+  margin:40px 0 20px;
+  text-transform:uppercase;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="title-en">Tree of Life — 22 Paths</div>
+    <h1>生命の樹＋</h1>
+    <div class="subtitle">22のパスで、星と星の間を渡る</div>
+    <a href="index.html" class="back-link">← 超数秘術に戻る</a>
+  </header>
+
+  <!-- 凡例 -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-line" style="background:#9b7fe8"></div>冥王星系</div>
+    <div class="legend-item"><div class="legend-line" style="background:#7bafd4"></div>海王星系</div>
+    <div class="legend-item"><div class="legend-line" style="background:#64b5c8"></div>天王星系</div>
+    <div class="legend-item"><div class="legend-line" style="background:#8fbc8f"></div>木星系</div>
+    <div class="legend-item"><div class="legend-line" style="background:#e08050"></div>火星系</div>
+    <div class="legend-item"><div class="legend-line" style="background:#f5c842"></div>太陽系</div>
+    <div class="legend-item"><div class="legend-line" style="background:#e879f9"></div>金星系</div>
+    <div class="legend-item"><div class="legend-line" style="background:#a0c8e8"></div>水星系</div>
+    <div class="legend-item"><div class="legend-line" style="background:#c0b8e8"></div>月系</div>
+  </div>
+
+  <!-- 生命の樹SVG -->
+  <div class="tree-wrap">
+    <svg class="tree-svg" viewBox="0 0 400 700" xmlns="http://www.w3.org/2000/svg" id="tree-svg">
+      <defs>
+        <!-- セフィロトのグロー -->
+        <filter id="glow-keter"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="glow-node"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <!--
+        正しい生命の樹の座標:
+        ケテル    (冥王星) : 200, 40
+        コクマー  (海王星) : 310, 130
+        ビナー    (天王星) :  90, 130
+        ダアト    (土星)   : 200, 210  ※隠れたセフィラ
+        ケセド    (木星)   : 310, 310
+        ゲブラー  (火星)   :  90, 310
+        ティファレト(太陽) : 200, 390  ※中央・一段下
+        ネツァク  (金星)   : 310, 480
+        ホド      (水星)   :  90, 480
+        イェソド  (月)     : 200, 560
+        マルクト  (地球)   : 200, 650
+      -->
+
+      <!-- ===== パスライン (背面) ===== -->
+      <!-- アレフ: ケテル↔コクマー -->
+      <line class="path-line" id="path-alef" x1="200" y1="40" x2="310" y2="130" stroke="#9b7fe8" data-path="alef"/>
+      <!-- ベート: ケテル↔ビナー -->
+      <line class="path-line" id="path-bet" x1="200" y1="40" x2="90" y2="130" stroke="#9b7fe8" data-path="bet"/>
+      <!-- ギーメル: ケテル↔ティファレト -->
+      <line class="path-line" id="path-gimel" x1="200" y1="40" x2="200" y2="390" stroke="#9b7fe8" data-path="gimel"/>
+      <!-- ダレット: コクマー↔ビナー -->
+      <line class="path-line" id="path-dalet" x1="310" y1="130" x2="90" y2="130" stroke="#7bafd4" data-path="dalet"/>
+      <!-- ヘー: コクマー↔ティファレト -->
+      <line class="path-line" id="path-he" x1="310" y1="130" x2="200" y2="390" stroke="#7bafd4" data-path="he"/>
+      <!-- ヴァヴ: コクマー↔ケセド -->
+      <line class="path-line" id="path-vav" x1="310" y1="130" x2="310" y2="310" stroke="#7bafd4" data-path="vav"/>
+      <!-- ザイン: ビナー↔ティファレト -->
+      <line class="path-line" id="path-zayin" x1="90" y1="130" x2="200" y2="390" stroke="#64b5c8" data-path="zayin"/>
+      <!-- ヘット: ビナー↔ゲブラー -->
+      <line class="path-line" id="path-het" x1="90" y1="130" x2="90" y2="310" stroke="#64b5c8" data-path="het"/>
+      <!-- テット: ケセド↔ゲブラー -->
+      <line class="path-line" id="path-tet" x1="310" y1="310" x2="90" y2="310" stroke="#8fbc8f" data-path="tet"/>
+      <!-- ヨッド: ケセド↔ティファレト -->
+      <line class="path-line" id="path-yod" x1="310" y1="310" x2="200" y2="390" stroke="#8fbc8f" data-path="yod"/>
+      <!-- カフ: ケセド↔ネツァク -->
+      <line class="path-line" id="path-kaf" x1="310" y1="310" x2="310" y2="480" stroke="#8fbc8f" data-path="kaf"/>
+      <!-- ラメド: ゲブラー↔ティファレト -->
+      <line class="path-line" id="path-lamed" x1="90" y1="310" x2="200" y2="390" stroke="#e08050" data-path="lamed"/>
+      <!-- メム: ゲブラー↔ホド -->
+      <line class="path-line" id="path-mem" x1="90" y1="310" x2="90" y2="480" stroke="#e08050" data-path="mem"/>
+      <!-- ヌン: ティファレト↔ネツァク -->
+      <line class="path-line" id="path-nun" x1="200" y1="390" x2="310" y2="480" stroke="#f5c842" data-path="nun"/>
+      <!-- サメフ: ティファレト↔イェソド -->
+      <line class="path-line" id="path-samech" x1="200" y1="390" x2="200" y2="560" stroke="#f5c842" data-path="samech"/>
+      <!-- アイン: ティファレト↔ホド -->
+      <line class="path-line" id="path-ayin" x1="200" y1="390" x2="90" y2="480" stroke="#f5c842" data-path="ayin"/>
+      <!-- ペー: ネツァク↔ホド -->
+      <line class="path-line" id="path-pe" x1="310" y1="480" x2="90" y2="480" stroke="#e879f9" data-path="pe"/>
+      <!-- ツァディー: ネツァク↔イェソド -->
+      <line class="path-line" id="path-tsadi" x1="310" y1="480" x2="200" y2="560" stroke="#e879f9" data-path="tsadi"/>
+      <!-- コフ: ネツァク↔マルクト -->
+      <line class="path-line" id="path-qof" x1="310" y1="480" x2="200" y2="650" stroke="#e879f9" data-path="qof"/>
+      <!-- レーシュ: ホド↔イェソド -->
+      <line class="path-line" id="path-resh" x1="90" y1="480" x2="200" y2="560" stroke="#a0c8e8" data-path="resh"/>
+      <!-- シン: ホド↔マルクト -->
+      <line class="path-line" id="path-shin" x1="90" y1="480" x2="200" y2="650" stroke="#a0c8e8" data-path="shin"/>
+      <!-- タヴ: イェソド↔マルクト -->
+      <line class="path-line" id="path-tav" x1="200" y1="560" x2="200" y2="650" stroke="#c0b8e8" data-path="tav"/>
+
+      <!-- ===== セフィロトノード ===== -->
+      <!-- ケテル (冥王星) -->
+      <g class="sephira" id="node-keter">
+        <circle cx="200" cy="40" r="26" fill="#1a1020" stroke="rgba(155,127,232,0.7)" stroke-width="1.5" filter="url(#glow-node)"/>
+        <text x="200" y="36" text-anchor="middle" font-size="9" fill="#9b7fe8" letter-spacing="1">冥王星</text>
+        <text x="200" y="48" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)">ケテル</text>
+      </g>
+      <!-- コクマー (海王星) -->
+      <g class="sephira" id="node-chokmah">
+        <circle cx="310" cy="130" r="24" fill="#101820" stroke="rgba(123,175,212,0.7)" stroke-width="1.5" filter="url(#glow-node)"/>
+        <text x="310" y="126" text-anchor="middle" font-size="9" fill="#7bafd4" letter-spacing="1">海王星</text>
+        <text x="310" y="138" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)">コクマー</text>
+      </g>
+      <!-- ビナー (天王星) -->
+      <g class="sephira" id="node-binah">
+        <circle cx="90" cy="130" r="24" fill="#101820" stroke="rgba(100,181,200,0.7)" stroke-width="1.5" filter="url(#glow-node)"/>
+        <text x="90" y="126" text-anchor="middle" font-size="9" fill="#64b5c8" letter-spacing="1">天王星</text>
+        <text x="90" y="138" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)">ビナー</text>
+      </g>
+      <!-- ダアト (土星) — 隠れたセフィラ -->
+      <g class="sephira" id="node-daat">
+        <circle cx="200" cy="210" r="18" fill="transparent" stroke="rgba(160,150,200,0.35)" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="200" y="206" text-anchor="middle" font-size="8" fill="rgba(160,150,200,0.4)">土星</text>
+        <text x="200" y="217" text-anchor="middle" font-size="7" fill="rgba(160,150,200,0.3)">ダアト</text>
+      </g>
+      <!-- ケセド (木星) -->
+      <g class="sephira" id="node-chesed">
+        <circle cx="310" cy="310" r="24" fill="#101810" stroke="rgba(143,188,143,0.7)" stroke-width="1.5" filter="url(#glow-node)"/>
+        <text x="310" y="306" text-anchor="middle" font-size="9" fill="#8fbc8f" letter-spacing="1">木星</text>
+        <text x="310" y="318" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)">ケセド</text>
+      </g>
+      <!-- ゲブラー (火星) -->
+      <g class="sephira" id="node-geburah">
+        <circle cx="90" cy="310" r="24" fill="#180e08" stroke="rgba(224,128,80,0.7)" stroke-width="1.5" filter="url(#glow-node)"/>
+        <text x="90" y="306" text-anchor="middle" font-size="9" fill="#e08050" letter-spacing="1">火星</text>
+        <text x="90" y="318" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)">ゲブラー</text>
+      </g>
+      <!-- ティファレト (太陽) — 中央・一段下 -->
+      <g class="sephira" id="node-tiferet">
+        <circle cx="200" cy="390" r="28" fill="#181408" stroke="rgba(245,200,66,0.8)" stroke-width="2" filter="url(#glow-keter)"/>
+        <text x="200" y="386" text-anchor="middle" font-size="9" fill="#f5c842" letter-spacing="1">太陽</text>
+        <text x="200" y="398" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.6)">ティファレト</text>
+      </g>
+      <!-- ネツァク (金星) -->
+      <g class="sephira" id="node-netzach">
+        <circle cx="310" cy="480" r="24" fill="#180818" stroke="rgba(232,121,249,0.7)" stroke-width="1.5" filter="url(#glow-node)"/>
+        <text x="310" y="476" text-anchor="middle" font-size="9" fill="#e879f9" letter-spacing="1">金星</text>
+        <text x="310" y="488" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)">ネツァク</text>
+      </g>
+      <!-- ホド (水星) -->
+      <g class="sephira" id="node-hod">
+        <circle cx="90" cy="480" r="24" fill="#081018" stroke="rgba(160,200,232,0.7)" stroke-width="1.5" filter="url(#glow-node)"/>
+        <text x="90" y="476" text-anchor="middle" font-size="9" fill="#a0c8e8" letter-spacing="1">水星</text>
+        <text x="90" y="488" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)">ホド</text>
+      </g>
+      <!-- イェソド (月) -->
+      <g class="sephira" id="node-yesod">
+        <circle cx="200" cy="560" r="24" fill="#100e18" stroke="rgba(192,184,232,0.7)" stroke-width="1.5" filter="url(#glow-node)"/>
+        <text x="200" y="556" text-anchor="middle" font-size="9" fill="#c0b8e8" letter-spacing="1">月</text>
+        <text x="200" y="568" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)">イェソド</text>
+      </g>
+      <!-- マルクト (地球) -->
+      <g class="sephira" id="node-malkuth">
+        <circle cx="200" cy="650" r="26" fill="#080c08" stroke="rgba(140,180,120,0.6)" stroke-width="1.5" filter="url(#glow-node)"/>
+        <text x="200" y="646" text-anchor="middle" font-size="9" fill="#8cb478" letter-spacing="1">地球</text>
+        <text x="200" y="658" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)">マルクト</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- 詳細パネル -->
+  <div class="detail-panel" id="detail-panel">
+    <div class="panel-header">
+      <div class="panel-path-name" id="panel-path-name"></div>
+      <div class="panel-title" id="panel-title"></div>
+      <div class="panel-meta" id="panel-meta"></div>
+    </div>
+    <div class="panel-body">
+      <div class="in-section">
+        <div class="section-label">陰転 — 活かせていない状態</div>
+        <div class="section-text" id="panel-in"></div>
+      </div>
+      <div class="yo-section">
+        <div class="section-label">陽転 — 活かせている状態</div>
+        <div class="section-text" id="panel-yo"></div>
+      </div>
+      <div class="summary-section">
+        <div class="section-label">まとめ</div>
+        <div class="section-text" id="panel-summary"></div>
+      </div>
+    </div>
+    <button class="close-btn" onclick="closePanel()">✕ 閉じる</button>
+  </div>
+
+  <!-- パス一覧 -->
+  <div class="section-title">✦ 22のパス一覧 ✦</div>
+  <div class="path-list" id="path-list"></div>
+
+</div>
+
+<script>
+const PATHS = {
+  alef: {
+    name: 'アレフ',
+    hebrew: '牛',
+    planets: '冥王星 ↔ 海王星',
+    tarot: '0. 愚者',
+    color: '#9b7fe8',
+    in: 'なぜかを探し続け、動けない。理由が見えないと踏み出せないから、根源も夢も掴みどころがないままに感じられる。信念のない場所では、霧の中に立ち尽くすだけで、どちらの深みも不安なものとして流れていくだけだ。',
+    yo: 'なぜかはわからないけど、これだという確信がある。根拠はなくても揺るがない。その信念が大地に根を張った牛のように体を支えるから、最も形のない領域の深みにも踏み込んでいける。理由を信じるのではなく、自分を信じる。それが愚者の一歩だ。',
+    summary: '根拠のない確信が、形のない領域をつなぐ唯一の橋になる。'
+  },
+  bet: {
+    name: 'ベート',
+    hebrew: '家',
+    planets: '冥王星 ↔ 天王星',
+    tarot: '1. 魔術師',
+    color: '#9b7fe8',
+    in: '自分という感覚の輪郭が定まっていない。枠を超えたものに触れたとき、何が自分のことなのかわからなくなる。理がないから、根源から来るものが何なのか理解できない。全体の波に飲まれて個が消え、覚醒が来ても自分のこととして受け取れない。受け取る家がないから、何が来ても定着しない。',
+    yo: '自分という理を持っている。だから根源から来るものが理解できる。全体の中にいても、これは自分のことだとわかる。想定外のことが起きても、自分がどう応じればいいかわかっている。理解があるから使いこなせる。魔術師が目の前のすべての道具を使えるように、破壊も変容も覚醒も、自分の理の中で応じることができる。全体の中の個として、根源からのものを受け取れる。',
+    summary: '自分という理を持っているから、枠外のものが来ても応じられる。理解があるから使いこなせる。'
+  },
+  gimel: {
+    name: 'ギーメル',
+    hebrew: 'らくだ',
+    planets: '冥王星 ↔ 太陽　※ダアト（土星）通過',
+    tarot: '2. 女教皇',
+    color: '#9b7fe8',
+    in: '虚無感や自己喪失を、ただ苦しいものとして受け取る。厳しさに飲まれ、なぜこんな目に遭うのかと消耗し続ける。蓄えになるはずのものを重荷として背負ったまま、砂漠の途中で果てる。',
+    yo: '苦しみや鍛錬の時間が、実は自分を作っていたと気づく。虚無感の中で向き合ったこと、削られた体験のすべてが、らくだのこぶのように内側に蓄えられている。その蓄えがあるから、補給のない砂漠も渡りきれる。渡りきったとき、あの時間は必要だったとわかる。',
+    summary: 'ダアト（土星）の試練さえ、らくだのこぶに変えられる。蓄えがあるから砂漠を渡れる。'
+  },
+  dalet: {
+    name: 'ダレット',
+    hebrew: '扉',
+    planets: '海王星 ↔ 天王星',
+    tarot: '3. 女帝',
+    color: '#7bafd4',
+    in: '扉は既に開かれているのに、夢や幻想の中にいてそれに気づかない。覚醒への入口が目の前にあっても、霧の中を漂うだけで通り過ぎてしまう。気づきの深さが足りないから、扉が見えない。',
+    yo: '夢や溶解の深みの中で、ふと扉があることに気づく。それは論理で見つけるものではなく、深い気づきだけが見せてくれるものだ。女帝のように豊かにそれを受け取ることで、覚醒へと自然に入っていける。',
+    summary: '扉は既に開かれている。気づけるかどうかだけが問われている。'
+  },
+  he: {
+    name: 'ヘー',
+    hebrew: '窓',
+    planets: '海王星 ↔ 太陽',
+    tarot: '4. 皇帝',
+    color: '#7bafd4',
+    in: '葛藤や曖昧さの雲の中で、もういいやと諦める。窓を曇らせたまま閉じてしまうから、晴れが来ても光が届かない。インスピレーションは霧の中にあるのに、自ら遮断することで意識の中心に何も差し込まない。玉座を捨てて流れから降りてしまった状態だ。',
+    yo: '雲の中にいても、いずれ晴れることを知っている。葛藤も曖昧さも流れの途中だと、皇帝のように玉座に座して待てる。窓は自分では光を作らない、ただ透明でいるだけでいい。自らの責任においてその流れにいるから、晴れ渡ったとき海王星のインスピレーションが太陽の中心に真っ直ぐ差し込んでくる。',
+    summary: '雲はいずれ晴れる。玉座に座して流れを待てるかどうかだ。'
+  },
+  vav: {
+    name: 'ヴァヴ',
+    hebrew: '釘',
+    planets: '海王星 ↔ 木星',
+    tarot: '5. 教皇',
+    color: '#7bafd4',
+    in: '釘を曲がったまま打ち込もうとする。性根が歪んでいるから、霊感や夢がどれだけあっても豊かさに繋がらない。念が正しく込められていないから橋にならず、可能性は広がるどころか衰退していく。',
+    yo: '正念を持って真っ直ぐ打ち込む。性根が真っ直ぐだから、霊感や夢が豊かさへの橋になる。教皇のように純粋な念が込められた釘は、見えないものと現実の恵みをしっかりと繋ぎ止める。その念の強さが、繁栄と広がりをもたらす。',
+    summary: '正念が橋になる。真っ直ぐな念だけが、夢を豊かさに変える。'
+  },
+  zayin: {
+    name: 'ザイン',
+    hebrew: '剣',
+    planets: '天王星 ↔ 太陽',
+    tarot: '6. 恋人',
+    color: '#64b5c8',
+    in: '覚醒の衝撃をそのまま抱えて、仕分けができない。有象無象のままぼやっとした状態で持ち込もうとするから、何が本質なのかわからない。剣を持っていても振れないまま、意識の中心に何も届かない。',
+    yo: '覚醒や革命的な気づきを剣で適切に仕分ける。必要なものと不必要なものを見極め、これだと選び取る。恋人が二つの間で決めるように、迷わず切り出すことでぼやっとしていた本質が明らかになり、意識の中心に真っ直ぐ届く。',
+    summary: '剣で仕分ける。ぼやっとしたものを切り出してこそ、本質が意識の中心に届く。'
+  },
+  het: {
+    name: 'ヘット',
+    hebrew: '柵',
+    planets: '天王星 ↔ 火星',
+    tarot: '7. 戦車',
+    color: '#64b5c8',
+    in: '柵を設けられないまま、覚醒の無限の可能性に向かって全方向に動こうとする。何でもやろうとするから行動力が分散し、本当に守るべきものが守れない。境界のない戦車は突き進む方向を見失い、白と黒のバランスが崩れて力だけが空回りする。',
+    yo: 'ある種の無慈悲さをもって、何をしないかを決める。柵で切り捨てることで本当に守るべきものが明確になる。相反する力にバランスが生まれ、手綱がしっかり握れる。覚醒の圧倒的なエネルギーに圧倒されるのではなく、あるべき場所に注がれていく。戦車のように、白と黒を制御しながら意志の方向へ真っ直ぐ進める。',
+    summary: '柵が方向を決める。何をしないかを決めることで、力は正しい場所に注がれる。'
+  },
+  tet: {
+    name: 'テット',
+    hebrew: '蛇',
+    planets: '木星 ↔ 火星',
+    tarot: '8. 力',
+    color: '#8fbc8f',
+    in: '力を自己顕示欲のために外に向ける。今の皮にしがみつき、豊かさが窮屈になっても手放せない。火星の闘争が内側に向かい、木星の拡大を自ら塞ぐ。蛇が脱皮できないように、進化が止まったまま力だけが空回りする。',
+    yo: '窮屈になったと感じたとき、それが脱皮のサインだとわかる。今の皮を手放すことで豊かさが解放され、火星の力が誇りと尊厳を守るために内側から湧いてくる。獅子を手懐けるように力を制御しながら、脱皮のたびに進化していく。力は外に証明するものではなく、内側で回すものだ。',
+    summary: '脱皮が進化になる。力を内側で回すとき、豊かさと意志は繋がっている。'
+  },
+  yod: {
+    name: 'ヨッド',
+    hebrew: '手・腕',
+    planets: '木星 ↔ 太陽',
+    tarot: '9. 隠者',
+    color: '#8fbc8f',
+    in: '木星の豊かさや可能性を外に求めて手を伸ばし続ける。広がりすぎて拡散するか、閉じすぎて可能性を遮断するか。どちらにしても自分の内側に手が届かず、意識の中心に豊かさが繋がらない。',
+    yo: '隠者のように一人で内側に向かい、自分から掴みに行く。外に答えを求めるのではなく、自分の内側にしか答えはないと知っている。その手が意識の中心に触れたとき、木星の豊かさがありのままの自分への導きとなる。',
+    summary: '答えは内側にある。自分の手で掴みに行くとき、豊かさは太陽への道になる。'
+  },
+  kaf: {
+    name: 'カフ',
+    hebrew: '手のひら',
+    planets: '木星 ↔ 金星',
+    tarot: '10. 運命の輪',
+    color: '#8fbc8f',
+    in: '手のひらを握りしめているから、何も入る余地がない。外側の基準で豊かさや愛を掴もうとするほど感性は閉じて余白が消える。豊かさも愛も巡ってきているのに受け取る隙間がなく、運命の輪の循環から外れていく。',
+    yo: '手のひらを開いているから余白がある。内側の感性を信頼して待つとき、その隙間に木星の豊かさと金星の愛が自然に入ってくる。開いた手のひらは運命の輪の循環に加わることができる。巡りは止まらない、受け取る余白があるかどうかだけだ。',
+    summary: '握れば余地がない。開けば余白がある。運命の輪は常に巡っている。'
+  },
+  lamed: {
+    name: 'ラメド',
+    hebrew: '牛追い棒',
+    planets: '火星 ↔ 太陽',
+    tarot: '11. 正義',
+    color: '#e08050',
+    in: '自信のなさの裏返しで力を外に向けて証明しようとする。牛追い棒を振り回すだけで方向が定まらず、火星の力が暴走する。均衡を失った力は正義から外れ、意識の中心を支えるどころか自分自身を傷つける方向に向かう。',
+    yo: '牛追い棒で暴走する力を正しい方向に導くように、火星のエネルギーを制御する。自信のなさではなく絶対値としての意志から力を使うとき、正義の均衡が生まれる。力が正確に測られ適切な場所に注がれることで、意識の中心が揺るぎなく支えられる。',
+    summary: '力を正確に使うとき、均衡が生まれる。方向が定まれば、意識の中心が支えられる。'
+  },
+  mem: {
+    name: 'メム',
+    hebrew: '水',
+    planets: '火星 ↔ 水星',
+    tarot: '12. 吊された男',
+    color: '#e08050',
+    in: '火星の力や意志が凝り固まったまま言葉にしようとする。血栓のように固まったものが水の流れを塞ぎ、思考と行動が乖離していく。硬直したまま語っても、知と行が一致しない。',
+    yo: '力への執着を脱力して手放す。凝り固まったものが溶けるとき、水が自然に流れ出すように言葉と行動が一致していく。吊された男のように止まって逆さから見たとき、思考と意志が水のように滑らかに繋がることで、知行合一の状態が生まれる。',
+    summary: '脱力が流れを生む。力を手放したとき、知と行は一つになる。'
+  },
+  nun: {
+    name: 'ヌン',
+    hebrew: '魚',
+    planets: '太陽 ↔ 金星',
+    tarot: '13. 死神',
+    color: '#f5c842',
+    in: '水面から覗くだけで、深みに潜ることを恐れる。終わりや手放すことへの恐れが足を止め、意識の中心にしがみついたまま動けない。外側の基準で愛を測ろうとするから、金星の感性は水面より上にしかない。魚が水から出たまま、本来いるべき場所に戻れない。死神が来ても変容を拒み、古いままでいようとする。',
+    yo: '水面下に潜ることを恐れない。意識の中心を手放し、死神のように古いものを終わらせることで変容が始まる。深みに降りるほど、水面からは見えなかった愛の本質が姿を現す。内側の感性を信頼して身を委ねるとき、魚のように自分の本来いるべき場所を泳げるようになる。',
+    summary: '深みに潜れるかどうか。手放すことが、愛の本質への扉になる。'
+  },
+  samech: {
+    name: 'サメフ',
+    hebrew: '支柱',
+    planets: '太陽 ↔ 月',
+    tarot: '14. 節制',
+    color: '#f5c842',
+    in: '感情を自分で消化できないから行き場がない。依存に向かえば感情の波に飲まれ、拒絶に向かえば感情を遮断する。どちらに振り切れても調整が効かず、支柱のない太陽は立てない。',
+    yo: '感情の波を自分で受け止めて消化する。月が整うほど支柱は安定していく。揺れても支柱があるから戻ってこられる。節制のように意識と無意識の間で調整が取れているとき、太陽はありのままの自分として立つことができる。',
+    summary: '月が整うとき、太陽は立てる。支柱があるから、揺れても戻れる。'
+  },
+  ayin: {
+    name: 'アイン',
+    hebrew: '目',
+    planets: '太陽 ↔ 水星',
+    tarot: '15. 悪魔',
+    color: '#f5c842',
+    in: '目に見えるものだけで判断しようとする。思考が過分析や批判に向かい、概念や言語の鎖に絡め取られていく。考えようとした瞬間に月に引っ張られ、意識の中心から離れていく。悪魔の鎖のように、自分で自分を固着させていることに気づかない。',
+    yo: '判断も感情も介在させず、ただ見る。純粋な観察に徹するとき、思考は道具として機能し始める。目が澄んでいるから月に引っ張られない。太陽の俯瞰した目で見るとき、意識の中心と思考が真っ直ぐ繋がっていく。',
+    summary: 'ただ見ること。判断を手放した観察が、太陽と水星を繋ぐ。'
+  },
+  pe: {
+    name: 'ペー',
+    hebrew: '口',
+    planets: '金星 ↔ 水星',
+    tarot: '16. 塔',
+    color: '#e879f9',
+    in: '恥や失敗を感じても言葉にしない。感情を飲み込み続けることで、古い言語の構造がそのまま残り続ける。',
+    yo: '恥や失敗を受け取ることで、今まで自分を守っていた言葉の構造が崩れる。そこから、本当に言いたかったことが口をついて出るようになる。',
+    summary: '塔が崩れるとき、本当の言葉が生まれる。感じることが、言葉を更新する。'
+  },
+  tsadi: {
+    name: 'ツァディー',
+    hebrew: '釣り針',
+    planets: '金星 ↔ 月',
+    tarot: '17. 星',
+    color: '#e879f9',
+    in: '感性が外に向いているから、欲しいものを追いかけようとする。むやみに追えば追うほど無意識の深みにあるものは逃げていく。釣り針を垂らさずにいるか、垂らしても焦って引き上げようとするか。どちらにしても、引っかかるタイミングを自ら逃している。月の感情が消化できていないから、静かに待つことができない。',
+    yo: '内側の感性を信頼して、静かに釣り針を垂らして待つ。無意識の深みにあるものは追いかけても逃げると知っている。豊かさを感じているから焦らずにいられる。引っかかる瞬間はやってくる。本当に望んでいるものとは、星のように静かにその時を迎えるものだ。',
+    summary: '待てるのは、豊かさを感じているから。静けさの中で、本当のものが引っかかる。'
+  },
+  qof: {
+    name: 'コフ',
+    hebrew: '後頭部',
+    planets: '金星 ↔ 地球',
+    tarot: '18. 月',
+    color: '#e879f9',
+    in: '目の前の現実や出来事を表面だけで捉える。物質的なものとしてしか見ていないから、その背後にある愛や美の本質に気づけない。感性が外に向いているから、見えないところにあるものを感じ取る受容性が育たない。後頭部にあるものは、見ようとしない限り永遠に盲点のままだ。',
+    yo: '目の前の出来事や問題の背後に、もっと大きな何かがあると感じ取れる。表面だけではなく、その奥にある愛や美の本質を受け取る受容性がある。後頭部は見えなくても感じられる。わからないまま進む月のように、内側の感性が開いているとき、現実の背景にあるものが自然に降りてくる。',
+    summary: '見えないものを感じ取れるか。背後にある愛の本質は、受容性が開いているとき降りてくる。'
+  },
+  resh: {
+    name: 'レーシュ',
+    hebrew: '頭部',
+    planets: '水星 ↔ 月',
+    tarot: '19. 太陽',
+    color: '#a0c8e8',
+    in: '頭で考えて悩むほど感情の沼に引き込まれていく。思考が月のパターンにはまり、暗さがどんどん増していく。考えれば考えるほど出口が見えなくなり、依存か拒絶かに振り切れていく。太陽の光が届かず、思考は感情の渦をかき混ぜるだけになる。',
+    yo: '頭を鏡として使う。感情に囚われるのではなく、月のパターンを明晰に照らす道具として思考が機能する。明瞭さがあるから感情の沼に引き込まれない。太陽のカードのように、思考が明るく照らすとき、無意識にあったものが喜びとして浮かび上がってくる。',
+    summary: '頭を鏡にする。照らすとき、感情の沼は喜びに変わる。'
+  },
+  shin: {
+    name: 'シン',
+    hebrew: '歯',
+    planets: '水星 ↔ 地球',
+    tarot: '20. 審判',
+    color: '#a0c8e8',
+    in: '思考が詰まって丸飲みしようとするか、散らかりすぎて何から手をつければいいかわからない。歯が機能していないから現実は変わらない。大きすぎるビジョンや概念を消化できないまま抱え続け、目覚めの声が来ても応えられない。変わらない現実は、噛み砕けていないことの現れだ。',
+    yo: 'ビジョンや概念を思考で丁寧に噛み砕いていく。扱えるサイズに分解されたものが現実に降りるとき、現実が更新されていく。そして噛み砕くたびに自分自身も変わっていく。噛み砕くという行為そのものが目覚めになる。現実が生まれ変わるとき、自分もまた生まれ変わっている。',
+    summary: '噛み砕くたびに、現実も自分も生まれ変わる。'
+  },
+  tav: {
+    name: 'タヴ',
+    hebrew: '十字・印',
+    planets: '月 ↔ 地球',
+    tarot: '21. 世界',
+    color: '#c0b8e8',
+    in: '感情を消化できないまま無意識のパターンが現実にそのまま出てしまう。依存か拒絶かに振り切れた状態で刻まれるから、現実に印されるものが歪む。産声を上げているのに、それが自分の本来の声かどうかわからない。統合されないまま四方に散らかっていく。',
+    yo: '感情が消化されて無意識と繋がっているとき、言語化や処理を介さずそのまま体現できる。産声のように意図せず出てくるものが現実に自然に刻まれていく。月の意のまま動くことが十字のように四方に広がり、すべてが揃ったとき世界のカードのように完成として現れる。',
+    summary: '意図を介さず体現するとき、月の意が現実に刻まれる。それが完成だ。'
+  }
+};
+
+const PATH_ORDER = ['alef','bet','gimel','dalet','he','vav','zayin','het','tet','yod','kaf','lamed','mem','nun','samech','ayin','pe','tsadi','qof','resh','shin','tav'];
+
+let activePathId = null;
+
+function openPath(pathId) {
+  if (!PATHS[pathId]) return;
+  const p = PATHS[pathId];
+
+  // アクティブ状態
+  if (activePathId) {
+    const prev = document.getElementById('path-' + activePathId);
+    if (prev) prev.classList.remove('active');
+    const prevCard = document.querySelector('.path-card[data-path="' + activePathId + '"]');
+    if (prevCard) prevCard.classList.remove('active');
+  }
+  activePathId = pathId;
+  const line = document.getElementById('path-' + pathId);
+  if (line) line.classList.add('active');
+  const card = document.querySelector('.path-card[data-path="' + pathId + '"]');
+  if (card) {
+    card.classList.add('active');
+    card.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  // パネル更新
+  document.getElementById('panel-path-name').textContent = p.name + ' — ' + p.hebrew;
+  document.getElementById('panel-title').textContent = p.planets;
+  document.getElementById('panel-meta').innerHTML = `
+    <span class="meta-tag meta-planet">${p.planets}</span>
+    <span class="meta-tag meta-hebrew">原義：${p.hebrew}</span>
+    <span class="meta-tag meta-tarot">${p.tarot}</span>
+  `;
+  document.getElementById('panel-in').textContent = p.in;
+  document.getElementById('panel-yo').textContent = p.yo;
+  document.getElementById('panel-summary').textContent = p.summary;
+
+  const panel = document.getElementById('detail-panel');
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function closePanel() {
+  document.getElementById('detail-panel').classList.remove('show');
+  if (activePathId) {
+    const line = document.getElementById('path-' + activePathId);
+    if (line) line.classList.remove('active');
+    const card = document.querySelector('.path-card[data-path="' + activePathId + '"]');
+    if (card) card.classList.remove('active');
+    activePathId = null;
+  }
+}
+
+// パスラインにクリックイベントを追加
+document.querySelectorAll('.path-line').forEach(line => {
+  line.addEventListener('click', function() {
+    openPath(this.dataset.path);
+  });
+});
+
+// パス一覧を生成
+const listEl = document.getElementById('path-list');
+PATH_ORDER.forEach(id => {
+  const p = PATHS[id];
+  const card = document.createElement('div');
+  card.className = 'path-card';
+  card.dataset.path = id;
+  card.innerHTML = `
+    <div class="pc-name" style="color:${p.color}">${p.name} — ${p.hebrew}</div>
+    <div class="pc-title">${p.planets}</div>
+    <div class="pc-meta">${p.tarot}</div>
+  `;
+  card.addEventListener('click', () => openPath(id));
+  listEl.appendChild(card);
+});
+</script>
+</body>
+</html>

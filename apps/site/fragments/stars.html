@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stars — 知識のかけら</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+JP:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;--surface:#111118;--surface2:#1a1a24;--border:rgba(180,160,255,0.15);
+  --accent:#a78bfa;--gold:#f5c842;--text:#e8e4f0;--text2:#9991b0;
+  --moon:#c8d8f0;--mercury:#a0e0c0;--venus:#f0c8d8;--sun:#f5c842;
+  --mars:#f0a080;--jupiter:#a0c8f0;--saturn:#c8b890;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Noto Serif JP',serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:
+  radial-gradient(1px 1px at 12% 10%,rgba(255,255,255,.5) 0%,transparent 100%),
+  radial-gradient(1px 1px at 34% 6%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 60% 16%,rgba(255,255,255,.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 80% 4%,rgba(255,255,255,.35) 0%,transparent 100%),
+  radial-gradient(1px 1px at 95% 30%,rgba(255,255,255,.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 5% 50%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 47% 44%,rgba(255,255,255,.25) 0%,transparent 100%),
+  radial-gradient(1px 1px at 70% 58%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 88% 46%,rgba(255,255,255,.35) 0%,transparent 100%),
+  radial-gradient(1px 1px at 22% 74%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 55% 80%,rgba(255,255,255,.25) 0%,transparent 100%),
+  radial-gradient(1px 1px at 78% 88%,rgba(255,255,255,.35) 0%,transparent 100%);
+  pointer-events:none;z-index:0}
+
+.container{max-width:760px;margin:0 auto;padding:60px 24px 120px;position:relative;z-index:1}
+
+.nav{display:flex;align-items:center;gap:8px;margin-bottom:60px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.3em;color:var(--text2)}
+.nav a{color:var(--accent);text-decoration:none;opacity:.7;transition:opacity .2s}.nav a:hover{opacity:1}
+.nav-sep{opacity:.3}
+
+header{text-align:center;padding-bottom:64px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:72px}
+.frag-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;opacity:.7}
+h1{font-family:'Cinzel',serif;font-size:clamp(22px,4vw,34px);font-weight:400;color:var(--text);letter-spacing:.15em;margin-bottom:8px}
+.h1-sub{font-family:'EB Garamond',serif;font-style:italic;font-size:17px;color:var(--text2);letter-spacing:.1em;margin-bottom:32px}
+.header-desc{font-size:14px;color:#9991b0;line-height:2.2;letter-spacing:.06em;max-width:500px;margin:0 auto}
+
+.section{margin-bottom:88px}
+.section-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:28px;opacity:.7;display:flex;align-items:center;gap:12px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.prose{font-size:14px;color:#c4bdd8;line-height:2.6;letter-spacing:.07em;margin-bottom:24px}
+.prose em{font-style:normal;color:var(--text)}
+
+/* 星カード */
+.star-card{display:grid;grid-template-columns:48px 1fr;gap:0;margin-bottom:4px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:border-color .25s,box-shadow .25s}
+.star-card:hover{border-color:rgba(255,255,255,0.15)}
+.star-card.open{border-color:rgba(255,255,255,0.12);box-shadow:0 4px 32px rgba(0,0,0,0.4);margin-bottom:16px}
+.star-card-left{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 4px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;writing-mode:vertical-rl;text-orientation:mixed;opacity:.6;gap:6px}
+.star-card-header{display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(255,255,255,0.02)}
+.star-symbol{font-size:22px;flex-shrink:0;width:32px;text-align:center}
+.star-titles{flex:1}
+.star-title-ja{font-size:14px;color:var(--text);letter-spacing:.08em;margin-bottom:3px}
+.star-title-en{font-family:'EB Garamond',serif;font-style:italic;font-size:12px;color:var(--text2);letter-spacing:.1em}
+.star-signs{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.1em;color:var(--text2);flex-shrink:0;text-align:right;line-height:1.8}
+.star-arrow{font-size:10px;color:var(--text2);margin-left:8px;transition:transform .25s;flex-shrink:0}
+.star-card.open .star-arrow{transform:rotate(180deg)}
+
+.star-body{display:none;padding:0 20px 24px;background:rgba(0,0,0,0.15)}
+.star-card.open .star-body{display:block}
+
+.star-desc{font-size:13px;color:#b8b0d0;line-height:2.2;letter-spacing:.06em;padding:20px 0 16px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:16px}
+
+/* ニュートラル・バグの3ボックス */
+.star-states{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+@media(max-width:560px){.star-states{grid-template-columns:1fr}}
+
+.state-box{border-radius:8px;padding:14px}
+.state-box-neutral{background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2)}
+.state-box-high{background:rgba(240,120,80,0.06);border:1px solid rgba(240,120,80,0.2)}
+.state-box-low{background:rgba(200,160,100,0.06);border:1px solid rgba(200,160,100,0.2)}
+
+.state-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.25em;margin-bottom:10px;text-transform:uppercase}
+.state-label-neutral{color:var(--accent)}
+.state-label-high{color:#e87a64}
+.state-label-low{color:#c8a060}
+
+.state-items{list-style:none}
+.state-items li{font-size:12px;color:#c4bdd8;padding:4px 0;line-height:1.7;display:flex;align-items:flex-start;gap:6px}
+.state-items li::before{font-size:8px;margin-top:4px;flex-shrink:0}
+.state-box-neutral .state-items li::before{content:'✦';color:var(--accent)}
+.state-box-high .state-items li::before{content:'●';color:#e87a64}
+.state-box-low .state-items li::before{content:'●';color:#c8a060}
+
+/* 根っこボックス */
+.star-root{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:14px;margin-bottom:10px}
+.star-root-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.25em;color:var(--text2);margin-bottom:8px;text-transform:uppercase}
+.star-root-text{font-size:12px;color:#c4bdd8;line-height:1.9;letter-spacing:.05em}
+
+/* 参照星座ボックス */
+.star-signs-box{background:rgba(245,200,66,0.04);border:1px solid rgba(245,200,66,0.15);border-radius:8px;padding:14px}
+.star-signs-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.25em;color:var(--gold);margin-bottom:10px;text-transform:uppercase;opacity:.8}
+.star-signs-items{list-style:none}
+.star-signs-items li{font-size:12px;color:#c4bdd8;padding:4px 0;line-height:1.7;display:flex;align-items:flex-start;gap:6px}
+.star-signs-items li::before{content:'◈';font-size:8px;color:var(--gold);margin-top:4px;flex-shrink:0;opacity:.6}
+
+/* 太陽の注記 */
+.sun-note{background:rgba(245,200,66,0.05);border:1px solid rgba(245,200,66,0.2);border-radius:10px;padding:20px 24px;margin-bottom:28px}
+.sun-note-text{font-size:13px;color:#c4bdd8;line-height:2.2;letter-spacing:.06em}
+.sun-note-text em{font-style:normal;color:var(--gold)}
+
+.closing{text-align:center;padding:48px 0 0;border-top:1px solid rgba(255,255,255,0.06)}
+.closing-text{font-family:'EB Garamond',serif;font-style:italic;font-size:18px;color:var(--text2);line-height:2.4;letter-spacing:.08em}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <nav class="nav">
+    <a href="index.html">超数秘術</a>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--text2)">知識のかけら</span>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--text)">Stars</span>
+  </nav>
+
+  <header>
+    <div class="frag-label">Fragments — Knowledge VI</div>
+    <h1>Stars</h1>
+    <div class="h1-sub">7つの星のバグ</div>
+    <div class="header-desc">
+      月・水星・金星・太陽・火星・木星・土星。<br>
+      それぞれに本来の機能がある。<br>
+      バグとは、その流れが歪んだときに現れる形だ。<br>
+      月星座の挙動を参照しながら、各星を見ていく。
+    </div>
+  </header>
+
+  <!-- 導入 -->
+  <div class="section">
+    <div class="section-label">読み方について</div>
+    <div class="prose">ここに挙げるバグの形は、性格でも欠点でもない。<em>エネルギーが歪んだときに現れる状態</em>だ。肥大側と卑下側は表裏で、どちらも同じ根っこから来ている。</div>
+    <div class="prose">月星座は、その星のバグが現れるときの挙動を知る手がかりになる。自分だけでなく、身近な人を見るときにも使える。</div>
+    <div class="prose">なお太陽については、本質の太陽はバグという概念の外にある。ここで扱うのは<em>月のエゴから見たときに現れる太陽の歪み</em>だ。</div>
+  </div>
+
+  <!-- 星カード一覧 -->
+  <div class="section">
+    <div class="section-label">7つの星</div>
+
+    <!-- 月 -->
+    <div class="star-card" id="star-moon" onclick="toggleStar('moon')">
+      <div class="star-card-left" style="background:rgba(200,216,240,0.08);color:var(--moon)">月</div>
+      <div>
+        <div class="star-card-header">
+          <div class="star-symbol" style="color:var(--moon)">☽</div>
+          <div class="star-titles">
+            <div class="star-title-ja" style="color:var(--moon)">月</div>
+            <div class="star-title-en">感情の基盤</div>
+          </div>
+          <div class="star-signs">蟹座</div>
+          <div class="star-arrow">▼</div>
+        </div>
+        <div class="star-body">
+          <div class="star-desc">月は感情の基盤だ。感情を受け取り、消化し、安心の土台を作る星。月が機能しているとき、人は感情の波を自分で受け止めることができる。バグは回避と逃避から来る。感情をそのまま消化できないとき、依存か拒絶かという二択に向かう。</div>
+          <div class="star-states">
+            <div class="state-box state-box-neutral">
+              <div class="state-label state-label-neutral">ニュートラル</div>
+              <ul class="state-items">
+                <li>感情を自分で受け取れる</li>
+                <li>安心の基盤が内側にある</li>
+                <li>喜びも学びも受け取れる</li>
+                <li>感情の波に飲まれない</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-high">
+              <div class="state-label state-label-high">肥大側</div>
+              <ul class="state-items">
+                <li>依存——感情処理を外に委ねる</li>
+                <li>執着・手放せない</li>
+                <li>周囲を感情で巻き込む</li>
+                <li>くっついていないと安心できない</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-low">
+              <div class="state-label state-label-low">卑下側</div>
+              <ul class="state-items">
+                <li>拒絶——感情を遮断する</li>
+                <li>感じないようにする</li>
+                <li>殻に完全に閉じこもる</li>
+                <li>必要としないという鎧を着る</li>
+              </ul>
+            </div>
+          </div>
+          <div class="star-root">
+            <div class="star-root-label">共通の根っこ</div>
+            <div class="star-root-text">感情を自分で消化できていない状態。回避・逃避の反応として依存か拒絶かに向かう。どちらも根っこは同じだ。</div>
+          </div>
+          <div class="star-signs-box">
+            <div class="star-signs-label">月蟹座の挙動</div>
+            <ul class="star-signs-items">
+              <li>感情の波に飲まれて周囲を巻き込む（依存側）</li>
+              <li>殻に完全に閉じこもって誰も入れない（拒絶側）</li>
+              <li>この二極の間を往復する</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 水星 -->
+    <div class="star-card" id="star-mercury" onclick="toggleStar('mercury')">
+      <div class="star-card-left" style="background:rgba(160,224,192,0.08);color:var(--mercury)">水星</div>
+      <div>
+        <div class="star-card-header">
+          <div class="star-symbol" style="color:var(--mercury)">☿</div>
+          <div class="star-titles">
+            <div class="star-title-ja" style="color:var(--mercury)">水星</div>
+            <div class="star-title-en">思考と言語の流れ</div>
+          </div>
+          <div class="star-signs">双子座<br>乙女座</div>
+          <div class="star-arrow">▼</div>
+        </div>
+        <div class="star-body">
+          <div class="star-desc">水星は情報を受け取り、処理し、適切に伝える星だ。思考と言語が流れているとき、人は自分の考えを組み立て、伝え、理解することができる。バグは思考が詰まるか、散らかりすぎるかという形で現れる。</div>
+          <div class="star-states">
+            <div class="state-box state-box-neutral">
+              <div class="state-label state-label-neutral">ニュートラル</div>
+              <ul class="state-items">
+                <li>思考が自然に流れている</li>
+                <li>情報を処理して伝えられる</li>
+                <li>自分の言葉を持っている</li>
+                <li>聞くことと話すことが均衡している</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-high">
+              <div class="state-label state-label-high">肥大側</div>
+              <ul class="state-items">
+                <li>批判・ダメ出し・過分析</li>
+                <li>思考で全てをコントロールしようとする</li>
+                <li>双子——脈絡なく飛び回る・すれ違い通信</li>
+                <li>乙女——詰め込みすぎてパンク</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-low">
+              <div class="state-label state-label-low">卑下側</div>
+              <ul class="state-items">
+                <li>思考停止・遮断</li>
+                <li>どうせ考えてもわからないという諦め</li>
+                <li>言葉が出てこない・伝えられない</li>
+                <li>情報を受け取れなくなる</li>
+              </ul>
+            </div>
+          </div>
+          <div class="star-root">
+            <div class="star-root-label">共通の根っこ</div>
+            <div class="star-root-text">思考が流れていない状態。散らかりすぎてフリーズするか、詰め込みすぎてフリーズするか——どちらも結果として止まる。</div>
+          </div>
+          <div class="star-signs-box">
+            <div class="star-signs-label">月双子・月乙女の挙動</div>
+            <ul class="star-signs-items">
+              <li>月双子——話が飛ぶ・脈絡がない・すれ違い通信・思考の散漫</li>
+              <li>月乙女——分析しすぎ・過集中でパンク・批判やダメ出しが自分や他者に向かう</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 金星 -->
+    <div class="star-card" id="star-venus" onclick="toggleStar('venus')">
+      <div class="star-card-left" style="background:rgba(240,200,216,0.08);color:var(--venus)">金星</div>
+      <div>
+        <div class="star-card-header">
+          <div class="star-symbol" style="color:var(--venus)">♀</div>
+          <div class="star-titles">
+            <div class="star-title-ja" style="color:var(--venus)">金星</div>
+            <div class="star-title-en">内側の感性と価値観</div>
+          </div>
+          <div class="star-signs">牡牛座<br>天秤座</div>
+          <div class="star-arrow">▼</div>
+        </div>
+        <div class="star-body">
+          <div class="star-desc">金星は内側の感性で価値を測る星だ。好き嫌い・似合う似合わない・自分にとっての美や心地よさを感じる力。バグは感性が外側に向くことで起きる。「自分が好きか」ではなく「受け入れられるか」が基準になるとき、金星は歪む。</div>
+          <div class="star-states">
+            <div class="state-box state-box-neutral">
+              <div class="state-label state-label-neutral">ニュートラル</div>
+              <ul class="state-items">
+                <li>内側の感性で価値を測れる</li>
+                <li>好き嫌いが自分のものとしてある</li>
+                <li>美や心地よさを自分で感じられる</li>
+                <li>外側に左右されない軸がある</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-high">
+              <div class="state-label state-label-high">肥大側</div>
+              <ul class="state-items">
+                <li>外側の基準を過剰に取り込む</li>
+                <li>社会・大衆・場の空気に完全に乗っかる</li>
+                <li>自分の感性がどこにあるかわからなくなる</li>
+                <li>受け入れられることが全ての基準になる</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-low">
+              <div class="state-label state-label-low">卑下側</div>
+              <ul class="state-items">
+                <li>自分の感性をおかしい・変だとして封じる</li>
+                <li>内側の価値観を信頼できない</li>
+                <li>好き嫌いを持つことを恐れる</li>
+                <li>感性を閉じてしまう</li>
+              </ul>
+            </div>
+          </div>
+          <div class="star-root">
+            <div class="star-root-label">共通の根っこ</div>
+            <div class="star-root-text">感性が外側に向いている。受け入れられるかどうかが価値観の基準になっている状態。客観性が歪んでいる。</div>
+          </div>
+          <div class="star-signs-box">
+            <div class="star-signs-label">月牡牛・月天秤の挙動</div>
+            <ul class="star-signs-items">
+              <li>月牡牛——今の居心地の良い価値観・環境に固執する。変化への強い抵抗・手放せない</li>
+              <li>月天秤——場の空気・相手に合わせて自分を消す。波風を立てないために感性を封じる</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 太陽 -->
+    <div class="star-card" id="star-sun" onclick="toggleStar('sun')">
+      <div class="star-card-left" style="background:rgba(245,200,66,0.08);color:var(--sun)">太陽</div>
+      <div>
+        <div class="star-card-header">
+          <div class="star-symbol" style="color:var(--sun)">☉</div>
+          <div class="star-titles">
+            <div class="star-title-ja" style="color:var(--sun)">太陽</div>
+            <div class="star-title-en">絶対値としての意志</div>
+          </div>
+          <div class="star-signs">獅子座</div>
+          <div class="star-arrow">▼</div>
+        </div>
+        <div class="star-body">
+          <div class="star-desc">良いことは喜び、悪いことは学び、全てが善となる——そういう絶対値的な在り方が太陽の本質だ。ここで扱うのは、月のエゴが太陽を覆ったときに現れる歪みだ。</div>
+          <div class="star-states">
+            <div class="state-box state-box-neutral">
+              <div class="state-label state-label-neutral">ニュートラル</div>
+              <ul class="state-items">
+                <li>絶対値としての意志がある</li>
+                <li>良いことは喜び・悪いことは学び</li>
+                <li>自力で在ることができる</li>
+                <li>エゴを超えた本質的な在り方</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-high">
+              <div class="state-label state-label-high">肥大側（月のエゴから）</div>
+              <ul class="state-items">
+                <li>過信・盲信</li>
+                <li>これしかないという固定</li>
+                <li>自分の意志だけが正しいという状態</li>
+                <li>承認を強く求める</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-low">
+              <div class="state-label state-label-low">卑下側（月のエゴから）</div>
+              <ul class="state-items">
+                <li>意志のなさ</li>
+                <li>自分の力を信頼できない</li>
+                <li>他の何かに委ねてしまう</li>
+                <li>主体性が消える</li>
+              </ul>
+            </div>
+          </div>
+          <div class="star-root">
+            <div class="star-root-label">共通の根っこ</div>
+            <div class="star-root-text">月のエゴが太陽を覆っている状態。本来の絶対値的な太陽が見えなくなっている。過信も意志のなさも、同じエゴの歪みの表裏だ。</div>
+          </div>
+          <div class="star-signs-box">
+            <div class="star-signs-label">月獅子の挙動</div>
+            <ul class="star-signs-items">
+              <li>過信・盲信——自分のやり方だけが正しいという固定</li>
+              <li>承認を強く求める——認められないと動けない</li>
+              <li>逆側——自信を失うと一気に崩れる</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 火星 -->
+    <div class="star-card" id="star-mars" onclick="toggleStar('mars')">
+      <div class="star-card-left" style="background:rgba(240,160,128,0.08);color:var(--mars)">火星</div>
+      <div>
+        <div class="star-card-header">
+          <div class="star-symbol" style="color:var(--mars)">♂</div>
+          <div class="star-titles">
+            <div class="star-title-ja" style="color:var(--mars)">火星</div>
+            <div class="star-title-en">行動力と直観</div>
+          </div>
+          <div class="star-signs">牡羊座<br>蠍座</div>
+          <div class="star-arrow">▼</div>
+        </div>
+        <div class="star-body">
+          <div class="star-desc">火星は自信・直観・行動力の星だ。自分の力を信頼して動く力。バグは自信のなさの裏返しとして現れる。外に向かって力を証明しようとするか、傷ついた側に留まるか、全部壊れてしまえになるか——いずれも根っこは同じだ。</div>
+          <div class="star-states">
+            <div class="state-box state-box-neutral">
+              <div class="state-label state-label-neutral">ニュートラル</div>
+              <ul class="state-items">
+                <li>自分の力を信頼して動ける</li>
+                <li>直観が働いている</li>
+                <li>行動力が自然に出る</li>
+                <li>証明のためではなく動きたいから動く</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-high">
+              <div class="state-label state-label-high">肥大側</div>
+              <ul class="state-items">
+                <li>マウント・攻撃性・怒り</li>
+                <li>牡羊——自分を強く見せる・力で証明しようとする</li>
+                <li>蠍——状況をコントロールしようとする・支配</li>
+                <li>イニシアチブを奪う</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-low">
+              <div class="state-label state-label-low">卑下側</div>
+              <ul class="state-items">
+                <li>被害者意識・悲劇のヒロイン</li>
+                <li>自暴自棄・開き直り</li>
+                <li>どうでも良くなる・無差別な自己破壊</li>
+                <li>怒りが外に向かわず自分に向かう</li>
+              </ul>
+            </div>
+          </div>
+          <div class="star-root">
+            <div class="star-root-label">共通の根っこ</div>
+            <div class="star-root-text">自信のなさの裏返し。力を外に証明しようとするか、傷ついた側に留まるか、全部壊れてしまえになるか——いずれも自分の力を信頼できていない状態から来ている。</div>
+          </div>
+          <div class="star-signs-box">
+            <div class="star-signs-label">月牡羊・月蠍の挙動</div>
+            <ul class="star-signs-items">
+              <li>月牡羊——自信のなさの裏返しで自分を強く見せる・衝動的な怒り</li>
+              <li>月蠍——コントロール・悲劇のヒロイン的な在り方・自暴自棄</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 木星 -->
+    <div class="star-card" id="star-jupiter" onclick="toggleStar('jupiter')">
+      <div class="star-card-left" style="background:rgba(160,200,240,0.08);color:var(--jupiter)">木星</div>
+      <div>
+        <div class="star-card-header">
+          <div class="star-symbol" style="color:var(--jupiter)">♃</div>
+          <div class="star-titles">
+            <div class="star-title-ja" style="color:var(--jupiter)">木星</div>
+            <div class="star-title-en">知と可能性の拡大</div>
+          </div>
+          <div class="star-signs">射手座<br>魚座</div>
+          <div class="star-arrow">▼</div>
+        </div>
+        <div class="star-body">
+          <div class="star-desc">木星は知と可能性の拡大の星だ。探求・意味の発見・視野の広がり。バグは拡大のエネルギーが歪んだとき、広がりすぎるか閉じすぎるかという形で現れる。射手側と魚側でその形が異なる。</div>
+          <div class="star-states">
+            <div class="state-box state-box-neutral">
+              <div class="state-label state-label-neutral">ニュートラル</div>
+              <ul class="state-items">
+                <li>知ることが純粋に楽しい</li>
+                <li>可能性への信頼がある</li>
+                <li>視野が広がることへの喜び</li>
+                <li>わからないことへの好奇心</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-high">
+              <div class="state-label state-label-high">肥大側</div>
+              <ul class="state-items">
+                <li>知的自己肥大・見下し・馬鹿にする</li>
+                <li>理論武装——自分の信念だけが正しい</li>
+                <li>夢想・現実逃避</li>
+                <li>自己犠牲が過剰になる</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-low">
+              <div class="state-label state-label-low">卑下側</div>
+              <ul class="state-items">
+                <li>信念を持てない・何も信じられない</li>
+                <li>冷笑・信じることへの拒絶</li>
+                <li>感受性を閉じる</li>
+                <li>探求をやめる</li>
+              </ul>
+            </div>
+          </div>
+          <div class="star-root">
+            <div class="star-root-label">共通の根っこ</div>
+            <div class="star-root-text">拡大のエネルギーが歪んでいる。広がりすぎて現実から浮くか、閉じすぎて可能性を遮断するか。どちらも本来の探求の喜びから離れた状態だ。</div>
+          </div>
+          <div class="star-signs-box">
+            <div class="star-signs-label">月射手・月魚の挙動</div>
+            <ul class="star-signs-items">
+              <li>月射手——見下し・理論武装・視野の狭さ（自分の信念の範囲だけが世界になる）・馬鹿が嫌い</li>
+              <li>月魚——夢想・逃避・感受性を閉じる・冷笑的になる</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 土星 -->
+    <div class="star-card" id="star-saturn" onclick="toggleStar('saturn')">
+      <div class="star-card-left" style="background:rgba(200,184,144,0.08);color:var(--saturn)">土星</div>
+      <div>
+        <div class="star-card-header">
+          <div class="star-symbol" style="color:var(--saturn)">♄</div>
+          <div class="star-titles">
+            <div class="star-title-ja" style="color:var(--saturn)">土星</div>
+            <div class="star-title-en">構造と完成への意志</div>
+          </div>
+          <div class="star-signs">山羊座<br>水瓶座</div>
+          <div class="star-arrow">▼</div>
+        </div>
+        <div class="star-body">
+          <div class="star-desc">土星は構造・秩序・時間をかけて磨くことの星だ。自覚と完成への意志。バグはルールや構造との関係が歪むことで起きる。縛りすぎるか、壊しすぎるか。山羊側と水瓶側でその形が異なる。</div>
+          <div class="star-states">
+            <div class="state-box state-box-neutral">
+              <div class="state-label state-label-neutral">ニュートラル</div>
+              <ul class="state-items">
+                <li>自覚を持って構造を作れる</li>
+                <li>長い時間軸で物事を見られる</li>
+                <li>秩序と美しさへの感受性がある</li>
+                <li>時間をかけて磨くことに喜びがある</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-high">
+              <div class="state-label state-label-high">肥大側</div>
+              <ul class="state-items">
+                <li>強迫的な義務感・○○しなければ</li>
+                <li>完璧主義・ミスを許さない</li>
+                <li>変な合理性の押しつけ</li>
+                <li>山羊——仕事・責任への固執・休めない</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-low">
+              <div class="state-label state-label-low">卑下側</div>
+              <ul class="state-items">
+                <li>責任を放棄する・構造を作れない</li>
+                <li>自覚のなさ</li>
+                <li>水瓶——アウトロー的な逃避・既存のルールへの反発</li>
+                <li>原則を壊すことで自由を得ようとする</li>
+              </ul>
+            </div>
+          </div>
+          <div class="star-root">
+            <div class="star-root-label">共通の根っこ</div>
+            <div class="star-root-text">構造やルールとの関係が歪んでいる。縛りすぎるか、壊しすぎるか。どちらも本来の「時間をかけて磨く」という土星の力から離れた状態だ。</div>
+          </div>
+          <div class="star-signs-box">
+            <div class="star-signs-label">月山羊・月水瓶の挙動</div>
+            <ul class="star-signs-items">
+              <li>月山羊——義務感・使命感・仕事しないとという強迫・休めない・弱さを見せられない</li>
+              <li>月水瓶——合理性の押しつけ・ミスや勘違いへの非許容・論理で切り捨てる冷たさ・アウトロー的な反発</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 締め -->
+  <div class="section">
+    <div class="section-label">バグは入口だ</div>
+    <div class="prose">7つの星のバグを見てきた。これらは欠点の一覧ではない。<em>流れが止まっている場所の地図</em>だ。</div>
+    <div class="prose">バグがどこにあるかがわかれば、何をすればいいかがわかる。ルールを適用するのではなく、その場所に意識を向ける。体がそこを知っている。</div>
+    <div class="prose">肥大と卑下は常に表裏だ。どちら側に出ていても、根っこは同じところにある。その根っこを見ることが、流れを取り戻す最初の一歩だ。</div>
+  </div>
+
+  <div class="closing">
+    <div class="closing-text">
+      バグは問題ではない。<br>
+      まだ流れていない場所が、<br>
+      そこにあるというだけだ。
+    </div>
+  </div>
+
+</div>
+<script>
+function toggleStar(id){
+  document.getElementById('star-'+id).classList.toggle('open');
+}
+</script>
+</body>
+</html>

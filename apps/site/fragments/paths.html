@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>22のパスと星を活かす鍵 — 知識のかけら</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+JP:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;--surface:#111118;--surface2:#1a1a24;--border:rgba(180,160,255,0.15);
+  --accent:#a78bfa;--accent2:#e879f9;--gold:#f5c842;--text:#e8e4f0;--text2:#9991b0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Noto Serif JP',serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:
+  radial-gradient(1px 1px at 15% 12%,rgba(255,255,255,.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 42% 8%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 68% 18%,rgba(255,255,255,.35) 0%,transparent 100%),
+  radial-gradient(1px 1px at 88% 5%,rgba(255,255,255,.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 8% 38%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 55% 32%,rgba(255,255,255,.25) 0%,transparent 100%),
+  radial-gradient(1px 1px at 78% 45%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 22% 65%,rgba(255,255,255,.35) 0%,transparent 100%),
+  radial-gradient(1px 1px at 62% 72%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 85% 68%,rgba(255,255,255,.25) 0%,transparent 100%),
+  radial-gradient(1px 1px at 35% 88%,rgba(255,255,255,.3) 0%,transparent 100%);
+  pointer-events:none;z-index:0}
+
+.container{max-width:720px;margin:0 auto;padding:60px 24px 120px;position:relative;z-index:1}
+
+.nav{display:flex;align-items:center;gap:8px;margin-bottom:60px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.3em;color:var(--text2)}
+.nav a{color:var(--accent);text-decoration:none;opacity:.7;transition:opacity .2s}.nav a:hover{opacity:1}
+.nav-sep{opacity:.3}
+
+header{text-align:center;padding-bottom:72px;border-bottom:1px solid rgba(255,255,255,0.04);margin-bottom:72px}
+.frag-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;opacity:.7}
+h1{font-family:'Cinzel',serif;font-size:clamp(22px,4vw,34px);font-weight:400;color:var(--text);letter-spacing:.15em;margin-bottom:8px}
+.h1-sub{font-family:'EB Garamond',serif;font-style:italic;font-size:17px;color:var(--text2);letter-spacing:.1em;margin-bottom:32px}
+.header-desc{font-size:14px;color:#9991b0;line-height:2.2;letter-spacing:.06em;max-width:500px;margin:0 auto}
+
+.section{margin-bottom:80px}
+.section-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:28px;opacity:.7;display:flex;align-items:center;gap:12px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.prose{font-size:14px;color:#c4bdd8;line-height:2.6;letter-spacing:.07em;margin-bottom:24px}
+.prose em{font-style:normal;color:var(--text)}
+
+.quote-block{
+  background:rgba(167,139,250,0.05);
+  border-left:2px solid rgba(167,139,250,0.3);
+  border-radius:0 8px 8px 0;
+  padding:20px 24px;
+  margin:32px 0;
+}
+.quote-text{font-size:13px;color:#c4bdd8;line-height:2.2;letter-spacing:.06em}
+.quote-text em{font-style:normal;color:var(--accent)}
+
+/* 有料区切り */
+.paid-divider{
+  text-align:center;
+  padding:32px 0;
+  margin:48px 0;
+  border-top:1px solid rgba(245,200,66,0.15);
+  border-bottom:1px solid rgba(245,200,66,0.15);
+}
+.paid-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:.5em;color:var(--gold);opacity:.5;text-transform:uppercase;}
+
+/* パスカード */
+.path-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+.path-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:20px 22px;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:16px;
+  align-items:flex-start;
+  transition:border-color .2s;
+}
+.path-card:hover{border-color:rgba(167,139,250,0.3)}
+.path-hebrew{
+  font-family:'Cinzel',serif;
+  font-size:22px;
+  font-weight:600;
+  color:var(--gold);
+  min-width:36px;
+  text-align:center;
+  line-height:1.2;
+  padding-top:2px;
+}
+.path-body{}
+.path-header{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.path-planets{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.15em;color:var(--accent);opacity:.8}
+.path-keyword{font-size:11px;color:var(--gold);opacity:.7;letter-spacing:.1em;}
+.path-desc{font-size:13px;color:#c4bdd8;line-height:2;letter-spacing:.05em}
+
+.closing{text-align:center;padding:48px 0 0;border-top:1px solid rgba(255,255,255,0.06)}
+.closing-text{font-family:'EB Garamond',serif;font-style:italic;font-size:18px;color:var(--text2);line-height:2.4;letter-spacing:.08em}
+.closing-name{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.3em;color:var(--text2);margin-top:24px;opacity:.6}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <nav class="nav">
+    <a href="../index.html">超数秘術</a>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--text2)">知識のかけら</span>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--text)">Paths</span>
+  </nav>
+
+  <header>
+    <div class="frag-label">Fragments — Knowledge VIII</div>
+    <h1>Paths</h1>
+    <div class="h1-sub">22本の経路で、あなたの星を活かせる</div>
+    <div class="header-desc">生命の樹、22のパスと惑星について</div>
+  </header>
+
+  <div class="section">
+    <div class="section-label">星と星の間に何があるか</div>
+    <div class="prose">生命の樹には、11の星がある。</div>
+    <div class="prose">その星と星の間を結ぶ通路が22本ある。パスと呼ばれる。</div>
+    <div class="prose">それぞれのパスにはヘブライ文字が割り当てられていて、その文字には原義がある。牛、家、らくだ、扉——そういう、具体的な言葉だ。</div>
+    <div class="prose">ここでわたしが面白いと思ったのは、その原義が「この二つの星をつなぐには何が必要か」を示しているように見えることだ。</div>
+    <div class="prose">星と星の間には、通路があるだけではない。その通路を渡るための素材が、そこにある。</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">思考の話</div>
+    <div class="prose">具体的な話をする前に、ひとつだけ例を挙げたい。</div>
+    <div class="prose">水星は思考と言語の星だ。生命の樹では3本のパスが水星（ホド）から伸びている。太陽（ティファレト）へ、月（イェソド）へ、地球（マルクト）へ。</div>
+    <div class="prose"><em>同じ水星でも、どこに向かうかで使い方がまったく変わる。</em></div>
+    <div class="quote-block">
+      <div class="quote-text">太陽↔水星のパスには「目」という文字が割り当てられている。意識の中心（太陽）と思考（水星）をつなぐには、ただ見ること。判断も感情も介在しない純粋な観察だ。考えようとした瞬間に、月に引っ張られる。俯瞰するには太陽の目が必要になる。</div>
+    </div>
+    <div class="quote-block">
+      <div class="quote-text">水星↔月のパスには「頭部」という文字が割り当てられている。思考（水星）で感情・無意識（月）につながる。頭で考えることは月の世界に入ることだ。悪いことではないが、思考が感情の枠に囚われやすくなる。</div>
+    </div>
+    <div class="quote-block">
+      <div class="quote-text">水星↔地球のパスには「歯」という文字が割り当てられている。思考（水星）を現実（地球）につなぐには、噛み砕くこと。どんなに大きなビジョンも、歯で砕けるサイズに分解されて初めて現実に消化される。噛み砕けないものは現実化しない。</div>
+    </div>
+    <div class="prose">同じ思考でも、太陽に向ければ観察になり、月に向ければ感情の整理になり、地球に向ければ現実化の処理になる。</div>
+    <div class="prose">これが、パスという概念の面白さだ。星そのものではなく、星と星の間に何があるかを見る。</div>
+  </div>
+
+  <div class="paid-divider">
+    <div class="paid-label">✦ &nbsp; 22のパスを読む &nbsp; ✦</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">22本のパス</div>
+    <div class="prose">以下、22本のパスをすべて読んでいく。惑星間の関係、ヘブライ文字の原義、そこから見えるもの——この三つを重ねて読む。</div>
+
+    <div class="path-grid">
+
+      <div class="path-card">
+        <div class="path-hebrew">א</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">冥王星 ↔ 海王星</span>
+            <span class="path-keyword">｜ アレフ ｜ 牛</span>
+          </div>
+          <div class="path-desc">根源（冥王星）と溶解・夢（海王星）をつなぐには、大地に根差した揺るぎない信念が必要だ。牛のように大地に根差しているからこそ、最も掴みどころのない領域同士を渡ることができる。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ב</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">冥王星 ↔ 天王星</span>
+            <span class="path-keyword">｜ ベート ｜ 家</span>
+          </div>
+          <div class="path-desc">根源（冥王星）と覚醒（天王星）をつなぐには、家を持つこと。どちらも枠を超えた領域にある。その枠を超えたものを受け取り理解するには、アンテナのような受信点としての家が必要だ。家がなければ枠を超えたものは定着しない。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ג</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">冥王星 ↔ 太陽</span>
+            <span class="path-keyword">｜ ギーメル ｜ らくだ</span>
+          </div>
+          <div class="path-desc">根源から意識の中心へ至る長い旅を完結させるのは、外部の補給ではなく自らに秘められた力だ。らくだのこぶのように、内に蓄えられたものがある。ありのままの自分につながる瞑想的な深みの中でそれは解放され、驚異的な力として発揮される。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ד</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">海王星 ↔ 天王星</span>
+            <span class="path-keyword">｜ ダレット ｜ 扉</span>
+          </div>
+          <div class="path-desc">海王星と天王星をつなぐ扉は、既に開かれている。溶解や夢の中にある扉に気づけるかどうかが覚醒への鍵になる。大いなる深い気づきだけがその扉を見せる。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ה</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">海王星 ↔ 太陽</span>
+            <span class="path-keyword">｜ ヘー ｜ 窓</span>
+          </div>
+          <div class="path-desc">海王星の霧や幻想を太陽の意識中心につなぐには、窓のように光を通すこと。曇りガラスでは光は遮られる。葛藤や曖昧さを手放すことで窓は透明になり、光が差し込むことでインスピレーションが冴える。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ו</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">海王星 ↔ 木星</span>
+            <span class="path-keyword">｜ ヴァヴ ｜ 釘</span>
+          </div>
+          <div class="path-desc">夢や霊感（海王星）を豊かさ（木星）につなぐには、念を込めること。釘を打つように、見えないものに意図を込めて打ち込む行為が、霊感を現実の恵みに変える。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ז</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">天王星 ↔ 太陽</span>
+            <span class="path-keyword">｜ ザイン ｜ 剣</span>
+          </div>
+          <div class="path-desc">覚醒・革命（天王星）を意識の中心（太陽）につなぐには、剣で切り分けること。覚醒の衝撃をそのまま持ち込むのではなく、識別して何が本質かを切り出す作業が必要だ。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ח</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">天王星 ↔ 火星</span>
+            <span class="path-keyword">｜ ヘット ｜ 柵</span>
+          </div>
+          <div class="path-desc">覚醒（天王星）と行動・意志（火星）をつなぐには、境界を設けること。革命的な気づきをエネルギーに変えるには、何をしないかを決める柵が必要だ。無限の可能性を行動に絞る。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ט</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">木星 ↔ 火星</span>
+            <span class="path-keyword">｜ テット ｜ 蛇</span>
+          </div>
+          <div class="path-desc">拡張・豊かさ（木星）と闘争・意志（火星）をつなぐには、脱皮すること。今の自分の皮を手放さなければ、豊かさは窮屈になり力は内側に向かう。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">י</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">木星 ↔ 太陽</span>
+            <span class="path-keyword">｜ ヨッド ｜ 手・腕</span>
+          </div>
+          <div class="path-desc">豊かさ（木星）を意識の中心（太陽）につなぐには、掴みに行くこと。自分から取りに行く能動的な行為が必要だ。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">כ</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">木星 ↔ 金星</span>
+            <span class="path-keyword">｜ カフ ｜ 手のひら</span>
+          </div>
+          <div class="path-desc">豊かさ（木星）と愛・美（金星）をつなぐには、手のひらを開いて待つこと。開いた手に舞い降りるのを受け取る。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ל</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">火星 ↔ 太陽</span>
+            <span class="path-keyword">｜ ラメド ｜ 牛追い棒</span>
+          </div>
+          <div class="path-desc">火星の力を太陽につなぐには、制御すること。暴走せずに力を正しく使う技術が、意識の中心を支える。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">מ</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">火星 ↔ 水星</span>
+            <span class="path-keyword">｜ メム ｜ 水</span>
+          </div>
+          <div class="path-desc">行動・闘争（火星）を思考・言語（水星）につなぐには、水のように形を手放すこと。火星の固い意志を言葉にするとき、硬直したまま語っても伝わらない。流動性が橋になる。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">נ</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">太陽 ↔ 金星</span>
+            <span class="path-keyword">｜ ヌン ｜ 魚</span>
+          </div>
+          <div class="path-desc">太陽から金星へつなぐには、水中の景色まで潜ること。水面からは見えない深みに降りた先に愛の本質がある。そこまで身を委ねられるかどうかが問われている。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ס</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">太陽 ↔ 月</span>
+            <span class="path-keyword">｜ サメフ ｜ 支柱</span>
+          </div>
+          <div class="path-desc">意識の中心（太陽）を発揮するには月（感情・無意識）が支柱になる。月を整えなければ太陽は立てない。心が整って初めて意識の中心が輝く。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ע</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">太陽 ↔ 水星</span>
+            <span class="path-keyword">｜ アイン ｜ 目</span>
+          </div>
+          <div class="path-desc">意識の中心（太陽）と思考（水星）をつなぐにはただ見ること。判断も感情も介在しない純粋な観察だ。考えようとした瞬間に月に引っ張られる。俯瞰するには太陽の目が必要だ。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">פ</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">金星 ↔ 水星</span>
+            <span class="path-keyword">｜ ペー ｜ 口</span>
+          </div>
+          <div class="path-desc">愛・美・感情（金星）を思考・言語（水星）につなぐには、口に出すこと。感じていることを言葉にする行為が橋になる。言語化されない感情は金星の中に留まり続ける。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">צ</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">金星 ↔ 月</span>
+            <span class="path-keyword">｜ ツァディー ｜ 釣り針</span>
+          </div>
+          <div class="path-desc">愛・美（金星）と感情・無意識（月）をつなぐには、釣り針のように待って引き寄せること。無意識の深みにあるものは追いかけても逃げる。静かに待ち、引っかかる瞬間を逃さない。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ק</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">金星 ↔ 地球</span>
+            <span class="path-keyword">｜ コフ ｜ 後頭部</span>
+          </div>
+          <div class="path-desc">愛・美（金星）を現実（地球）につなぐには、後頭部、つまり見えない背後を感じること。美や愛を現実に降ろすには、意識の外側にあるものを感じ取る受容性が必要だ。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ר</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">水星 ↔ 月</span>
+            <span class="path-keyword">｜ レーシュ ｜ 頭部</span>
+          </div>
+          <div class="path-desc">思考（水星）で感情・無意識（月）につながる。頭で考えることは月の世界に入ることだ。悪いことではないが、思考が感情の枠に囚われやすくなる。月のパターンを俯瞰したいなら太陽の視点が必要になる。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ש</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">水星 ↔ 地球</span>
+            <span class="path-keyword">｜ シン ｜ 歯</span>
+          </div>
+          <div class="path-desc">思考（水星）を現実（地球）につなぐには、噛み砕くこと。どんなに大きなビジョンも、歯で砕けるサイズに分解されて初めて現実に消化される。噛み砕けないものは現実化しない。</div>
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-hebrew">ת</div>
+        <div class="path-body">
+          <div class="path-header">
+            <span class="path-planets">月 ↔ 地球</span>
+            <span class="path-keyword">｜ タヴ ｜ 十字・印</span>
+          </div>
+          <div class="path-desc">月の感覚や無意識をそのまま体現すること。言語化や処理を介さず、月の意のように振る舞うことが現実に刻まれる。産声のように、出すことで初めてそこに存在が生まれる。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="closing-text">
+      星と星の間に、何があるか。<br>
+      それを知ることが、通路を開く最初の一歩だ。
+    </div>
+    <div class="closing-name">——とぎ</div>
+    <div style="margin-top:48px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.06);text-align:center;">
+      <div style="font-size:13px;color:#9991b0;margin-bottom:20px;line-height:2;letter-spacing:.05em;">どんなセッション？</div>
+      <a href="../session/slider_rpg.html" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;color:#fff;font-family:'Noto Serif JP',serif;font-size:14px;letter-spacing:.15em;text-decoration:none;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">セッションの中身を見る →</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

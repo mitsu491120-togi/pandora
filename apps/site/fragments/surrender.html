@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surrender — 知識のかけら</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+JP:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;--surface:#111118;--surface2:#1a1a24;--border:rgba(180,160,255,0.15);
+  --accent:#a78bfa;--accent2:#e879f9;--gold:#f5c842;--text:#e8e4f0;--text2:#9991b0;
+  --uranus:#a0d4f0;--neptune:#9090e0;--pluto:#c87090;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Noto Serif JP',serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(1px 1px at 15% 12%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 42% 8%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 68% 18%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 88% 5%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 8% 38%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 55% 32%,rgba(255,255,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 78% 45%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 22% 65%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 62% 72%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 85% 68%,rgba(255,255,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 35% 88%,rgba(255,255,255,.3) 0%,transparent 100%);pointer-events:none;z-index:0}
+
+.container{max-width:720px;margin:0 auto;padding:60px 24px 120px;position:relative;z-index:1}
+
+.nav{display:flex;align-items:center;gap:8px;margin-bottom:60px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.3em;color:var(--text2)}
+.nav a{color:var(--accent);text-decoration:none;opacity:.7;transition:opacity .2s}.nav a:hover{opacity:1}
+.nav-sep{opacity:.3}
+
+header{text-align:center;padding-bottom:72px;border-bottom:1px solid rgba(255,255,255,0.04);margin-bottom:72px}
+.frag-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;opacity:.7}
+h1{font-family:'Cinzel',serif;font-size:clamp(22px,4vw,34px);font-weight:400;color:var(--text);letter-spacing:.15em;margin-bottom:8px}
+.h1-sub{font-family:'EB Garamond',serif;font-style:italic;font-size:17px;color:var(--text2);letter-spacing:.1em;margin-bottom:40px}
+.header-warning{
+  display:inline-block;
+  font-size:12px;
+  color:rgba(200,112,144,0.8);
+  border:1px solid rgba(200,112,144,0.25);
+  border-radius:8px;
+  padding:10px 20px;
+  letter-spacing:.1em;
+  line-height:1.8;
+}
+
+.section{margin-bottom:88px}
+.section-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:28px;opacity:.7;display:flex;align-items:center;gap:12px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.prose{font-size:14px;color:#c4bdd8;line-height:2.6;letter-spacing:.07em;margin-bottom:24px}
+.prose em{font-style:normal;color:var(--text)}
+.prose strong{font-weight:500;color:#e8e4f0}
+
+/* 言葉の対比 */
+.word-pair{
+  display:grid;
+  grid-template-columns:1fr 40px 1fr;
+  gap:0;
+  align-items:center;
+  margin:40px 0;
+  text-align:center;
+}
+.word-box{
+  padding:24px 16px;
+  border-radius:12px;
+}
+.word-box-left{
+  background:rgba(167,139,250,0.06);
+  border:1px solid rgba(167,139,250,0.2);
+}
+.word-box-right{
+  background:rgba(245,200,66,0.06);
+  border:1px solid rgba(245,200,66,0.2);
+}
+.word-main{
+  font-family:'Cinzel',serif;
+  font-size:clamp(20px,3vw,28px);
+  letter-spacing:.15em;
+  margin-bottom:8px;
+}
+.word-main-left{color:var(--accent)}
+.word-main-right{color:var(--gold)}
+.word-reading{
+  font-size:11px;
+  color:var(--text2);
+  letter-spacing:.2em;
+  font-family:'Cinzel',serif;
+  margin-bottom:10px;
+}
+.word-desc{font-size:12px;color:#9991b0;line-height:1.8;letter-spacing:.05em}
+.word-sep{font-family:'Cinzel',serif;font-size:18px;color:rgba(255,255,255,0.15);text-align:center}
+
+/* 区別ボックス */
+.distinction{
+  margin:40px 0;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.07);
+}
+.distinction-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+}
+.distinction-header{
+  padding:14px 20px;
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  text-align:center;
+}
+.distinction-header-left{
+  background:rgba(232,120,100,0.08);
+  border-bottom:1px solid rgba(232,120,100,0.2);
+  border-right:1px solid rgba(255,255,255,0.05);
+  color:#e87a64;
+}
+.distinction-header-right{
+  background:rgba(100,200,150,0.08);
+  border-bottom:1px solid rgba(100,200,150,0.2);
+  color:#64c896;
+}
+.distinction-body{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+}
+.distinction-col{padding:20px}
+.distinction-col-left{
+  background:rgba(232,120,100,0.04);
+  border-right:1px solid rgba(255,255,255,0.04);
+}
+.distinction-col-right{background:rgba(100,200,150,0.04)}
+.distinction-item{
+  font-size:13px;
+  color:#c4bdd8;
+  padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  line-height:1.8;
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
+}
+.distinction-item:last-child{border-bottom:none}
+.distinction-item::before{font-size:8px;margin-top:5px;flex-shrink:0}
+.distinction-col-left .distinction-item::before{content:'●';color:#e87a64}
+.distinction-col-right .distinction-item::before{content:'✦';color:#64c896}
+
+/* トラサタセクション */
+.transpersonal-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin:40px 0;
+}
+@media(max-width:560px){.transpersonal-grid{grid-template-columns:1fr}}
+
+.tp-card{
+  border-radius:12px;
+  padding:24px 18px;
+  text-align:center;
+  cursor:pointer;
+  transition:box-shadow .25s, border-color .25s;
+}
+.tp-card:hover{box-shadow:0 4px 24px rgba(0,0,0,0.4)}
+
+.tp-card-uranus{background:rgba(160,212,240,0.06);border:1px solid rgba(160,212,240,0.25)}
+.tp-card-neptune{background:rgba(144,144,224,0.06);border:1px solid rgba(144,144,224,0.25)}
+.tp-card-pluto{background:rgba(200,112,144,0.06);border:1px solid rgba(200,112,144,0.25)}
+
+.tp-symbol{font-size:28px;margin-bottom:10px;display:block}
+.tp-name{font-family:'Cinzel',serif;font-size:13px;letter-spacing:.2em;margin-bottom:6px}
+.tp-name-uranus{color:var(--uranus)}
+.tp-name-neptune{color:var(--neptune)}
+.tp-name-pluto{color:var(--pluto)}
+.tp-keyword{font-size:11px;color:var(--text2);letter-spacing:.1em;margin-bottom:14px;font-family:'EB Garamond',serif;font-style:italic}
+.tp-desc{font-size:12px;color:#b8b0d0;line-height:1.9;letter-spacing:.04em;text-align:left}
+
+/* 核心ブロック */
+.core-block{
+  background:rgba(245,200,66,0.04);
+  border:1px solid rgba(245,200,66,0.18);
+  border-radius:16px;
+  padding:36px 32px;
+  margin:48px 0;
+  position:relative;
+  overflow:hidden;
+}
+.core-block::before{
+  content:'';
+  position:absolute;
+  top:-40px;right:-40px;
+  width:160px;height:160px;
+  background:radial-gradient(circle,rgba(245,200,66,0.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.core-block-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;margin-bottom:20px;opacity:.7}
+.core-block-text{font-size:15px;color:#d8d0ee;line-height:2.6;letter-spacing:.07em}
+.core-block-text em{font-style:normal;color:var(--gold)}
+
+/* 死の区別 */
+.death-distinction{
+  margin:40px 0;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+@media(max-width:500px){.death-distinction{grid-template-columns:1fr}}
+
+.death-box{border-radius:12px;padding:24px 20px}
+.death-box-ego{
+  background:rgba(200,112,144,0.06);
+  border:1px solid rgba(200,112,144,0.2);
+}
+.death-box-surrender{
+  background:rgba(100,200,150,0.06);
+  border:1px solid rgba(100,200,150,0.2);
+}
+.death-box-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.25em;text-transform:uppercase;margin-bottom:14px}
+.death-box-ego .death-box-label{color:#c87090}
+.death-box-surrender .death-box-label{color:#64c896}
+.death-box-title{font-size:16px;color:var(--text);letter-spacing:.08em;margin-bottom:12px;font-weight:500}
+.death-box-items{list-style:none}
+.death-box-items li{font-size:12px;color:#c4bdd8;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);line-height:1.8;display:flex;gap:8px;align-items:flex-start}
+.death-box-items li:last-child{border-bottom:none}
+.death-box-items li::before{font-size:8px;margin-top:4px;flex-shrink:0}
+.death-box-ego .death-box-items li::before{content:'●';color:#c87090}
+.death-box-surrender .death-box-items li::before{content:'✦';color:#64c896}
+
+/* フェーズ */
+.phase-flow{margin:40px 0}
+.phase-item{
+  display:grid;
+  grid-template-columns:40px 1fr;
+  gap:16px;
+  margin-bottom:4px;
+  position:relative;
+}
+.phase-item:not(:last-child)::after{
+  content:'';
+  position:absolute;
+  left:19px;
+  top:48px;
+  width:2px;
+  height:calc(100% - 32px);
+  background:rgba(255,255,255,0.06);
+}
+.phase-dot{
+  width:40px;height:40px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;
+  font-size:12px;
+  flex-shrink:0;
+  margin-top:4px;
+}
+.phase-content{padding:8px 0 32px}
+.phase-title{font-size:14px;color:var(--text);letter-spacing:.08em;margin-bottom:8px;font-weight:500}
+.phase-text{font-size:13px;color:#b8b0d0;line-height:2.1;letter-spacing:.05em}
+
+.closing{text-align:center;padding:56px 0 0;border-top:1px solid rgba(255,255,255,0.04)}
+.closing-text{font-family:'EB Garamond',serif;font-style:italic;font-size:19px;color:var(--text2);line-height:2.2;letter-spacing:.08em}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <nav class="nav">
+    <a href="index.html">超数秘術</a>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--text2);">知識のかけら</span>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--text);">Surrender</span>
+  </nav>
+
+  <header>
+    <div class="frag-label">Fragments — Knowledge III</div>
+    <h1>Surrender</h1>
+    <div class="h1-sub">降伏と幸福、自我の死と再生</div>
+    <div class="header-warning">
+      このページは覚悟を持った人に向けて書かれている。<br>
+      生々しい話をする。
+    </div>
+  </header>
+
+  <!-- Prologueからの橋渡し -->
+  <div style="margin-bottom:72px;padding:28px 32px;background:rgba(245,200,66,0.03);border:1px solid rgba(245,200,66,0.12);border-radius:14px;">
+    <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;opacity:.6">← Prologueから来た人へ</div>
+    <div style="font-size:14px;color:#b8b0d0;line-height:2.4;letter-spacing:.07em;">
+      「分離している話があると認めないと、統合は見えてこない。まず認めて降参する。」<br>
+      Prologueで書いたその「降参」が、このページのテーマだ。
+    </div>
+  </div>
+
+  <!-- 言葉の話 -->
+  <div class="section">
+    <div class="section-label">音が同じ、意味が重なる</div>
+
+    <div class="prose">日本語には面白い現象がある。音は同じなのに、意味が違う。想像と創造。そして——降伏と幸福。</div>
+
+    <div class="word-pair">
+      <div class="word-box word-box-left">
+        <div class="word-reading">こうふく</div>
+        <div class="word-main word-main-left">降伏</div>
+        <div class="word-desc">抵抗をやめること<br>明け渡すこと<br>自我が手を下ろすこと</div>
+      </div>
+      <div class="word-sep">=</div>
+      <div class="word-box word-box-right">
+        <div class="word-reading">こうふく</div>
+        <div class="word-main word-main-right">幸福</div>
+        <div class="word-desc">満たされていること<br>大いなるものに抱かれること<br>在ることが喜びであること</div>
+      </div>
+    </div>
+
+    <div class="prose">これは偶然ではないと思っている。降伏することが、そのまま幸福への道だ。音が同じなのは、本質が同じだからだ。</div>
+    <div class="prose">ではなぜ人は降伏できないのか。自我が生きているからだ。自分を守ろうとする意志、自分さえよければという閉じた回路、それが手放せない限り、幸福はその人の外側にあり続ける。</div>
+  </div>
+
+  <!-- 自我の閉じた回路 -->
+  <div class="section">
+    <div class="section-label">自我の閉じた回路</div>
+
+    <div class="prose">自我は生存のために発達した。危険を避け、資源を確保し、自分という個体を守る。それ自体は悪ではない。ただ、その回路だけで生きようとするとき、人は孤立する。</div>
+    <div class="prose"><em>己一人の中に幸せはない。</em></div>
+    <div class="prose">自分さえよければという動きは、結果として自分を孤島にする。もっと持たなければ、もっと安全にならなければ、もっと認められなければ——その「もっと」は終わらない。欠乏の感覚は満たされるほど深くなる。自我の回路が閉じているから、外から何かが入ってこない。</div>
+    <div class="prose">この状態でいくら努力しても、幸福には届かない。届かないのは努力が足りないからではなく、方向が根本的に違うからだ。</div>
+  </div>
+
+  <!-- 死にたがりと死ぬ覚悟 -->
+  <div class="section">
+    <div class="section-label">死にたがりと、死ぬ覚悟</div>
+
+    <div class="prose">ここを間違えてはいけない。</div>
+
+    <div class="death-distinction">
+      <div class="death-box death-box-ego">
+        <div class="death-box-label">● 死にたがり</div>
+        <div class="death-box-title">自我が苦しくて逃げたい</div>
+        <ul class="death-box-items">
+          <li>自我がまだ主役のまま</li>
+          <li>苦しみから解放されたいという欲求</li>
+          <li>自分という感覚を消したい</li>
+          <li>逃げることが目的</li>
+          <li>自我の強化の裏返し</li>
+        </ul>
+      </div>
+      <div class="death-box death-box-surrender">
+        <div class="death-box-label">✦ 死ぬ覚悟</div>
+        <div class="death-box-title">自我を手放す覚悟</div>
+        <ul class="death-box-items">
+          <li>自分という輪郭が消えることを受け入れる</li>
+          <li>しがみつくのをやめる意志</li>
+          <li>大いなるものへの明け渡し</li>
+          <li>向かうことが目的</li>
+          <li>自我の溶解</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="prose">方向が真逆だ。死にたがりは自我が苦しくて、その苦しみから逃れたいという自我の叫びだ。自我はまだそこにいる。むしろその叫びの中で、自我はより強く存在している。</div>
+    <div class="prose">死ぬ覚悟は違う。自分という保身、自分可愛さ、その執着を手放すことへの覚悟だ。消えることへの恐れを超えた先にある、明け渡しの意志だ。</div>
+
+    <div class="core-block">
+      <div class="core-block-label">核心</div>
+      <div class="core-block-text">
+        自分にしがみついている限り、トラサタとは出会えない。<br>
+        トラサタは個人の意識を超えた領域の星だ。<em>肉体を超えたもの、死の先にあるもの</em>を、ある程度受け入れていなければ、その扉は開かない。<br><br>
+        霊的な領域に心を開いていない人間に、トラサタは意識できない。怖いものとして現れるか、そもそも視野に入ってこない。<br><br>
+        自我の死によって初めて、見える景色がある。
+      </div>
+    </div>
+  </div>
+
+  <!-- トラサタ -->
+  <div class="section">
+    <div class="section-label">トラサタ — 個人を超えた三つの星</div>
+
+    <div class="prose">天王星・海王星・冥王星。この三つをまとめてトラサタと呼ぶ。いずれも肉眼では見えない。個人の次元を超えた、集合的・霊的な領域の星だ。</div>
+
+    <div class="transpersonal-grid">
+      <div class="tp-card tp-card-uranus">
+        <span class="tp-symbol">⛢</span>
+        <div class="tp-name tp-name-uranus">Uranus</div>
+        <div class="tp-keyword">天王星 — 解放と革命</div>
+        <div class="tp-desc">突然やってくる。構造を壊す。既存の枠組みが一瞬で崩れる体験。サレンダーのトリガーになりやすい。抵抗しても意味がないと知らされる瞬間を作り出す。</div>
+      </div>
+      <div class="tp-card tp-card-neptune">
+        <span class="tp-symbol">♆</span>
+        <div class="tp-name tp-name-neptune">Neptune</div>
+        <div class="tp-keyword">海王星 — 溶解とワンネス</div>
+        <div class="tp-desc">境界が溶ける。自分と他者、自分と宇宙の境目が消える。生かされている感覚、大いなるものへの溶け合い。ワンネスの体験はここから来る。</div>
+      </div>
+      <div class="tp-card tp-card-pluto">
+        <span class="tp-symbol">♇</span>
+        <div class="tp-name tp-name-pluto">Pluto</div>
+        <div class="tp-keyword">冥王星 — 死と再生</div>
+        <div class="tp-desc">根底からの変容。避けられない。どれだけ抵抗しても押し流される力。一度完全に死んで、新しいフェーズに生まれ直す。死は終わりではない。</div>
+      </div>
+    </div>
+
+    <div class="prose">トラサタ力が強い人は、死生観を自然に持っている。死を身近に感じた体験、霊的なものへの感受性、肉体を超えた何かへの開き。それがなければ、これらの星は意識の表面に上ってこない。</div>
+  </div>
+
+  <!-- 生かされている感覚 -->
+  <div class="section">
+    <div class="section-label">生かされている感覚</div>
+
+    <div class="prose">人生に事件が起きる。衝撃が来る。死を意識する。その瞬間、自我が一時的に機能を止める。</div>
+    <div class="prose">そのとき入ってくるものがある。</div>
+    <div class="prose"><em>自分が生かされているという感覚。</em></div>
+    <div class="prose">自分で生きているのではない。何か大きなものに、生かされている。その感覚が入った瞬間、幸福と降伏が同じ音である理由がわかる。大いなるものに抱かれている安心感——それ自体が幸福だ。場所でも状況でも人でもなく、その感覚そのものが。</div>
+    <div class="prose">これは一瞥体験として訪れることが多い。突然、ある瞬間に。努力して得られるものではなく、自我が緩んだ隙間に入ってくる。だから降伏が先だ。手放した先に、見える。</div>
+
+    <div class="core-block" style="border-color:rgba(144,144,224,0.25);background:rgba(144,144,224,0.04)">
+      <div class="core-block-label" style="color:var(--neptune)">一人では降伏へ、ワンネスでは幸福へ</div>
+      <div class="core-block-text">
+        自我の閉じた回路の中にいるとき、人は一人だ。その孤独の中で、降伏を迫られる。<br><br>
+        降伏した先に、ワンネスがある。個という境界が溶けて、すべてと繋がっている感覚。<em>そこに幸福がある。</em><br><br>
+        幸福は自分の中にあるのではない。自分という輪郭が消えたところにある。
+      </div>
+    </div>
+  </div>
+
+  <!-- 死は終わりではない -->
+  <div class="section">
+    <div class="section-label">死は終わりではない</div>
+
+    <div class="prose">自我の死は終わりではない。新たなフェーズの始まりだ。</div>
+
+    <div class="phase-flow">
+      <div class="phase-item">
+        <div class="phase-dot" style="background:rgba(200,112,144,0.15);border:1px solid rgba(200,112,144,0.3);color:#c87090">I</div>
+        <div class="phase-content">
+          <div class="phase-title">自我の保身</div>
+          <div class="phase-text">自分を守ること、認められること、失わないことに全力を注ぐ。それが当然の前提として機能している状態。苦しいが、手放し方がわからない。</div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-dot" style="background:rgba(160,212,240,0.15);border:1px solid rgba(160,212,240,0.3);color:var(--uranus)">II</div>
+        <div class="phase-content">
+          <div class="phase-title">衝撃・構造の崩壊</div>
+          <div class="phase-text">人生に事件が起きる。死を意識する体験、喪失、予期しない出来事。天王星的な突然の崩壊。これまで自分を支えていた枠組みが機能しなくなる。</div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-dot" style="background:rgba(200,112,144,0.15);border:1px solid rgba(200,112,144,0.3);color:#c87090">III</div>
+        <div class="phase-content">
+          <div class="phase-title">自我の死</div>
+          <div class="phase-text">冥王星が動く。避けられない。どれだけ抵抗しても押し流される。自分という感覚が根底から揺らぐ。これが死だ。肉体の死ではなく、「自分」という固定した観念の死。</div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-dot" style="background:rgba(144,144,224,0.15);border:1px solid rgba(144,144,224,0.3);color:var(--neptune)">IV</div>
+        <div class="phase-content">
+          <div class="phase-title">溶解・ワンネス</div>
+          <div class="phase-text">境界が消える。自分と宇宙の間にあった壁がない。大いなるものに抱かれている感覚。生かされているという気づき。これが海王星の領域だ。</div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-dot" style="background:rgba(245,200,66,0.15);border:1px solid rgba(245,200,66,0.3);color:var(--gold)">V</div>
+        <div class="phase-content">
+          <div class="phase-title">新たなフェーズへの再生</div>
+          <div class="phase-text">死んだ自我は戻らない。しかし何かが残る。というより、より本質的なものが現れる。それはもはや「自分」と呼ぶより「在るもの」に近い。ここから先が、本来の人生だ。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">このプロセスは努力で起こすものではない。準備はできる。自我への執着を少しずつ緩めること、死を概念として受け入れること、霊的な領域に心を開くこと。しかし実際にそれが起きるのは、起きるべき時に起きる。</div>
+    <div class="prose">ただ言えることがある。<em>自分にしがみついている限り、このプロセスは始まらない。</em>保身の鎧を着たまま、ワンネスには入れない。</div>
+  </div>
+
+  <div class="closing">
+    <div class="closing-text">
+      降伏は負けではない。<br>
+      それは、もっと大きなものへの<br>
+      合流だ。
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desires — 知識のかけら</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+JP:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;
+  --surface:#111118;
+  --surface2:#1a1a24;
+  --border:rgba(180,160,255,0.15);
+  --accent:#a78bfa;
+  --accent2:#e879f9;
+  --gold:#f5c842;
+  --text:#e8e4f0;
+  --text2:#9991b0;
+  --glow:rgba(167,139,250,0.2);
+
+  /* 星の色 */
+  --moon:#c8d8f0;
+  --venus:#f0c8d8;
+  --mars:#f0a080;
+  --jupiter:#a0c8f0;
+  --saturn:#c8b890;
+  --sun:#f5c842;
+  --transpersonal:#c8a0f0;
+  --asc:#90e0c0;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Noto Serif JP',serif;
+  min-height:100vh;
+  overflow-x:hidden;
+  line-height:1;
+}
+
+/* 星空 */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 35% 8%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 58% 15%,rgba(255,255,255,.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 78% 6%,rgba(255,255,255,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 92% 28%,rgba(255,255,255,.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 8% 45%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 48% 38%,rgba(255,255,255,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 68% 55%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 88% 48%,rgba(255,255,255,.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 22% 72%,rgba(255,255,255,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 55% 68%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 75% 82%,rgba(255,255,255,.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 42% 88%,rgba(255,255,255,.3) 0%,transparent 100%);
+  pointer-events:none;
+  z-index:0;
+}
+
+.container{
+  max-width:760px;
+  margin:0 auto;
+  padding:60px 24px 120px;
+  position:relative;
+  z-index:1;
+}
+
+/* ナビ */
+.nav{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:60px;
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:.3em;
+  color:var(--text2);
+}
+.nav a{
+  color:var(--accent);
+  text-decoration:none;
+  opacity:.7;
+  transition:opacity .2s;
+}
+.nav a:hover{opacity:1}
+.nav-sep{opacity:.3}
+
+/* ヘッダー */
+header{
+  text-align:center;
+  padding-bottom:64px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  margin-bottom:64px;
+}
+
+.frag-label{
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:.5em;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:16px;
+  opacity:.7;
+}
+
+h1{
+  font-family:'Cinzel',serif;
+  font-size:clamp(22px,4vw,34px);
+  font-weight:400;
+  color:var(--text);
+  letter-spacing:.15em;
+  margin-bottom:8px;
+  line-height:1.4;
+}
+
+.h1-sub{
+  font-family:'EB Garamond',serif;
+  font-style:italic;
+  font-size:17px;
+  color:var(--text2);
+  letter-spacing:.1em;
+  margin-bottom:32px;
+}
+
+.header-desc{
+  font-size:14px;
+  color:#9991b0;
+  line-height:2.2;
+  letter-spacing:.06em;
+  max-width:500px;
+  margin:0 auto;
+}
+
+/* セクション共通 */
+.section{
+  margin-bottom:80px;
+}
+
+.section-label{
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:.4em;
+  color:var(--accent);
+  text-transform:uppercase;
+  margin-bottom:24px;
+  opacity:.7;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.section-label::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--border);
+}
+
+.prose{
+  font-size:14px;
+  color:#c4bdd8;
+  line-height:2.4;
+  letter-spacing:.06em;
+}
+
+.prose + .prose{
+  margin-top:20px;
+}
+
+/* 欲求マップ */
+.needs-map{
+  margin:40px 0;
+  position:relative;
+}
+
+/* 欲求カード */
+.need-card{
+  display:grid;
+  grid-template-columns:48px 1fr;
+  gap:0;
+  margin-bottom:4px;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.06);
+  cursor:pointer;
+  transition:border-color .25s, box-shadow .25s;
+  position:relative;
+}
+
+.need-card:hover{
+  border-color:rgba(255,255,255,0.15);
+}
+
+.need-card.open{
+  border-color:rgba(255,255,255,0.12);
+  box-shadow:0 4px 32px rgba(0,0,0,0.4);
+  margin-bottom:12px;
+}
+
+.need-card-left{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:16px 4px;
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:.1em;
+  writing-mode:vertical-rl;
+  text-orientation:mixed;
+  opacity:.6;
+  gap:6px;
+}
+
+.need-card-header{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:16px 20px;
+  background:rgba(255,255,255,0.02);
+}
+
+.need-number{
+  font-family:'Cinzel',serif;
+  font-size:22px;
+  font-weight:600;
+  line-height:1;
+  opacity:.4;
+  flex-shrink:0;
+  width:28px;
+}
+
+.need-star-symbol{
+  font-size:20px;
+  flex-shrink:0;
+  width:32px;
+  text-align:center;
+}
+
+.need-titles{
+  flex:1;
+}
+
+.need-title-ja{
+  font-size:14px;
+  color:var(--text);
+  letter-spacing:.08em;
+  margin-bottom:3px;
+}
+
+.need-title-en{
+  font-family:'EB Garamond',serif;
+  font-style:italic;
+  font-size:12px;
+  color:var(--text2);
+  letter-spacing:.1em;
+}
+
+.need-star-name{
+  font-family:'Cinzel',serif;
+  font-size:11px;
+  letter-spacing:.15em;
+  flex-shrink:0;
+  text-align:right;
+}
+
+.need-arrow{
+  font-size:10px;
+  color:var(--text2);
+  margin-left:8px;
+  transition:transform .25s;
+  flex-shrink:0;
+}
+
+.need-card.open .need-arrow{
+  transform:rotate(180deg);
+}
+
+.need-body{
+  display:none;
+  padding:0 20px 24px 20px;
+  background:rgba(0,0,0,0.15);
+}
+
+.need-card.open .need-body{
+  display:block;
+}
+
+.need-desc{
+  font-size:13px;
+  color:#b8b0d0;
+  line-height:2.2;
+  letter-spacing:.06em;
+  padding:20px 0 16px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  margin-bottom:16px;
+}
+
+.need-states{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:16px;
+}
+
+@media(max-width:500px){
+  .need-states{grid-template-columns:1fr}
+}
+
+.state-box{
+  border-radius:8px;
+  padding:14px;
+}
+
+.state-box-good{
+  background:rgba(100,200,150,0.07);
+  border:1px solid rgba(100,200,150,0.2);
+}
+
+.state-box-bad{
+  background:rgba(232,120,100,0.07);
+  border:1px solid rgba(232,120,100,0.2);
+}
+
+.state-label{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:.25em;
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+
+.state-label-good{color:#64c896}
+.state-label-bad{color:#e87a64}
+
+.state-items{
+  list-style:none;
+}
+
+.state-items li{
+  font-size:12px;
+  color:#c4bdd8;
+  padding:4px 0;
+  line-height:1.7;
+  display:flex;
+  align-items:flex-start;
+  gap:6px;
+}
+
+.state-items li::before{
+  font-size:8px;
+  margin-top:4px;
+  flex-shrink:0;
+}
+
+.state-box-good .state-items li::before{content:'✦';color:#64c896}
+.state-box-bad .state-items li::before{content:'●';color:#e87a64}
+
+.need-beyond{
+  background:rgba(167,139,250,0.06);
+  border:1px solid rgba(167,139,250,0.15);
+  border-radius:8px;
+  padding:14px;
+}
+
+.beyond-label{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:.25em;
+  color:var(--accent);
+  margin-bottom:8px;
+  text-transform:uppercase;
+}
+
+.beyond-text{
+  font-size:12px;
+  color:#c4bdd8;
+  line-height:1.9;
+  letter-spacing:.05em;
+}
+
+/* 分水嶺 */
+.watershed{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:16px 20px;
+  margin:8px 0;
+  background:rgba(245,200,66,0.05);
+  border:1px solid rgba(245,200,66,0.2);
+  border-radius:10px;
+  position:relative;
+}
+
+.watershed-label{
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:.3em;
+  color:var(--gold);
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.watershed-line{
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg,rgba(245,200,66,0.4),rgba(245,200,66,0.1));
+}
+
+.watershed-text{
+  font-size:12px;
+  color:#c4bdd8;
+  line-height:1.8;
+  letter-spacing:.05em;
+}
+
+/* 月の核心セクション */
+.moon-core{
+  background:rgba(200,216,240,0.04);
+  border:1px solid rgba(200,216,240,0.2);
+  border-radius:16px;
+  padding:32px;
+  margin:40px 0;
+  text-align:center;
+}
+
+.moon-symbol{
+  font-size:40px;
+  margin-bottom:16px;
+  opacity:.8;
+}
+
+.moon-core-title{
+  font-family:'Cinzel',serif;
+  font-size:13px;
+  letter-spacing:.25em;
+  color:var(--moon);
+  margin-bottom:20px;
+  text-transform:uppercase;
+}
+
+.moon-core-text{
+  font-size:14px;
+  color:#c4bdd8;
+  line-height:2.4;
+  letter-spacing:.07em;
+  max-width:520px;
+  margin:0 auto;
+}
+
+.moon-core-text em{
+  font-style:normal;
+  color:var(--moon);
+}
+
+/* 締めの言葉 */
+.closing{
+  text-align:center;
+  padding:48px 0 0;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+
+.closing-text{
+  font-family:'EB Garamond',serif;
+  font-style:italic;
+  font-size:18px;
+  color:var(--text2);
+  line-height:2;
+  letter-spacing:.08em;
+}
+
+/* 欠乏/成長バッジ */
+.need-type-badge{
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  letter-spacing:.2em;
+  padding:3px 8px;
+  border-radius:20px;
+  text-transform:uppercase;
+  flex-shrink:0;
+}
+
+.badge-deficiency{
+  background:rgba(232,120,100,0.12);
+  border:1px solid rgba(232,120,100,0.3);
+  color:#e87a64;
+}
+
+.badge-growth{
+  background:rgba(100,200,150,0.12);
+  border:1px solid rgba(100,200,150,0.3);
+  color:#64c896;
+}
+
+/* ASC特別スタイル */
+.asc-note{
+  font-size:12px;
+  color:#90e0c0;
+  line-height:1.9;
+  letter-spacing:.05em;
+  background:rgba(144,224,192,0.06);
+  border:1px solid rgba(144,224,192,0.15);
+  border-radius:8px;
+  padding:12px 14px;
+  margin-top:12px;
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+
+  <nav class="nav">
+    <a href="index.html">超数秘術</a>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--text2);">知識のかけら</span>
+    <span class="nav-sep">/</span>
+    <span style="color:var(--text);">欲求の地図</span>
+  </nav>
+
+  <header>
+    <div class="frag-label">Fragments — Knowledge I</div>
+    <h1>Desires</h1>
+    <div class="h1-sub">欲求の地図</div>
+    <div class="header-desc">
+      人は何かを求めて動いている。<br>
+      その「何か」を辿ると、どの星の領域にいるかがわかる。<br>
+      マズローの7段階と、天体の対応から読み解く。
+    </div>
+  </header>
+
+  <!-- 導入 -->
+  <div class="section">
+    <div class="section-label">はじめに</div>
+    <div class="prose">
+      アブラハム・マズローは人間の欲求を階層として整理した。生理的なものから始まり、安全、所属、承認、認知、審美、そして自己実現へ。晩年にはさらにその上、自己超越という段階も示した。
+    </div>
+    <div class="prose">
+      この階層を星と重ねると、ひとつひとつの欲求がどんな性質を持っているのかが、より鮮明に見えてくる。占星術の天体は、それぞれが人間の意識の一側面を象徴している。その対応は、偶然にしては精密すぎる。
+    </div>
+    <div class="prose">
+      重要なのは、今あなたがどの段階で動いているかを知ることだ。それは良い悪いの話ではない。ただ、自分が今どこにいるかを知ることが、次への入り口になる。
+    </div>
+  </div>
+
+  <!-- 欲求マップ -->
+  <div class="section">
+    <div class="section-label">欲求と星の対応</div>
+
+    <!-- 1. 生理的欲求 / ASC -->
+    <div class="need-card" id="card-1" style="--card-color:var(--asc)" onclick="toggleCard(1)">
+      <div class="need-card-left" style="background:rgba(144,224,192,0.08);color:var(--asc)">
+        <span class="need-type-badge badge-deficiency" style="writing-mode:horizontal-tb;margin-bottom:4px;">欠乏</span>
+      </div>
+      <div>
+        <div class="need-card-header">
+          <div class="need-number" style="color:var(--asc)">1</div>
+          <div class="need-star-symbol">⊕</div>
+          <div class="need-titles">
+            <div class="need-title-ja">生理的欲求</div>
+            <div class="need-title-en">Physiological Needs</div>
+          </div>
+          <div class="need-star-name" style="color:var(--asc)">ASC</div>
+          <div class="need-arrow">▼</div>
+        </div>
+        <div class="need-body">
+          <div class="need-desc">
+            ASC（アセンダント）は、この世界へ生まれ落ちた瞬間の角度だ。肉体を持ち、地球という環境に適応するための入り口。生理的欲求はまさにその次元の話で、息をし、眠り、食べ、体温を保つという、存在することそのものへの要求を指す。<br><br>
+            アングル全体（ASC・DSC・MC・IC）は、人がこの次元にどう根ざしているかを示す。生きているということ、ここに在るということ。それが満たされていなければ、何も始まらない。
+          </div>
+          <div class="need-states">
+            <div class="state-box state-box-good">
+              <div class="state-label state-label-good">✦ 健全な状態</div>
+              <ul class="state-items">
+                <li>体の感覚に素直でいられる</li>
+                <li>睡眠・食事のリズムが安定している</li>
+                <li>「ここにいる」という感覚がある</li>
+                <li>環境との自然な適応ができている</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-bad">
+              <div class="state-label state-label-bad">● 欠乏している状態</div>
+              <ul class="state-items">
+                <li>体の声を無視し続ける</li>
+                <li>睡眠・食事を後回しにする習慣</li>
+                <li>「生きている実感」が薄い</li>
+                <li>身体症状が慢性化している</li>
+              </ul>
+            </div>
+          </div>
+          <div class="need-beyond">
+            <div class="beyond-label">▶ 超えていくには</div>
+            <div class="beyond-text">体の要求を「邪魔なもの」として抑圧するのをやめる。肉体はこの次元を生きるための乗り物だ。無視するほど、根が抜けていく。ただ在ることを許す。</div>
+          </div>
+          <div class="asc-note">
+            ※ ASCは固定した「性格」ではなく、今この瞬間この世界とどう接しているかの角度を示す。常に変化の可能性がある。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. 安全の欲求 / 月 -->
+    <div class="need-card" id="card-2" onclick="toggleCard(2)">
+      <div class="need-card-left" style="background:rgba(200,216,240,0.08);color:var(--moon)">
+        <span class="need-type-badge badge-deficiency" style="writing-mode:horizontal-tb;margin-bottom:4px;">欠乏</span>
+      </div>
+      <div>
+        <div class="need-card-header">
+          <div class="need-number" style="color:var(--moon)">2</div>
+          <div class="need-star-symbol">☽</div>
+          <div class="need-titles">
+            <div class="need-title-ja">安全の欲求</div>
+            <div class="need-title-en">Safety Needs</div>
+          </div>
+          <div class="need-star-name" style="color:var(--moon)">Moon</div>
+          <div class="need-arrow">▼</div>
+        </div>
+        <div class="need-body">
+          <div class="need-desc">
+            月は感情の海だ。安心、慣れ親しんだもの、守られているという感覚。月が象徴するのは、心の内側の状態であり、幼少期から積み重なった「安全かどうか」の判断基準でもある。<br><br>
+            安全の欲求は、月の欲求そのものだ。危険にさらされていないか、ここにいていいか、受け入れられているか。この問いが静まらない限り、人は次の段階へ自然に進めない。
+          </div>
+          <div class="need-states">
+            <div class="state-box state-box-good">
+              <div class="state-label state-label-good">✦ 健全な状態</div>
+              <ul class="state-items">
+                <li>今ここが安全だと感じられる</li>
+                <li>不確かさの中でも落ち着いていられる</li>
+                <li>感情の波に飲み込まれない</li>
+                <li>自分の内側を信頼できている</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-bad">
+              <div class="state-label state-label-bad">● 欠乏している状態</div>
+              <ul class="state-items">
+                <li>常に何かを警戒している</li>
+                <li>感情の揺れが止まらない</li>
+                <li>安定を外側に求め続ける</li>
+                <li>変化に強い恐怖を感じる</li>
+              </ul>
+            </div>
+          </div>
+          <div class="need-beyond">
+            <div class="beyond-label">▶ 超えていくには</div>
+            <div class="beyond-text">月は外から満たすことができない。安心を人や状況に求めるほど、その人や状況に依存し、失ったときにまた不安に戻る。月が満たされるのは、すでに安全であることに気づく瞬間だ。気づきは外から与えられない。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 分水嶺（月） -->
+    <div class="watershed">
+      <div class="watershed-label">核心</div>
+      <div class="watershed-line"></div>
+      <div class="watershed-text">月が満たされていなければ、人は欠乏欲求の中を回り続ける。金星で繋がろうとし、火星で認められようとする。しかしそれは月の穴を別の星で埋めようとしているだけだ。</div>
+    </div>
+
+    <!-- 3. 社会的欲求 / 金星 -->
+    <div class="need-card" id="card-3" onclick="toggleCard(3)">
+      <div class="need-card-left" style="background:rgba(240,200,216,0.08);color:var(--venus)">
+        <span class="need-type-badge badge-deficiency" style="writing-mode:horizontal-tb;margin-bottom:4px;">欠乏</span>
+      </div>
+      <div>
+        <div class="need-card-header">
+          <div class="need-number" style="color:var(--venus)">3</div>
+          <div class="need-star-symbol">♀</div>
+          <div class="need-titles">
+            <div class="need-title-ja">社会的欲求</div>
+            <div class="need-title-en">Social Needs</div>
+          </div>
+          <div class="need-star-name" style="color:var(--venus)">Venus</div>
+          <div class="need-arrow">▼</div>
+        </div>
+        <div class="need-body">
+          <div class="need-desc">
+            金星は関係の星だ。愛されること、所属すること、誰かと繋がること。美しいものへの感受性、調和への欲求も金星の領域にある。社会的欲求とは、孤独でないことへの渇望であり、「誰かにとって大切な存在でありたい」という根本的な望みだ。<br><br>
+            金星が欠乏側に動いているとき、人は承認を「関係」の中に求める。誰かに必要とされることで、安全を確認しようとする。それは月の不満を金星で埋めようとするパターンだ。
+          </div>
+          <div class="need-states">
+            <div class="state-box state-box-good">
+              <div class="state-label state-label-good">✦ 健全な状態</div>
+              <ul class="state-items">
+                <li>繋がりを「必要」ではなく「喜び」として楽しめる</li>
+                <li>一人でも寂しくない</li>
+                <li>関係に依存しない</li>
+                <li>美しいものを素直に美しいと感じられる</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-bad">
+              <div class="state-label state-label-bad">● 欠乏している状態</div>
+              <ul class="state-items">
+                <li>嫌われることへの過剰な恐れ</li>
+                <li>関係を失うことへの強い不安</li>
+                <li>「必要とされたい」が動機になっている</li>
+                <li>自分を曲げて合わせ続ける</li>
+              </ul>
+            </div>
+          </div>
+          <div class="need-beyond">
+            <div class="beyond-label">▶ 超えていくには</div>
+            <div class="beyond-text">関係は存在の証明ではない。一人でいられる人間が、初めて本当の意味で誰かと繋がれる。金星の喜びは、欠乏から求めるのをやめたとき、自然に開いていく。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 承認欲求 / 火星 -->
+    <div class="need-card" id="card-4" onclick="toggleCard(4)">
+      <div class="need-card-left" style="background:rgba(240,160,128,0.08);color:var(--mars)">
+        <span class="need-type-badge badge-deficiency" style="writing-mode:horizontal-tb;margin-bottom:4px;">欠乏</span>
+      </div>
+      <div>
+        <div class="need-card-header">
+          <div class="need-number" style="color:var(--mars)">4</div>
+          <div class="need-star-symbol">♂</div>
+          <div class="need-titles">
+            <div class="need-title-ja">承認欲求</div>
+            <div class="need-title-en">Esteem Needs</div>
+          </div>
+          <div class="need-star-name" style="color:var(--mars)">Mars</div>
+          <div class="need-arrow">▼</div>
+        </div>
+        <div class="need-body">
+          <div class="need-desc">
+            火星は行動と意志の星だ。結果を出すこと、認められること、競争で勝つこと。承認欲求は火星の欲求そのものであり、「自分には価値がある」という確信を外側の評価から得ようとする動きだ。<br><br>
+            火星が欠乏側にあるとき、人は証明し続けなければならない状態に置かれる。結果を出しても満足できず、次の証明を求める。それは月の不安定さを、成功という形で埋めようとしているだけかもしれない。
+          </div>
+          <div class="need-states">
+            <div class="state-box state-box-good">
+              <div class="state-label state-label-good">✦ 健全な状態</div>
+              <ul class="state-items">
+                <li>自分を信頼できている</li>
+                <li>結果ではなく行為そのものを楽しめる</li>
+                <li>他者の評価に左右されない芯がある</li>
+                <li>エネルギーを自然に発揮できる</li>
+              </ul>
+            </div>
+            <div class="state-box state-box-bad">
+              <div class="state-label state-label-bad">● 欠乏している状態</div>
+              <ul class="state-items">
+                <li>常に誰かと比較している</li>
+                <li>負けることへの強い恐れ</li>
+                <li>称賛がないと動けない</li>
+                <li>自己批判が止まらない</li>
+              </ul>
+            </div>
+          </div>
+          <div class="need-beyond">
+            <div class="beyond-label">▶ 超えていくには</div>
+            <div class="beyond-text">承認は外から与えられるものではない。自分が自分を認めていないとき、外の評価はいくら積み上げても底が抜ける。火星の力は、証明のためではなく、ただ動きたいから動くとき、本来の姿になる。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 分水嶺（欠乏→成長） -->
+    <div class="watershed" style="background:rgba(100,200,150,0.05);border-color:rgba(100,200,150,0.25);">
+      <div class="watershed-label" style="color:#64c896">分水嶺</div>
+      <div class="watershed-line" style="background:linear-gradient(90deg,rgba(100,200,150,0.4),rgba(100,200,150,0.1))"></div>
+      <div class="watershed-text">ここより上は成長欲求。満たされるほどさらに求める性質に変わる。月が落ち着いているとき、人は自然にこちら側へ移行し始める。</div>
+    </div>
+
+    <!-- 5. 認知的欲求 / 木星 -->
+    <div class="need-card" id="card-5" onclick="toggleCard(5)">
+      <div class="need-card-left" style="background:rgba(160,200,240,0.08);color:var(--jupiter)">
+        <span class="need-type-badge badge-growth" style="writing-mode:horizontal-tb;margin-bottom:4px;">成長</span>
+      </div>
+      <div>
+        <div class="need-card-header">
+          <div class="need-number" style="color:var(--jupiter)">5</div>
+          <div class="need-star-symbol">♃</div>
+          <div class="need-titles">
+            <div class="need-title-ja">認知的欲求</div>
+            <div class="need-title-en">Cognitive Needs</div>
+          </div>
+          <div class="need-star-name" style="color:var(--jupiter)">Jupiter</div>
+          <div class="need-arrow">▼</div>
+        </div>
+        <div class="need-body">
+          <div class="need-desc">
+            木星は拡張と探求の星だ。知ること、理解すること、意味を見出すこと。認知的欲求は「なぜ」を問い続ける衝動であり、世界をもっと広く理解したいという自然な渇望だ。<br><br>
+            成長欲求に入ると、性質が変わる。欠乏から求めるのではなく、探求そのものが喜びになる。木星は本来、豊かさと祝福の星だ。知ることの喜びが、ここから始まる。
+          </div>
+          <div class="need-states">
+            <div class="state-box state-box-good">
+              <div class="state-label state-label-good">✦ 健全な状態</div>
+              <ul class="state-items">
+                <li>知ることが純粋に楽しい</li>
+                <li>意味のある問いを持って生きている</li>
+                <li>視野が広がることへの喜び</li>
+                <li>知識を生き方と統合できている</li>
+              </ul>
+            </div>
+          </div>
+          <div class="need-beyond">
+            <div class="beyond-label">▶ この段階にいるとき</div>
+            <div class="beyond-text">知ることが純粋な喜びになっている。わからないことへの恐れがなく、好奇心が自然に動いている。知識は鎧ではなく、生き方と統合されている。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. 審美的欲求 / 土星 -->
+    <div class="need-card" id="card-6" onclick="toggleCard(6)">
+      <div class="need-card-left" style="background:rgba(200,184,144,0.08);color:var(--saturn)">
+        <span class="need-type-badge badge-growth" style="writing-mode:horizontal-tb;margin-bottom:4px;">成長</span>
+      </div>
+      <div>
+        <div class="need-card-header">
+          <div class="need-number" style="color:var(--saturn)">6</div>
+          <div class="need-star-symbol">♄</div>
+          <div class="need-titles">
+            <div class="need-title-ja">審美的欲求</div>
+            <div class="need-title-en">Aesthetic Needs</div>
+          </div>
+          <div class="need-star-name" style="color:var(--saturn)">Saturn</div>
+          <div class="need-arrow">▼</div>
+        </div>
+        <div class="need-body">
+          <div class="need-desc">
+            土星は構造と完成の星だ。型、秩序、形式、そして時間の積み重ね。一般には制限の星と言われるが、その本質は「完成に向けた磨き」にある。審美的欲求は、秩序と美しさへの感受性だ。整っていること、調和していること、それ自体が目的になる段階。<br><br>
+            土星がここに対応するのは深い。美とは恣意的なものではなく、構造と法則の中に宿る。土星が示す「時間をかけて磨かれたもの」への敬意が、審美眼の本体だ。
+          </div>
+          <div class="need-states">
+            <div class="state-box state-box-good">
+              <div class="state-label state-label-good">✦ 健全な状態</div>
+              <ul class="state-items">
+                <li>美しさ・秩序への純粋な感受性</li>
+                <li>形を整えること自体に喜びがある</li>
+                <li>長い時間軸で物事を見られる</li>
+                <li>自分なりの美学を持っている</li>
+              </ul>
+            </div>
+          </div>
+          <div class="need-beyond">
+            <div class="beyond-label">▶ この段階にいるとき</div>
+            <div class="beyond-text">美しさ・秩序への純粋な感受性がある。形を整えること自体に喜びがあり、自分なりの美学を持って生きている。長い時間軸で物事を見ることができる。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. 自己実現 / 太陽 -->
+    <div class="need-card" id="card-7" onclick="toggleCard(7)">
+      <div class="need-card-left" style="background:rgba(245,200,66,0.08);color:var(--sun)">
+        <span class="need-type-badge badge-growth" style="writing-mode:horizontal-tb;margin-bottom:4px;">成長</span>
+      </div>
+      <div>
+        <div class="need-card-header">
+          <div class="need-number" style="color:var(--sun)">7</div>
+          <div class="need-star-symbol">☉</div>
+          <div class="need-titles">
+            <div class="need-title-ja">自己実現の欲求</div>
+            <div class="need-title-en">Self-Actualization</div>
+          </div>
+          <div class="need-star-name" style="color:var(--sun)">Sun</div>
+          <div class="need-arrow">▼</div>
+        </div>
+        <div class="need-body">
+          <div class="need-desc">
+            太陽は自己の核心だ。本来の自分として在ること、可能性の完全な発現。自己実現とは夢を叶えることではなく、自分らしく生きることそのものが目的になる状態だ。<br><br>
+            太陽が輝くとき、外側の評価は動機にならない。ただ在ることが目的になる。それは他の星がある程度落ち着いて初めて、自然に現れてくる状態だ。太陽は主役だが、他の星の協力なしには輝けない。
+          </div>
+          <div class="need-states">
+            <div class="state-box state-box-good">
+              <div class="state-label state-label-good">✦ 健全な状態</div>
+              <ul class="state-items">
+                <li>自分らしくあることへの迷いがない</li>
+                <li>外の評価と内の確信が一致している</li>
+                <li>成長が義務ではなく自然な流れ</li>
+                <li>存在すること自体が肯定されている</li>
+              </ul>
+            </div>
+          </div>
+          <div class="need-beyond">
+            <div class="beyond-label">▶ この段階にいるとき</div>
+            <div class="beyond-text">自分らしくあることへの迷いがない。外の評価と内の確信が一致している。成長が義務ではなく自然な流れになっており、存在すること自体が肯定されている。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. 自己超越 / トラサタ -->
+    <div class="need-card" id="card-8" onclick="toggleCard(8)">
+      <div class="need-card-left" style="background:rgba(200,160,240,0.08);color:var(--transpersonal)">
+        <span class="need-type-badge badge-growth" style="writing-mode:horizontal-tb;margin-bottom:4px;">超越</span>
+      </div>
+      <div>
+        <div class="need-card-header">
+          <div class="need-number" style="color:var(--transpersonal)">8</div>
+          <div class="need-star-symbol" style="font-size:13px;margin-left:-3px;margin-right:3px;">⛢♆♇</div>
+          <div class="need-titles">
+            <div class="need-title-ja">自己超越</div>
+            <div class="need-title-en">Self-Transcendence</div>
+          </div>
+          <div class="need-star-name" style="color:var(--transpersonal)">Transpersonal</div>
+          <div class="need-arrow">▼</div>
+        </div>
+        <div class="need-body">
+          <div class="need-desc">
+            天王星・海王星・冥王星——トラサタと呼ばれる三つの星は、個人の次元を超えている。天王星は革命と解放、海王星は溶解と普遍性、冥王星は根底からの変容。これらは個人の意識が「個」の枠を超えていく動きを示す。<br><br>
+            自己超越とは、自己がなくなることではない。自己が大きな何かの一部であると感じられる状態だ。この段階になると、欲求という言葉自体がもはや適切ではなくなる。ただ在ることと、流れに委ねることが一致する。
+          </div>
+          <div class="need-states">
+            <div class="state-box state-box-good">
+              <div class="state-label state-label-good">✦ 健全な状態</div>
+              <ul class="state-items">
+                <li>自分と他者の境界が柔らかい</li>
+                <li>流れに委ねることへの信頼がある</li>
+                <li>個人を超えた何かへの奉仕が自然</li>
+                <li>存在の神秘と共に在ることができる</li>
+              </ul>
+            </div>
+          </div>
+          <div class="need-beyond">
+            <div class="beyond-label">▶ この段階について</div>
+            <div class="beyond-text">トラサタは制御できない。天王星は突然やってくる解放であり、海王星は個を溶かし、冥王星は避けられない変容をもたらす。ここに至るのは、努力の結果ではなく、準備が整ったときに起こる。下の段階を丁寧に歩くことが、唯一の準備だ。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 月の核心 -->
+  <div class="section">
+    <div class="section-label">月について</div>
+    <div class="moon-core">
+      <div class="moon-symbol">☽</div>
+      <div class="moon-core-title">月は外から満たせない</div>
+      <div class="moon-core-text">
+        月が示す安全の欲求は、欠乏欲求の中で最も根本的なものだ。<br><br>
+        月が満たされていないとき、人は金星で繋がろうとし、火星で認められようとする。形は変わっても、動機の根は同じだ。<br><br>
+        月を外から満たそうとすること自体が、不安を維持するメカニズムになっている。何かが手に入れば安心できる、という前提が、常に「まだ足りない」を生み出す。<br><br>
+        <em>月が満たされるのは、すでに満たされていると気づく瞬間だ。</em><br><br>
+        それは状況が変わることではない。内側の何かが変容することだ。その変容は、外から押し付けることも、努力で達成することもできない。ただ気づく、それだけだ。
+      </div>
+    </div>
+  </div>
+
+  <!-- 締め -->
+  <div class="section">
+    <div class="section-label">この地図の使い方</div>
+    <div class="prose">
+      今、何かに強く反応しているとき、その反応はどの星の領域の話をしているか、立ち止まって眺めてみる。承認されたいなら火星、繋がりたいなら金星、安心したいなら月。
+    </div>
+    <div class="prose">
+      それは良い悪いの話ではない。ただ、自分がどこにいるかを知ること。それだけで、少し自由になれることがある。
+    </div>
+    <div class="prose">
+      そしてもし月の領域の話をしているなら、それを外から解決しようとするのをやめてみる。解決しようとする行為そのものが、問題を維持している。
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="closing-text">
+      「どこへ向かうか」より「今どこにいるか」。<br>
+      地図は目的地を教えない。ただ、今地を示す。
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleCard(n){
+  const card = document.getElementById('card-'+n);
+  card.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
