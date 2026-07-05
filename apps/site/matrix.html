@@ -505,6 +505,7 @@ function doCalc(){
   var mei=document.getElementById('mei').value.trim();
   if(!sei||!mei){alert('姓と名を入力してください');return;}
   var sR=toRom(sei),mR=toRom(mei);
+  if(!/[A-Z]/.test(sR)||!/[A-Z]/.test(mR)){alert('読みに変換できない入力です。ひらがなの読みを確認してください');return;}
   document.getElementById('rs').textContent=sR;
   document.getElementById('rm').textContent=mR;
   var V=calcAll(sR,mR);

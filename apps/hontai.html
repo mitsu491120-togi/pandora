@@ -2399,6 +2399,7 @@ function calculate(){
 
   const seiRom=toRomaji(seiIn);
   const meiRom=toRomaji(meiIn);
+  if(!/[A-Z]/.test(seiRom)||!/[A-Z]/.test(meiRom)){err.textContent='読みに変換できない入力です。ひらがなの読みを確認してください';err.style.display='block';return;}
   currentVals=calcAll(seiRom,meiRom);
 
   const sunNum=currentVals.taiyou;
