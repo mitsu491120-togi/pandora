@@ -1759,6 +1759,9 @@ header .title-en{margin-top:0;margin-bottom:0;opacity:.55;font-size:10px}
       </div>
 
     </div>
+    <div style="text-align:center;margin-top:28px;">
+      <span onclick="toggleOps()" style="cursor:pointer;color:rgba(255,255,255,0.12);font-size:11px;letter-spacing:.4em;user-select:none;">♦♦♦</span>
+    </div>
   </footer>
 
 </div>
@@ -4660,6 +4663,13 @@ function toggleContact(){
   const open=b.style.display==='none';
   b.style.display=open?'block':'none';
   if(ar)ar.textContent=open?'▲':'▼';
+}
+
+function toggleOps(){
+  const l=document.getElementById('ops-link'),sp=document.getElementById('ops-sep');
+  const show=l&&l.style.display==='none';
+  if(l)l.style.display=show?'':'none';
+  if(sp)sp.style.display=show?'':'none';
 }
 
 function updateSenseiBtn(){
