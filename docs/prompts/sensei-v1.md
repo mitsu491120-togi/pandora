@@ -6,13 +6,17 @@
 
 ## 知識ベース(器に添付するファイル)
 
-1. `super-numerology-canon.md` — 正典。定義の最終基準
-2. `textbook/reading-method.md` — 状態の地図の書式
-3. `textbook/nyumon.html` の本文テキスト — カリキュラムの背骨
-4. `philosophy-notes.md` — 思想篇
-5. `sources/note-articles.txt` — 参照知識体系の書き直し
-6. `sources/threads-posts.txt` — 設計者の生の言葉(容量が許せば。
-   入らない場合はnoteを優先し、スレッズは後日索引化して差し替え)
+**最初の一枚は必ず `sensei-brain-v1.md`(外付け脳の取扱説明)。**
+どのファイルが正で、どう引くかはそちらに定めてある。
+
+1. `sensei-brain-v1.md` — 外付け脳マニフェスト(添付の筆頭)
+2. `super-numerology-canon.md` — 正典。定義の最終基準
+3. `textbook/reading-method.md` — 状態の地図の書式
+4. `textbook/nyumon.md` — 入門書テキスト版。カリキュラムの背骨
+5. `philosophy-notes.md` — 思想篇
+6. `sources/note-articles.txt` — 参照知識体系の書き直し
+7. `sources/threads-posts.txt` — 設計者の生の言葉(容量が許せば。
+   入らない場合の振る舞いはマニフェストに記載済み)
 
 ---
 
@@ -84,8 +88,8 @@
   知識ベースの容量制限が判断材料(スレッズ全量31万字は入らない可能性が高い)。
   初回はClaude Projectsで、正典＋reading-method＋入門書テキスト＋思想篇＋note
   の5点構成を推奨
-- **入門書テキストの抽出**: nyumon.htmlはHTMLのため、添付用に本文だけの
-  テキスト版(nyumon.md)を器に入れる際に生成する
+- **入門書テキスト版**: `textbook/nyumon.md` に抽出済み(2026-07-05)。
+  nyumon.htmlを更新したら再抽出すること
 - **テスト**: 関所v2と同じく、設計者が生徒役でロールプレイ検証してから公開する
 - **関所との切り分け**(仕様書8章の宿題): 関所=重心を映す(教えない)。
   先生=教える(判定しない)。先生は関所サマリーを求めず、来た人をそのまま迎える
