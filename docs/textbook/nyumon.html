@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超数秘術 入門</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;700&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0a12;
+  --ink:#e8e4f0;
+  --ink-soft:#c4bdd8;
+  --ink-dim:#9991b0;
+  --accent:#a78bfa;
+  --gold:#d4b26a;
+  --line:rgba(167,139,250,0.22);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Shippori Mincho B1',serif;
+  line-height:2.05;
+  letter-spacing:.05em;
+  font-size:15.5px;
+  overflow:hidden;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, rgba(255,255,255,.5) 50%, transparent 51%),
+    radial-gradient(1px 1px at 78% 12%, rgba(255,255,255,.35) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 55% 45%, rgba(200,180,255,.4) 50%, transparent 51%),
+    radial-gradient(1px 1px at 30% 72%, rgba(255,255,255,.3) 50%, transparent 51%),
+    radial-gradient(1px 1px at 88% 62%, rgba(200,180,255,.35) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 8% 88%, rgba(255,255,255,.25) 50%, transparent 51%),
+    radial-gradient(1px 1px at 65% 85%, rgba(255,255,255,.3) 50%, transparent 51%);
+}
+#book{
+  position:relative;z-index:1;
+  height:100%;
+  max-width:640px;
+  margin:0 auto;
+  display:flex;flex-direction:column;
+}
+#stage{
+  flex:1;min-height:0;
+  position:relative;
+  overflow:hidden;
+}
+.pg{
+  position:absolute;inset:0;
+  padding:54px 32px 24px;
+  overflow-y:auto;
+  opacity:0;pointer-events:none;
+  transform:translateX(24px);
+  transition:opacity .35s ease, transform .35s ease;
+  display:flex;flex-direction:column;justify-content:flex-start;
+}
+.pg.center{justify-content:center;text-align:center;}
+.pg.on{opacity:1;pointer-events:auto;transform:translateX(0);}
+.pg.off-l{transform:translateX(-24px);}
+/* ナビ */
+#nav{
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 26px 20px;
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:.2em;
+  color:var(--ink-dim);
+  user-select:none;
+}
+.nav-btn{
+  cursor:pointer;padding:8px 18px;
+  border:1px solid var(--line);
+  color:var(--ink-soft);
+  transition:all .2s;
+}
+.nav-btn:hover{background:rgba(167,139,250,.12);color:#fff}
+.nav-btn.dis{opacity:.25;pointer-events:none}
+#chap{position:fixed;top:18px;left:0;right:0;text-align:center;z-index:2;
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:.45em;color:var(--accent);opacity:.7;}
+/* パーツ */
+.knum{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.5em;color:var(--accent);opacity:.85;margin-bottom:14px;}
+h1{font-size:24px;font-weight:700;letter-spacing:.14em;margin-bottom:30px;padding-bottom:16px;border-bottom:1px solid var(--line);}
+h2{font-size:17px;font-weight:600;letter-spacing:.1em;color:var(--accent);margin-bottom:20px;}
+p{margin-bottom:1.7em;}
+.soft{color:var(--ink-soft)}
+strong{color:var(--gold);font-weight:600}
+em{font-style:normal;color:var(--accent)}
+.q{margin:1.8em 0;padding:2px 0 2px 20px;border-left:2px solid var(--line);color:var(--ink-soft);font-size:14.5px;}
+.big{font-size:21px;line-height:2.5;letter-spacing:.12em;}
+.try{
+  margin-top:auto;
+  border:1px solid var(--line);
+  padding:18px 20px;
+  font-size:14px;color:var(--ink-soft);
+  background:rgba(167,139,250,.05);
+}
+.try b{display:block;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.4em;color:var(--accent);margin-bottom:8px;font-weight:400;}
+/* 表紙 */
+.cover-en{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.6em;color:var(--accent);opacity:.8;margin-bottom:24px;}
+.cover-title{font-size:42px;font-weight:700;letter-spacing:.3em;text-indent:.3em;margin-bottom:8px;}
+.cover-sub{font-size:19px;letter-spacing:.5em;color:var(--gold);text-indent:.5em;margin-bottom:42px;}
+.cover-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--accent),transparent);margin:0 auto 38px;}
+/* 図鑑 */
+.zk{border-bottom:1px solid rgba(167,139,250,.14);padding:16px 2px;}
+.zk:last-of-type{border-bottom:none}
+.zk-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;}
+.zk-no{font-family:'Cinzel',serif;font-size:11px;color:var(--accent);opacity:.8;min-width:22px;}
+.zk-name{font-size:18px;font-weight:700;letter-spacing:.16em;}
+.zk-desc{font-size:13.5px;color:var(--gold);margin-bottom:4px;letter-spacing:.04em;}
+.zk-tr{font-size:12.5px;color:var(--ink-dim);line-height:1.9;}
+/* ステージ表 */
+.stg{border:1px solid var(--line);padding:14px 18px;margin-bottom:14px;}
+.stg b{color:var(--accent);font-weight:600;letter-spacing:.08em;display:block;margin-bottom:4px;font-size:14px;}
+.stg span{font-size:13px;color:var(--ink-soft);}
+.stg i{font-style:normal;color:var(--gold);font-size:12px;}
+@media(max-width:480px){
+  .cover-title{font-size:32px}
+  body{font-size:14.5px}
+  .pg{padding:50px 22px 20px}
+}
+</style>
+</head>
+<body>
+<div id="chap"></div>
+<div id="book">
+  <div id="stage"></div>
+  <div id="nav">
+    <div class="nav-btn" id="prev">◀ 前へ</div>
+    <div id="pos"></div>
+    <div class="nav-btn" id="next">次へ ▶</div>
+  </div>
+</div>
+
+<script>
+// 33キャラクター
+const ZUKAN=[
+[4,'騎士','繰り返して、基礎を身に着ける人','基本に忠実で型に安心する／冷静沈着で自制心が強い／頑固でゆずれない個性がある'],
+[5,'冒険者','物は試しで、挑戦してやってみる人','幅広い知識と好奇心がある／気まぐれで愛嬌がある／無数の選択肢を持つ'],
+[6,'村人','一般的で、親しみやすい説明をする人','情が深く、お世話焼き／備えあれば憂いなし／集合的な意識を大切にする'],
+[7,'弓使い','探究で、専門的な知識に辿り着く人','肉体の感覚が鋭い／研究気質で専門性に繋がる／道具を扱う技術が高い'],
+[8,'親方','実際に出来ることで、結果を出す人','結果主義で達成度が高い／影で努力する野心家／成功する事への執念が強い'],
+[9,'聖職者','癒して、人生にゆとりをもたらす人','回復や治癒を得意とする／泰然自若で成熟している／巨視で細かさを気にしない'],
+[10,'開拓者','常に、自分が出来る最善を尽くす人','再生力から現状打破する／0か1で唯一無二でもある／決断力と集中力がある'],
+[11,'詩人','今に集中して、その情熱を放つ人','感受性が強く閃きに優れる／屈しない信念の強さがある／今という一瞬を捉える'],
+[12,'踊り子','自分を出して、周りも元気にする人','表舞台で派手に振る舞う／反応が良く感情が隠せない／話術を持ち、説得力がある'],
+[13,'錬金術師','冷静な立場で、物事の真実をみる人','がらくたに価値を与える／真実を求め、生死を考える／自己研鑚をして熟練する'],
+[14,'海賊','本能的な欲求で、果敢に攻める人','果てしないロマンを求める／旅が好きで束縛を嫌う／大胆で刺激的で自由である'],
+[15,'保護官','正義を守って、秩序を維持する人','護る対象を定めると強い／空回るほどの情熱がある／熱血指導して正義を貫く'],
+[16,'考古学者','疑問から、本質の意味を発見する人','専門的な分析が凄まじい／人生とは何かを追い求める／凝り性で変な趣味がある'],
+[17,'闘士','心折れても、諦めず立ち上がる人','諦めず最前線で闘う／逆境の火事場力がある／目的達成を永久に繰り返す'],
+[18,'勇者','大局を見極め、理想を形にする人','大志で多くを成し遂げる／仲間想いで懐が深い／行動しながら考えている'],
+[19,'賢者','未知へと踏み込んで、道にする人','知識と実践から知恵を導く／鋭い発言が核心をつく／伏線や謎解きを好む'],
+[20,'僧侶','関係を調整して、場を調和する人','平穏で中庸の世界を望む／極度の忍耐強さがある／利他の心を持っている'],
+[21,'夢使い','楽しく明るく、笑いを忘れない人','前向きで陽気で元気になる／サービス精神旺盛である／誰とでも交流出来る'],
+[22,'王様','表も裏もみて、全てを乗り越える人','両極端を有する／退屈を嫌い波乱万丈を歩む／物事の裏表を捉える'],
+[23,'魔術師','異なっても構わずで、成立させる人','不可能が存在していない／常軌を逸し新しい風となる／柔軟に機転を利かせる'],
+[24,'教師','愛情をかけて育てる、整える人','教えることが好きである／愛情深く好き嫌いが激しい／絆を大切にする'],
+[25,'獣使い','奥深くの繊細な感覚を理解する人','五感が鋭敏に発達している／自然や動物と通じ合う／本能的に考えることが得意'],
+[26,'秘書','やるとそうでないを公平に仕分ける人','さり気ない気遣いが出来る／明確に公私混同しない／傾聴力があり、良く吸収する'],
+[27,'侍','執着を断ち切り、誠に生きる人','誠実に筋を通し嘘を嫌う／覚悟すると一歩も引かない／求道者で修業はいとわない'],
+[28,'将軍','全体をまとめて、完成に進める人','想いをまとめ場を統率する／高い理想を現実に落とす／顔が利き、幅広い人脈を築く'],
+[29,'巫女','闇と向き合い、光へと統合する人','不可視の領域を捉える／闇を光に変えることが可能／気付きを促すメッセンジャー'],
+[30,'発明家','必ず良くなるものだと確信する人','爆発的な化学反応を起こす／一生懸命であり強運を引く／予想外の仕上がりになる'],
+[31,'職人','枠を極めて、枠外も受け入れる人','型を追求して型を超越する／熟考している時間が好き／階段状に基礎から積む'],
+[32,'忍者','突然訪れた機会を掴んで活かす人','秘密を知る能力がある／偶然の縁が必然の様に来る／読心術に長ける'],
+[33,'召喚士','全てに生かされていると感謝する人','全存在と一緒に進んでいる／愛し愛され自然と徳を積む／困難にすぐ助けが入る'],
+];
+
+const P=[]; // {c:章名, h:html, center:bool}
+const pg=(c,h,center)=>P.push({c,h,center:!!center});
+
+/* ===== 表紙・案内 ===== */
+pg('', `
+<div class="cover-en">SUPER NUMEROLOGY</div>
+<div class="cover-title">超数秘術</div>
+<div class="cover-sub">入門</div>
+<div class="cover-line"></div>
+<p class="soft" style="line-height:2.6;letter-spacing:.1em;">
+名前には、地図が刻まれている。<br>
+本来の顔。機嫌の仕組み。いま、旅のどのあたりか。<br>
+これは、それを読めるようになるための一冊。
+</p>`,1);
+
+pg('この本の歩き方', `
+<div class="knum">HOW TO READ</div>
+<h1>この本の歩き方</h1>
+<p>この本は、計算ページと一緒に読みます。<br>
+自分の名前をひらがなで入れると、33の席にキャラクターが出ます。</p>
+<p>本文で新しい席の話が出るたびに、自分の盤面のキャラクターを見てください。
+この本は一般論を語りますが、<strong>あなたの本は、あなたの盤面のほうです。</strong></p>
+<p class="soft">前から順に読むのがおすすめですが、
+気になる章から開いても構いません。
+巻の後半には、33人全員の図鑑があります。
+自分と、身近な人を、探してみてください。</p>`);
+
+/* ===== 得られるもの ===== */
+pg('得られるもの', `
+<div class="knum">ABSTRACT</div>
+<h1>この本で得られるもの</h1>
+<p>超数秘術は、名前から人を読む体系です。ひらがなの名前ひとつから33の観測点を割り出し、生まれ持ったキャラクター、機嫌の仕組み、逃げ方の癖、そしていま人生のどの段階を歩いているのかを、一枚の地図にします。</p>
+<p>読み終えたとき手元に残るのは、知識ではなく<strong>見る目</strong>です。</p>
+<div class="q">
+なぜ、ちゃんとやっているのに消耗する日があるのか。<br>
+なぜ、同じ喧嘩を同じ相手と繰り返すのか。<br>
+なぜ、手に入れても満たされないのか。<br>
+なぜ、頑張っているのに進んでいる気がしないのか。<br>
+そして、なぜあの人はああなのか。
+</div>
+<p>これらすべてに、地図の上で場所が与えられます。<br>
+場所がわかったものには、人は呑まれにくくなります。</p>`);
+
+pg('得られるもの', `
+<p class="big" style="margin-top:14vh;text-align:center;">
+最後まで歩けば、<br>行き着く先は一つです。<br><br>
+<strong>自分探しの終わり。</strong>
+</p>
+<p class="soft" style="text-align:center;margin-top:30px;">
+探していたものは外にはなく、<br>最初からど真ん中にあったという発見。<br>
+そこから先の人生を、自分の名前で、<br>創造的に生きていくこと。
+</p>`,1);
+
+/* ===== 序章 ===== */
+pg('序章', `
+<div class="knum">PROLOGUE</div>
+<h1>作った人間の話</h1>
+<p>先に、この体系を作った人間の話を少しだけ。</p>
+<p>子どもの頃、よく空を飛ぶ夢を見ていた人間です。中学からの5年間、いじめの中で感情を封印して生きました。悲しみを、そのうち怒りも。それでも底のどこかに「何とかなる」という感覚だけは、ずっとありました。</p>
+<p>社会に出て一年目、同じ道路の同じあたりで、三回、意識を失う事故を起こしました。三回目に思ったそうです——これは理屈で説明できるものじゃない。こんな状況でも死んでいないのは、<strong>何かによって生かされているのではないか</strong>。</p>
+<p>そこから占いの世界に入り、数秘術に出会い——でも、しっくりこなかった。そのしっくりこない感覚を手放さずに探し続けた先で、ある一つの考えに出会います。</p>
+<div class="q">時間はエゴが作り出したもの。今しかない。</div>
+<p>生年月日は、時間の流れの中にある過去の一点です。でも名前は、時間に属していません。今この瞬間も、名前は名前として響いている。<strong>誕生日は外側の自分を、名前は内側の自分を映す。</strong>今を生きるための道具は名前しかない——そこから、超数秘術が生まれました。</p>`);
+
+pg('序章', `
+<div class="knum">PROLOGUE</div>
+<h1>超数秘術とは何か</h1>
+<p>数秘術は古い知恵です。名前や数に人の本質が響いているという見方は、何千年も前から世界中にありました。</p>
+<p>ただ、既存の数秘術には限界がありました。<em>平面的</em>なのです。人をひとつの数に畳み込んで「あなたは3の人」と言う。それでは、人がいまどこにいて、これからどう変わっていくのかが読めません。人は止まった絵ではなく、動いている物語だからです。</p>
+<p>超数秘術は、その平面を<strong>立体</strong>にしたものです。9つの基本数から33のキャラクターを立ち上げ、生命の樹——意識が育っていく階層の地図——につなぎました。「何者か」だけでなく、「いま、旅のどのあたりか」が読めるようになります。</p>`);
+
+pg('序章', `
+<h2>当てる道具ではなく、導く地図</h2>
+<p>この体系は、当てるための道具ではありません。<strong>導くための地図</strong>です。</p>
+<p>地図は現在地を断定しません。制作者にも断定はできません。あなたの盤面に何があるかは計算で確定しますが、<strong>あなたがいまどの席で生きているかは、あなたにしかわからない</strong>からです。</p>
+<p>だからこの本は「あなたはこうです」とは言いません。「この席で生きているなら、こう見えるはずです」と言います。現在地を指すのは、いつもあなた自身です。</p>
+<p class="soft">占いに答えを出してほしい人には、この地図は向きません。
+自分で歩く人の手に渡ったときにだけ、働きます。</p>`);
+
+pg('序章', `
+<h2>どういう人に合うか</h2>
+<p>合うのは、柔軟な人です。<br>
+「今まではこうだったけど、これからはこういう見方もありかもしれない」と思える人。何かを全面的に信じ込むのでもなく、自分の知っているもの以外を締め出すのでもない人。</p>
+<p style="margin-top:46px;">もしいいと思ったなら、後悔せずについてきてください。<br>
+それが、自分を信じるということです。</p>
+<div class="try"><b>YOUR MAP</b>
+先へ進む前に、計算ページで自分の33か所を出しておいてください。
+ここから先は、あなたの盤面が本文になります。</div>`);
+
+/* ===== 中編 ===== */
+pg('中編', `
+<p class="big" style="margin-top:16vh;text-align:center;">
+中編<br><br>地図と歩く
+</p>
+<p class="soft" style="text-align:center;margin-top:26px;">
+ここからは、超数秘術と歩きはじめた人に<br>何が起きていくのかを、一つの流れで描きます。<br><br>
+これはあなたの物語の、先回りです。
+</p>`,1);
+
+pg('中編', `
+<h2>読む前に、一つだけ</h2>
+<p>星の話をこれからたくさんしますが、先に一番大事なことを。</p>
+<p>星の影響は、受けます。潮が月に引かれるように、感情や意識は星々と響き合っています。ただし、水は自動的に動きますが、人間は違います。</p>
+<p class="big" style="text-align:center;margin:30px 0;">影響は受ける。<br>どう応答するかは、あなたの意志。</p>
+<p>名前に宿っているのは、運命ではなく、この<strong>応答の質</strong>です。同じ影響を受けても、人によって応え方が違う。その違いこそが、あなたという固有の存在です。</p>
+<p class="soft">だから、どの数字が出ても良し悪しはありません。比較も優劣もなく、ただ、あなたがあなたであるということ。それを前提に、歩きはじめましょう。</p>`);
+
+pg('太陽', `
+<div class="knum">SUN</div>
+<h1>最初の日 — 顔ぶれに会う</h1>
+<p>すべては、名前をひらがなで入れるところから始まります。</p>
+<p>最初に会うのは<strong>太陽</strong>——あなたの本来の顔です。騎士、賢者、闘士、巫女、忍者……33人のうちの一人が、そこに立っています。</p>
+<p>多くの人が、ここで最初の発見をします。<br>
+「本来の顔でいられた日は、疲れていない」という発見です。</p>
+<p>ちゃんとやったのに妙に消耗した日は、たいてい、自分ではないキャラクターを演じていた日です。疲れの原因が「頑張りが足りない」から「<strong>配役が違う</strong>」に変わる——地図の最初の性能です。</p>`);
+
+pg('太陽', `
+<p>たとえば、太陽が<strong>僧侶</strong>の人が、闘士のように競い続ける職場にいたら。
+どれだけ成果を出しても、家に帰るとぐったりしているはずです。
+逆に太陽が<strong>闘士</strong>の人が、波風を立てないことだけを求められる場所にいたら。
+楽なはずなのに、なぜか腐っていく。</p>
+<p>どちらも能力の問題ではありません。配役の問題です。</p>
+<p>実際に太陽が闘士（17）の人は、こう話しています。</p>
+<div class="q">やりたいと決めたら、寝食を忘れてそれだけをやり続けられる。ゾーンに入る感覚がある。結果がどうあれ、ストイックに向かうこと自体が喜びになっている。</div>
+<p>闘うのは相手ではなく、自分の限界。これがこの人の「本来の顔」です。</p>
+<div class="try"><b>TRY</b>
+自分の太陽キャラクターを見て、今日一日のうち「この顔でいられた時間」を数えてみてください。
+その長さと、今日の疲れ具合を見比べる——最初の答え合わせです。</div>`);
+
+pg('太陽', `
+<h2>数字の層 — どこから来たキャラクターか</h2>
+<p>キャラクターには、番号がついています。この番号は、ただの整理番号ではありません。</p>
+<p>たとえば17・闘士は、<strong>1＋7→8</strong>でできています。
+1（自分の意志で動く）と7（深く探究する）が組み合わさって、8（結果を出す）に向かう。
+だから闘士の「結果」は、探究の果ての結果です。</p>
+<p>同じ8でも、8＋0→8の親方の「結果」とは、来た道が違う。
+<strong>同じ数字でも、どこから来たかで質がまったく変わります。</strong></p>
+<p>また、20・僧侶は<strong>2＋0→2</strong>。0がつくと、その数の性質が純化・増幅されます。
+ただの「調和を好む」ではなく、魂レベルで争いが苦手——2と0から来た2は、より純粋な2です。</p>
+<p class="soft">図鑑（巻末）で自分のキャラクターの番号を分解してみてください。
+一段深く、自分の質が見えてきます。</p>`);
+
+pg('ASC', `
+<div class="knum">ASC</div>
+<h1>見た目は、中身ではない</h1>
+<p>「あなたって、こういう人だよね」と言われて、当たっているような、でも自分とは違うような——そんな据わりの悪さを感じたことはないでしょうか。</p>
+<p>その「こういう人」の正体が<strong>ASC</strong>です。</p>
+<p>ASCは、あなたの<strong>パッケージ</strong>です。中身がどうであれ、外からはまずこの包装が見えます。そう見られること自体は当たり前で、問題ではありません。</p>
+<p>大事なのは一つだけ。<br>
+<strong>そう見えることと、それが本体であることは、同義ではない</strong>ということです。</p>`);
+
+pg('ASC', `
+<p>ここを混同すると、人はパッケージを自分だと思い込みます。見られ方に外見を寄せたり、無理に自分を磨いて「それ」になろうとしたりする。</p>
+<p>順序が逆なのです。<br>
+パッケージは、なろうとしてなるものではなく、<strong>自然にしていたら、その見た目になっているもの</strong>。中身が先で、包装は後からついてきます。</p>
+<p class="soft">これがわかるだけで、無理な自分磨きが一つ終わります。</p>
+<div class="try"><b>TRY</b>
+自分のASCキャラクターと、人からよく言われる「あなたって〜だよね」を見比べてください。
+当たっていたら、包装が正常に働いているだけ。
+「でも本当の自分は違う」と感じたら、正解です。本体は太陽のほうです。</div>`);
+
+pg('月', `
+<div class="knum">MOON</div>
+<h1>揺れの発見 — 月</h1>
+<p>世界に出たあと、人の中では「自分」が育っていきます。
+自分が強くなってくると、次の主役が現れます。
+ここからが、この地図のいちばん役に立つ区間です。</p>
+<p>同じことを言われても、平気な日と刺さる日があります。
+ということは、急所は出来事ではなく、自分の内側にあります。</p>
+<p>その席に座っているのが<strong>月</strong>です。</p>
+<p>月は、自分の中の小さな子どものようなものです。わがままな願いを抱えていて、あと一歩のところで言葉になりません。本当は、ただ聞いてほしいだけなのです。</p>
+<p>悪者ではありません。ただ、この子に運転を任せると、人生ごと振り回されます。<strong>太陽が運転して、月には隣に座ってもらう。</strong>順番の問題です。</p>`);
+
+pg('月', `
+<p>月のキャラクターは、機嫌の顔です。<br>
+月が<strong>僧侶</strong>なら、我慢の顔で静かに座っています。爆発は滅多にしませんが、限界まで溜めます。
+月が<strong>踊り子</strong>なら、すねた顔がすぐ表に出ます。隠せません。
+月が<strong>忍者</strong>なら、何も言わずに気配を消します。</p>
+<p>面白いのは、太陽と月がまるで違う人がいることです。
+さっきの太陽17・闘士の人は、月が20・僧侶でした。</p>
+<div class="q">争いは好まない。周りがいがみ合っていたら、内心ずっと仲良くしてほしいと思っている。</div>
+<p>闘志と、平和への願いが、同じ人の中に共存している。
+これは矛盾ではありません。それぞれの星が、それぞれの質を持って存在しているということです。
+自分の月の顔を知っている人は、呑まれても戻ってこられます。</p>
+<p><strong>呑まれなくなるのではありません。呑まれても、帰り道がわかるようになるのです。</strong>実際に可能なのは、こちらです。</p>
+<div class="try"><b>TRY</b>
+今日のどこかで機嫌が動いたら、責めずに一言だけ聞いてあげてください。
+「本当は、何て言ってほしかった？」
+答えが返ってきたら、それが月の願いです。返ってこなくても、聞いたという事実だけで氷は溶けはじめます。</div>`);
+
+pg('SM', `
+<div class="knum">SM</div>
+<h1>逃げ道は、二つある</h1>
+<p>月の願いが聞かれないままだと、人は逃げます。<br>
+逃げ方は、二つしかありません。</p>
+<p class="big" style="text-align:center;margin:34px 0;">しがみつくか、突き放すか。<br>依存か、拒絶か。</p>
+<p>誰かに重くもたれかかるのも、「別に要らないし」と壁を作るのも、正反対に見えて、同じ一つの願いからの逃げ方です。</p>
+<p>この二つは軸になっています。月の正反対の席にいるのが<strong>SM</strong>。月が依存側、SMが拒絶側です。願いを受け入れていないあいだ、人はこの両端を行ったり来たりします。</p>`);
+
+pg('SM', `
+<p>近づいては突き放す。我慢しては爆発する。同じ相手と同じ喧嘩を繰り返す——あれは相性の問題ではなく、たいていこの揺れです。</p>
+<p><strong>多くの人が、この揺れの中で生きています。</strong>
+そして揺れの中にいる間は、揺れていることが見えません。</p>
+<p>片方だけ直そうとしても、反対側の端に振れるだけです。
+行き来が終わるのは、願いをなかったことにするのをやめて、月と共にいられるようになったとき。そうなればこの軸は、もう逃げ道ではなくなります。</p>
+<div class="try"><b>TRY</b>
+傷ついたとき、自分はしがみつく側でしょうか。ドアを閉める側でしょうか。
+癖の側を知っておくだけで、揺れの最中に気づける確率が上がります。</div>`);
+
+pg('SM', `
+<p class="big" style="margin-top:16vh;text-align:center;">
+バグは問題ではない。<br><br>
+まだ流れていない場所が、<br>そこにあるというだけだ。
+</p>
+<p class="soft" style="text-align:center;margin-top:30px;">
+しがみつくのも、突き放すのも、<br>
+肥大も、卑下も、いつも表裏で、<br>
+根っこは同じところにあります。<br>
+直すのではなく、その場所に意識を向ける。<br>
+体が、そこを知っています。
+</p>`,1);
+
+pg('リリス', `
+<div class="knum">LILITH</div>
+<h1>引力の正体 — リリス</h1>
+<p>この揺れには、人を引きずり込んでいる引力があります。</p>
+<p>手に入れたら満たされるはずだったものを、手に入れたのに、思ったほど何も変わらなかった——そういう経験はないでしょうか。そしてもう、次の「これさえあれば」を探しはじめている。</p>
+<p>その引力の正体が<strong>リリス</strong>です。</p>
+<p>リリスは幻の空間です。見たくなかったもの、封じたものが、魅力的な姿に化けてそこに立っています。封じているほど引力は強くなり、現実から逃げる力になります。</p>
+<p><strong>ここからの脱却が、旅の前半でいちばん大事な仕事です。</strong></p>`);
+
+pg('リリス', `
+<p>抜け方は、拍子抜けするほど静かです。</p>
+<p>追いかけているものの正体を見に行くこと。<br>
+そして——</p>
+<p class="big" style="text-align:center;margin:30px 0;">「そこには、最初から<br>何もなかった」<br>と気づくこと。</p>
+<p>本当に気づいたとき、追いかけることそのものが終わります。
+執着は、頑張って手放すものではなく、何もなかったとわかったときに、自然に薄れて落ちるものです。</p>
+<div class="try"><b>TRY</b>
+自分のリリスのキャラクターの姿をした「これさえあれば」が、自分の中にないか、一つだけ探してみてください。
+見つけても捨てなくていい。気づくところまでが、あなたの仕事です。</div>`);
+
+pg('足場', `
+<div class="knum">FOUNDATION</div>
+<h1>足場 — 自分に戻る四つの働き</h1>
+<p>揺れから降りるには、足場が要ります。四つあります。どれも小さなことです。</p>
+<div class="stg"><b>感じる — 月</b><span>願いを聞いてやる。もうやりました。</span></div>
+<div class="stg"><b>選ぶ — 金星</b><span>小さなことを、誰にも確認せずに選ぶ。好きかどうかを人に聞かない。</span></div>
+<div class="stg"><b>考える — 水星</b><span>外に答えを探す前に、「それってどういうことだろう」と一度自分の頭を通す。</span></div>
+<div class="stg"><b>体験する — 地球</b><span>うまくやるためではなく、やりたかったことを、やってみる。</span></div>
+<p style="margin-top:20px;">完璧は要りません。四つに向き合う姿勢があるだけで、次の扉は開きます。「人に確認しないと決められない」が、このあたりで終わりはじめます。</p>`);
+
+pg('テイルとヘッド', `
+<div class="knum">DRAGON TAIL / HEAD</div>
+<h1>ブレーキと、アクセル</h1>
+<p>足場ができると、停滞の正体が見えてきます。</p>
+<p>「これ、前にもやった気がする」——そんな既視感を覚えながら、同じことの繰り返しに思えて、進んでいる感じがしない。その正体が<strong>ドラゴンテイル</strong>です。</p>
+<p>テイルは、どこかで旅した記憶のかけらです。だからなじみ深く、既視感がある。ただしそれは<strong>教訓</strong>——教えとして持っているものであって、進むべき道ではありません。</p>
+<p>テイルの上では慣性が働きます。走っているつもりでも、<strong>ブレーキを踏んだように止まって見える</strong>。動いているのに進まない感じの正体は、これです。</p>`);
+
+pg('テイルとヘッド', `
+<p>反対側に<strong>ドラゴンヘッド</strong>——今生の旅の方向があります。</p>
+<p>こちらは、やったことのない未知の挑戦です。それなのに、やりがいがあり、進んでいる感じがする。<strong>アクセルを踏んでいる感覚</strong>です。</p>
+<p class="big" style="text-align:center;margin:30px 0;">出来る方は、繰り返す。<br>やりたいは、新たな世界へ。</p>
+<p>テイルはブレーキ、ヘッドはアクセル。見分け方はこの感覚です。既視感があって進まないなら、それは教訓の側。未知なのに進んでいる感じがするなら、それが道です。</p>
+<div class="try"><b>TRY</b>
+自分のヘッドのキャラクターらしい行動を、どんなに小さくてもいいので今週一回だけ。
+未知で当たり前。「進んでいる感じ」がしたか、だけ覚えておいてください。</div>`);
+
+pg('土星', `
+<div class="knum">SATURN</div>
+<h1>分かれ目 — 土星</h1>
+<p>新しい道を歩きはじめると、必ず壁に見えるものが来ます。<strong>土星</strong>です。</p>
+<p>土星は試練の星と呼ばれますが、本当の仕事は違います。</p>
+<p>人は、自分の強い部分だけを見ていると、脆く崩れます。だから土星は、不都合で、弱くて、未熟な自分を見るように促してくる——敵ではなく、<strong>人生の指導者</strong>です。</p>
+<p>しんどい時期の読み方が、ここで変わります。<br>
+「運が悪い」ではなく、「いま、見ていない弱さを見せられている」。</p>
+<p>自分の人生の責任は、自分でとる。人のせいにしようがない。それを引き受けた人にだけ、土星は達成感という報酬を渡します。</p>`);
+
+pg('太陽・再び', `
+<div class="knum">SUN AGAIN</div>
+<h1>太陽が、本領を出す</h1>
+<p>ここが、旅の分かれ目です。<br>
+弱さから目をそらしたまま強がるのか。<br>
+弱さを見た上で、それでも本来の顔で生きるのか。</p>
+<p>後者を選んだとき、太陽が本領を出します。</p>
+<p>「何かやらなければ」「成果を取りに行かなければ」と焦っているうちは、まだ月が運転しています。本来の自分で生きていれば、やりたいことは勝手に湧いてくる。</p>
+<p class="big" style="text-align:center;margin:30px 0;">湧いたものは、やっていて満ちる。<br>取りに行ったものは、やっても足りない。</p>
+<p>もう一つ、実用的な目印を。<strong>誰かへの怒りが止まらないとき、それは自分の本当にやりたいことに熱を注げていないサイン</strong>です。本当に熱中しているなら、外にキレる暇はないからです。怒りは敵ではなく、行き場を探している熱——注ぎ先が見つかれば、そのまま創造の燃料になります。</p>
+<div class="try"><b>TRY</b>
+いま頑張っていることを一つ思い浮かべて、聞いてみてください。
+それは、やっていて満ちてくるものですか。それとも、やってもやっても足りないものですか。</div>`);
+
+pg('キロン', `
+<div class="knum">CHIRON</div>
+<h1>橋 — 痛みが光に変わる</h1>
+<p>ここまでの道のり全体に、静かにかかっているものがあります。<strong>キロン</strong>——土星と、その外側の星々のあいだの橋です。</p>
+<p>キロンは、痛みを癒して、光に反転させる働きです。</p>
+<p class="big" style="text-align:center;margin:26px 0;">傷のない癒し手は、いない。</p>
+<p>深く痛んだ場所は、深く人を理解できる場所になります。自分が苦しんだことでしか、人は本当のところ、人を助けられません。</p>
+<p>月の願いを聞いたのも、弱さを認めたのも、振り返ればすべて、この癒しの一部でした。傷が「なかったことにしたいもの」から「<strong>使い道のあるもの</strong>」に変わります。</p>`);
+
+pg('天海冥', `
+<div class="knum">TRANS-SATURN</div>
+<h1>流れに乗る</h1>
+<p>橋の向こうに、三つの星がいます。<br>
+ここから先は、もう頑張る場所ではありません。</p>
+<div class="stg"><b>天王星 — 転換点</b><span>引っ越し、環境の変化、状況の一変。狙って起こすものではなく、流れに任せたときに向こうから来ます。</span></div>
+<div class="stg"><b>海王星 — 溶け合い</b><span>境界を溶かし、理想と現実のあいだを埋めるインスピレーションを運びます。</span></div>
+<div class="stg"><b>冥王星 — 破壊と再生</b><span>自然を見れば、壊れて生まれ変わるのはただの営み。ずっとそのままであり続けるほうが不自然です。</span></div>
+<p style="margin-top:18px;">ここが読めると、人生の激変期の意味が変わります。「なぜこんな目に」ではなく、「いま、入れ替えが起きている」。</p>
+<p class="soft">あるのは一つの姿勢だけです。ただ、流れていくのみ。</p>
+<p class="soft">日本語には、面白い符合があります。降伏と幸福——どちらも「こうふく」と読む。抵抗をやめて明け渡すことと、満たされていること。音が同じなのは、本質が同じだからかもしれません。降伏は負けではなく、もっと大きなものへの合流です。</p>`);
+
+pg('統合', `
+<p class="big" style="margin-top:12vh;text-align:center;">そして、統合</p>
+<p class="soft" style="text-align:center;margin-top:34px;line-height:2.6;">
+自分がありながら、周りとも調和していく。<br>
+受け取ることと与えることが、循環していく。<br><br>
+派手なことは何も起こりません。<br>
+気づいたらそうなっていた——<br>静かに、その時は訪れます。<br><br>
+統合は目指すものではなく、<br>ありのままに生きた結果として訪れるもの。<br>
+あなたの仕事は、ここを目指すことではなく、<br>いま自分がいる場所を、ちゃんと歩くことです。
+</p>`,1);
+
+/* ===== 人を読む ===== */
+pg('人を読む', `
+<div class="knum">OTHERS</div>
+<h1>人を読む</h1>
+<p>自分の地図が読めるようになったら、最後はまわりの人です。家族、友人、同僚。名前さえわかれば、同じ地図が引けます。</p>
+<p>そして地図が引けると、人への見方がこう変わります。</p>
+<div class="q">
+「あの人はなんでああなのか」<br>→「ああいうキャラクターが、いまああいう場所を歩いている」<br><br>
+「なんでわかってくれないのか」<br>→「いま、月とSMのあいだで揺れているのかもしれない」
+</div>
+<p>腹の立つ回数が、減ります。謎だった言動に説明がつくと、人は怒りにくくなるものだからです。</p>`);
+
+pg('人を読む', `
+<p>ただし、一つだけ約束があります。</p>
+<p class="big" style="text-align:center;margin:28px 0;">人のキャラクターを、<br>決めつけの道具にしないこと。</p>
+<p>キャラクターは持ち味であって、その人がいまその持ち味で生きているとは限りません。あなたにも、太陽の顔でいられない日があったように。</p>
+<p>変わらない人は、変わりません。その人は、いまその場所にいたいのです。無理に変えようとしなくていい——それも、この地図の使い方のうちです。</p>
+<div class="try"><b>TRY</b>
+身近な人を一人選んで、太陽と月を出してみてください。
+最近のその人は、太陽の顔で生きているでしょうか。揺れの中でしょうか。
+答え合わせはできなくて構いません。見方が変わること自体が報酬です。</div>`);
+
+/* ===== 図鑑 ===== */
+pg('図鑑', `
+<p class="big" style="margin-top:14vh;text-align:center;">33人の図鑑</p>
+<p class="soft" style="text-align:center;margin-top:26px;">
+33人のキャラクターは、基本数秘1〜9の<strong>9つの族</strong>に分かれます。<br>
+足して同じ数に還る者たちは、同じ原理の一族です。<br>
+たとえば10・19・28は、どれも足すと1に還る——軍師と同じ、意志の一族。<br><br>
+自分の族を、家族を、友達を、探してみてください。<br><br>
+<span style="font-size:12px;color:var(--ink-dim);">太陽として現れるのは4〜33です。<br>1〜3（軍師・占い師・道化師）は太陽以外の席で出会います。</span>
+</p>`,1);
+
+const ALL33=[
+[1,'軍師','決断して、前向きに動いていく人','ストレートで負けず嫌い／常に本気で手加減が苦手／絶対的な存在である'],
+[2,'占い師','一途な想いで、寄り添い支える人','繊細に共感して人を支える／人と人を繋ぐ仲介役となる／一歩引いて協力する'],
+[3,'道化師','素直に受け取り、純粋に遊ぶ人','無邪気、天真爛漫、パワフル／素直で学びに貪欲である／感情・表情の表現が豊か'],
+...ZUKAN];
+const FAM={
+1:['意志','真っ直ぐに始め、先頭で決断する一族'],
+2:['受信','共感し、あいだに立って支える一族'],
+3:['遊び','無邪気に受け取り、表現する一族'],
+4:['型','積み上げて、形にする一族'],
+5:['自由','変化と衝動で道をひらく一族'],
+6:['世話','場を守り、育む一族'],
+7:['探究','深く掘り下げて、専門に届く一族'],
+8:['結果','現実の中で、達成する一族'],
+9:['受容','受け容れて、統合する一族'],
+};
+function famOf(n){while(n>=10)n=Math.floor(n/10)+(n%10);return n;}
+for(let f=1;f<=9;f++){
+  const members=ALL33.filter(([n])=>famOf(n)===f);
+  const rows=members.map(([n,name,desc,tr])=>`
+  <div class="zk"><div class="zk-head"><span class="zk-no">${n}</span><span class="zk-name">${name}</span>${n<4?'<span style="font-size:10px;color:var(--ink-dim);letter-spacing:.1em;">太陽以外の席で</span>':''}</div>
+  <div class="zk-desc">${desc}</div>
+  <div class="zk-tr">${tr}</div></div>`).join('');
+  pg('図鑑', `
+<div class="knum">FAMILY ${f}</div>
+<h1 style="margin-bottom:6px;">数秘${f}族 <span style="font-size:14px;color:var(--gold);letter-spacing:.1em;">— ${FAM[f][0]}</span></h1>
+<p class="soft" style="font-size:13px;margin-bottom:10px;">${FAM[f][1]}</p>
+${rows}`);
+}
+
+/* ===== 終章 ===== */
+pg('終章', `
+<div class="knum">EPILOGUE</div>
+<h1>さあ、何を生み出しますか</h1>
+<p>ここまでが、超数秘術の地図です。</p>
+<p>これは新しい時代のパッケージです。古い知恵——数、名前、樹、星——を、いまを生きる人が実際に使える一枚に組み直したもの。</p>
+<p>そして、名前から読むというこの体系の入口には、意味があります。あなたの名前は、あなたが一人で作ったものではありません。誰かが想いを込めてつけ、無数の人に呼ばれて、響いてきたものです。</p>
+<p>その名前に地図が刻まれているということは、あなたが最初から、<strong>ご縁の世界の一員</strong>だったということです。一人で生きているようで、一人ではなかったということです。</p>`);
+
+pg('終章', `
+<p style="margin-top:10vh;">地図を手にした人の人生は、占いに従う人生ではありません。</p>
+<p>本来の顔で生き、揺れから降り、湧いてくるものと共に進む——それは、人生を<strong>創造するもの</strong>として生きるということです。</p>
+<p>創造とは、その人でなければ生まれなかったもののことです。誰かにできることなら、あなたでなくてもいい。あなたから生まれて、でもあなただけのものでもない——そういう何かが、名前の中で出番を待っています。</p>
+<p>道具は渡しました。地図はあなたの手の中にあります。</p>
+<p class="big" style="text-align:center;margin-top:56px;">さあ、あなたは<br>何を生み出していきますか。</p>`,1);
+
+/* ===== 付録 ===== */
+pg('付録', `
+<p class="big" style="margin-top:16vh;text-align:center;">付録</p>
+<p class="soft" style="text-align:center;margin-top:26px;">
+ここから先は、読まなくても本編は完結しています。<br>
+気になった人だけ、めくってください。
+</p>`,1);
+
+pg('よくある問い', `
+<div class="knum">FAQ</div>
+<h1>よくある問い</h1>
+<h2>Q. 当たっている気がしません</h2>
+<p>それで大丈夫です。この地図は、当てるためのものではないからです。</p>
+<p>誕生日を使う占いの多くは、実は「何もしなければ、その通りになる」という性質を持っています。行動を変えなければ、その通りになるのは当然で、そこを天井だと信じている人には、天井の通りの人生が返ってきます。</p>
+<p>名前の地図は逆です。<strong>どう応答するかを、あなたに委ねています。</strong>だから「当たる/外れる」という物差しでは、そもそも測れません。地図の上に立って、自分がどちらの方角へ動くかを選ぶのは、いつもあなたです。</p>`);
+
+pg('よくある問い', `
+<h2>Q. 一つの数字だけで人が分かるとは思えません</h2>
+<p>その通りです。名前一つから出てくるのは33か所——太陽と月だけではありません。人は複数の要素でできています。一つの数字だけを取り出して「あなたはこういう人」と決めつける読み方は、この体系の使い方として正しくありません。</p>
+<p>太陽・月・SM・リリス・テイル・ヘッド・土星……それぞれ別の場所から、別の顔が見えてきます。どれか一つが「本当のあなた」なのではなく、全部を重ねたところに、あなたがいます。</p>`);
+
+pg('用語集', `
+<div class="knum">GLOSSARY</div>
+<h1>用語集</h1>
+<div class="stg"><b>太陽</b><span>本来の顔。演じなくていいときの、自然な持ち味</span></div>
+<div class="stg"><b>月</b><span>機嫌の顔。願いを聞いてほしい、内なる子ども</span></div>
+<div class="stg"><b>SM</b><span>月の正反対の席。願いが受け入れられないとき出る、拒絶の顔</span></div>
+<div class="stg"><b>ASC</b><span>パッケージ。外から最初に見える包装。本体ではない</span></div>
+<div class="stg"><b>ドラゴンテイル</b><span>なじみ深い古い型。教訓。ブレーキ</span></div>
+<div class="stg"><b>ドラゴンヘッド</b><span>今生の進む方向。未知の挑戦。アクセル</span></div>
+<div class="stg"><b>リリス</b><span>追いかけても満たされない幻。手に入らないのではなく、最初から何もない場所</span></div>
+<div class="stg"><b>キロン</b><span>痛みを光に変える働き。傷のない癒し手はいない</span></div>
+<div class="stg"><b>土星</b><span>弱さを見せてくる人生の指導者。試練ではなく関所</span></div>
+<div class="stg"><b>トラサタ</b><span>天王星・海王星・冥王星。個人を超えた領域。頑張る場所ではない</span></div>
+<div class="stg"><b>族</b><span>33のキャラクターを、基本数秘1〜9で分けた9つのグループ</span></div>`);
+
+pg('計算ページの使い方', `
+<div class="knum">HOW TO USE</div>
+<h1>計算ページの使い方</h1>
+<p>姓と名を、それぞれ<strong>ひらがな</strong>で入力します。漢字やローマ字ではなく、読み方をそのまま。</p>
+<p>入力すると、33の席にキャラクターが自動で表示されます。まずは太陽と月から見るのがおすすめです。この本の中編を、自分の盤面を見ながら読み返すと、より入ってきやすいはずです。</p>
+<p class="soft">身近な人の名前も、同じように入力できます。本人の許可を得てから、一緒に見るのがいいと思います。</p>`);
+
+/* ===== 描画 ===== */
+const stage=document.getElementById('stage');
+P.forEach((p,i)=>{
+  const d=document.createElement('div');
+  d.className='pg'+(p.center?' center':'');
+  d.innerHTML=p.h;
+  stage.appendChild(d);
+});
+const pages=[...stage.children];
+let cur=0;
+const pos=document.getElementById('pos'),chap=document.getElementById('chap');
+const prev=document.getElementById('prev'),next=document.getElementById('next');
+function show(n){
+  n=Math.max(0,Math.min(P.length-1,n));
+  pages.forEach((el,i)=>{
+    el.classList.toggle('on',i===n);
+    el.classList.toggle('off-l',i<n);
+  });
+  cur=n;
+  pos.textContent=(n+1)+' / '+P.length;
+  chap.textContent=P[n].c;
+  prev.classList.toggle('dis',n===0);
+  next.classList.toggle('dis',n===P.length-1);
+  pages[n].scrollTop=0;
+  try{history.replaceState(null,'','#'+(n+1));}catch(e){}
+}
+prev.onclick=()=>show(cur-1);
+next.onclick=()=>show(cur+1);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')show(cur+1);
+  if(e.key==='ArrowLeft')show(cur-1);
+});
+let tx=null;
+stage.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+stage.addEventListener('touchend',e=>{
+  if(tx===null)return;
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>60) show(cur+(dx<0?1:-1));
+  tx=null;
+},{passive:true});
+const h=parseInt((location.hash||'').slice(1));
+show(isNaN(h)?0:h-1);
+</script>
+</body>
+</html>
