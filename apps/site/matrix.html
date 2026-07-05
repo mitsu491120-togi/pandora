@@ -308,6 +308,8 @@ function toRom(inp){
     r+=s[i].toUpperCase();i++;
   }
   r=r.replace(/NB/g,'MB').replace(/NM/g,'MM').replace(/NP/g,'MP');
+  // 長音記号「ー」: 直前の母音の引き伸ばしとして母音を重ね、下の長音処理で縮約する
+  r=r.replace(/([AEIOU])ー/g,'$1$1').replace(/ー/g,'');
   r=r.replace(/OO(?=.)/g,'O').replace(/OU/g,'O').replace(/UU/g,'U').replace(/AA/g,'A').replace(/EE/g,'E').replace(/II/g,'I');
   return r;
 }
