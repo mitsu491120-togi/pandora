@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>個と全体 — 縦の関所と横の関所</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+body{background:#0a0a0f;color:#e8e4f0;font-family:'Noto Serif JP',serif;margin:0;padding:24px 12px 60px;display:flex;flex-direction:column;align-items:center}
+h1{font-family:'Cinzel',serif;font-size:16px;letter-spacing:.25em;color:#a78bfa;font-weight:400;margin:16px 0 4px}
+.sub{font-size:12px;color:#9991b0;letter-spacing:.1em;margin-bottom:20px}
+svg{max-width:680px;width:100%;height:auto}
+.note{max-width:600px;font-size:12.5px;color:#9991b0;line-height:2;letter-spacing:.05em;margin-top:20px;border-top:1px solid rgba(255,255,255,0.08);padding-top:16px}
+.note em{font-style:normal;color:#d4b26a}
+</style>
+</head>
+<body>
+<h1>個 と 全 体</h1>
+<div class="sub">縦の関所(土星)と横の関所(月) — 2026-07-06 とぎや みつのぶ の図より</div>
+
+<svg viewBox="0 0 680 640" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="one" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="rgba(245,200,66,0.25)"/>
+      <stop offset="100%" stop-color="rgba(245,200,66,0)"/>
+    </radialGradient>
+    <radialGradient id="earth" cx="50%" cy="0%" r="100%">
+      <stop offset="0%" stop-color="rgba(167,139,250,0.10)"/>
+      <stop offset="100%" stop-color="rgba(167,139,250,0)"/>
+    </radialGradient>
+    <marker id="up" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1,6 L4,1 L7,6" fill="none" stroke="#64c896" stroke-width="1.4"/>
+    </marker>
+    <marker id="down" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1,2 L4,7 L7,2" fill="none" stroke="#c8b890" stroke-width="1.4"/>
+    </marker>
+  </defs>
+
+  <!-- ワンネス(大元) -->
+  <ellipse cx="340" cy="90" rx="150" ry="62" fill="url(#one)" stroke="rgba(245,200,66,0.45)" stroke-width="1.2"/>
+  <text x="340" y="84" text-anchor="middle" font-size="17" fill="#f5c842" letter-spacing="6" font-family="'Noto Serif JP',serif">ワンネス</text>
+  <text x="340" y="106" text-anchor="middle" font-size="10" fill="rgba(245,200,66,0.55)" letter-spacing="3" font-family="Cinzel,serif">HELIO — 大元はひとつ</text>
+
+  <!-- 大元から個々への光(全員に注いでいる) -->
+  <g stroke="rgba(245,200,66,0.18)" stroke-width="1" fill="none">
+    <path d="M295,140 L120,455"/>
+    <path d="M315,148 L230,462"/>
+    <path d="M365,148 L450,462"/>
+    <path d="M385,140 L560,455"/>
+  </g>
+  <!-- 中央の一本(いま思い出しつつある個) -->
+  <path d="M340,152 L340,268" stroke="rgba(245,200,66,0.5)" stroke-width="1.6" fill="none"/>
+
+  <!-- ドラゴニック層 -->
+  <text x="340" y="200" text-anchor="middle" font-size="11" fill="#c8a0f0" letter-spacing="4">ドラゴニック</text>
+  <text x="340" y="216" text-anchor="middle" font-size="9" fill="rgba(200,160,240,0.5)" letter-spacing="2">天と繋がった太陽 — 十二単の上衣</text>
+
+  <!-- 土星: 縦の関所(コイル) -->
+  <g stroke="#64c896" stroke-width="2" fill="none">
+    <path d="M340,270 C 355,276 325,284 340,290 C 355,296 325,304 340,310 C 355,316 325,324 340,330"/>
+  </g>
+  <text x="368" y="296" font-size="12" fill="#64c896" letter-spacing="2">♄ 土星 — 縦の関所</text>
+  <text x="368" y="314" font-size="10" fill="rgba(100,200,150,0.6)">囚われ: 自分のみで何とかしようとする</text>
+
+  <!-- テイル/ヘッドの双方向 -->
+  <path d="M300,332 L300,268" stroke="#64c896" stroke-width="1.1" fill="none" marker-end="url(#up)"/>
+  <text x="292" y="304" text-anchor="end" font-size="10" fill="#64c896">ヘッド 地→天</text>
+  <path d="M262,268 L262,332" stroke="#c8b890" stroke-width="1.1" fill="none" marker-end="url(#down)"/>
+  <text x="254" y="304" text-anchor="end" font-size="10" fill="#c8b890">テイル 天→地</text>
+
+  <!-- ジオ層: 地球の弧 -->
+  <path d="M40,540 Q340,380 640,540 L640,640 L40,640 Z" fill="url(#earth)" stroke="none"/>
+  <path d="M40,540 Q340,380 640,540" stroke="rgba(167,139,250,0.4)" stroke-width="1.3" fill="none"/>
+  <text x="600" y="470" font-size="11" fill="#a78bfa" letter-spacing="4">ジオ</text>
+
+  <!-- 個々の人(弧の上のふくらみ=元は同じ球) -->
+  <g>
+    <!-- 5人: 頭(丸)が弧から生えている -->
+    <circle cx="120" cy="470" r="17" fill="rgba(232,121,249,0.08)" stroke="rgba(232,121,249,0.5)" stroke-width="1.2"/>
+    <circle cx="230" cy="443" r="17" fill="rgba(232,121,249,0.08)" stroke="rgba(232,121,249,0.5)" stroke-width="1.2"/>
+    <circle cx="340" cy="433" r="19" fill="rgba(245,200,66,0.10)" stroke="rgba(245,200,66,0.65)" stroke-width="1.4"/>
+    <circle cx="450" cy="443" r="17" fill="rgba(232,121,249,0.08)" stroke="rgba(232,121,249,0.5)" stroke-width="1.2"/>
+    <circle cx="560" cy="470" r="17" fill="rgba(232,121,249,0.08)" stroke="rgba(232,121,249,0.5)" stroke-width="1.2"/>
+    <!-- 中央の個: ネイタル太陽(核)とドラゴニックの衣 -->
+    <circle cx="340" cy="433" r="7" fill="#f5c842" opacity="0.85"/>
+    <circle cx="340" cy="433" r="13" fill="none" stroke="rgba(245,200,66,0.35)" stroke-width="1" stroke-dasharray="2 3"/>
+  </g>
+  <text x="340" y="415" text-anchor="middle" font-size="10.5" fill="#f5c842">☉ ネイタル太陽 = 個</text>
+  <text x="340" y="470" text-anchor="middle" font-size="9" fill="rgba(245,200,66,0.5)">(点線 = まとったドラゴニックの衣)</text>
+
+  <!-- 月: 横の関所(個と個のあいだの波) -->
+  <g stroke="#7bb8f0" stroke-width="1.6" fill="none">
+    <path d="M140,477 C 160,467 180,487 200,477 C 207,473 210,470 213,466"/>
+    <path d="M248,450 C 268,440 288,460 308,450"/>
+    <path d="M372,450 C 392,440 412,460 432,450"/>
+    <path d="M467,466 C 487,477 507,457 527,467"/>
+  </g>
+  <text x="340" y="510" text-anchor="middle" font-size="12" fill="#7bb8f0" letter-spacing="2">☽ 月 — 横の関所</text>
+  <text x="340" y="528" text-anchor="middle" font-size="10" fill="rgba(123,184,240,0.6)">囚われ: 関係性に依存する</text>
+
+  <!-- 下部の但し書き -->
+  <text x="340" y="600" text-anchor="middle" font-size="10.5" fill="#9991b0" letter-spacing="1">別々に見えているだけで、元は一つ。どれだけ思い出すかで、見え方が変わる。</text>
+</svg>
+
+<div class="note">
+・<em>ワンネス(ヘリオ)</em>が大元。光は全員に等しく注いでいる。<br>
+・<em>個(ジオ)</em>は同じ球のふくらみとして立ち、別々に見えているだけ。核はネイタル太陽。<br>
+・<em>土星=縦の関所</em>。次元の縦のつながり。囚われると「自分のみで何とかしようとする」。<br>
+・<em>月=横の関所</em>。個と個の横のつながり。囚われると「関係性に依存する」。<br>
+・<em>テイル=天→地、ヘッド=地→天</em>【推測】。テイルのみ=地に着きすぎる。ヘッドのみ=足が浮く。地力をつけて天命を思い出す、その配分。<br>
+・成長(思い出し)の度合いで、ドラゴニックの太陽を十二単のように上へまとっていく。レイヤーは人それぞれで、同じになることを強制されない。ただ共鳴はする。
+</div>
+</body>
+</html>
