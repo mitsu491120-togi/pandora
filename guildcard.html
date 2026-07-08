@@ -39,6 +39,8 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
 .gen.paperbtn{background:linear-gradient(90deg,#e6d9b8,#f0e6cc);color:#3d2b1a;}
 .gen.ghost{background:rgba(240,230,204,.08);color:#d8ccb0;border:1px solid rgba(240,230,204,.25);}
 .hint{font-size:10.5px;color:#a89878;margin-top:12px;line-height:1.7;letter-spacing:.02em;}
+.btnrow{display:flex;flex-wrap:wrap;align-items:center;row-gap:24px;column-gap:26px;}
+.btn-group{display:flex;flex-wrap:wrap;align-items:center;row-gap:12px;column-gap:10px;}
 
 /* ===== ギルドカード ===== */
 .sheet{position:relative;width:1500px;overflow:hidden;margin:0 auto;
@@ -87,12 +89,16 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
   font-size:15px;letter-spacing:.02em;color:var(--ink2);line-height:1.5;text-align:left;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Shippori Mincho B1',serif;}
 .subchars b{color:var(--ink);font-weight:700;}
-.tool details.dom-details{border:1px solid rgba(240,230,204,.18);border-radius:6px;margin-bottom:14px;}
-.tool details.dom-details summary{cursor:pointer;padding:10px 14px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.14em;color:#cbbfa0;list-style:none;}
+.tool details.dom-details{border:1px solid rgba(240,230,204,.25);border-radius:6px;margin-bottom:14px;background:rgba(240,230,204,.03);}
+.tool details.dom-details summary{cursor:pointer;padding:12px 14px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.14em;color:#e8ddc0;list-style:none;display:flex;align-items:center;gap:8px;user-select:none;}
+.tool details.dom-details summary:hover{background:rgba(240,230,204,.06);}
 .tool details.dom-details summary::-webkit-details-marker{display:none;}
-.tool details.dom-details summary::before{content:'▸ ';}
-.tool details.dom-details[open] summary::before{content:'▾ ';}
-.tool details.dom-details .dom-body{padding:0 14px 14px;}
+.tool details.dom-details summary::before{content:'▶';font-size:9px;color:#7c1717;background:rgba(240,230,204,.14);border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s;}
+.tool details.dom-details[open] summary::before{content:'▶';transform:rotate(90deg);}
+.tool details.dom-details summary .dom-hint2{margin-left:auto;font-family:'Shippori Mincho B1',serif;font-size:10.5px;letter-spacing:.04em;color:#8a7a5f;}
+.tool details.dom-details[open]{background:rgba(240,230,204,.05);}
+.tool details.dom-details[open] summary{border-bottom:1px solid rgba(240,230,204,.18);}
+.tool details.dom-details .dom-body{padding:14px 14px 14px;}
 .dom-grid{display:flex;flex-wrap:wrap;gap:10px;}
 .dom-grid label{font-size:11px;color:#a89878;display:flex;flex-direction:column;gap:4px;}
 .dom-grid input{width:66px;text-align:center;background:#1b150c;border:1px solid rgba(240,230,204,.2);border-radius:4px;color:#efe6d0;font-family:'Shippori Mincho B1',serif;font-size:13px;padding:7px 9px;}
@@ -199,7 +205,7 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
     <label>表示名<input class="txt" id="f-disp" placeholder="（空欄なら姓を使用）"></label>
   </div></fieldset>
   <details class="dom-details">
-    <summary>DOMINANT ／ ネイタル・ドミナント点（astro-seek の SUM Points・任意）</summary>
+    <summary>DOMINANT ／ ネイタル・ドミナント点（astro-seek の SUM Points・任意）<span class="dom-hint2">クリックで開閉</span></summary>
     <div class="dom-body">
       <div class="dom-grid" id="f-dom"></div>
       <div class="hint" style="margin-top:10px">ホロスコープに馴染みがない場合は未入力でOK。入力すると、カード下部に柱・界・舞台がテキストで表示されます。</div>
@@ -211,10 +217,16 @@ body{font-family:'Shippori Mincho B1',serif;color:var(--ink);}
       <label style="flex-direction:row;align-items:center;gap:6px;cursor:pointer"><input type="radio" name="f-orient" value="landscape" onchange="applyOrient()">横型（印刷・PC用）</label>
     </div>
   </fieldset>
-  <button class="gen" onclick="gen()">▶ ギルドカードを発行する</button>
-  <button class="gen sub2" style="margin-left:10px" onclick="savePNG()">⬇ PNGで保存</button>
-  <button class="gen paperbtn" style="margin-left:36px" onclick="copyGuildScroll()">📜 受付嬢を召喚（巻物＋カードをコピー）</button>
-  <button class="gen ghost" style="margin-left:10px" onclick="downloadScroll()">⬇ 巻物を .txt 保存</button>
+  <div class="btnrow">
+    <div class="btn-group">
+      <button class="gen" onclick="gen()">▶ ギルドカードを発行する</button>
+      <button class="gen sub2" onclick="savePNG()">⬇ PNGで保存</button>
+    </div>
+    <div class="btn-group">
+      <button class="gen paperbtn" onclick="copyGuildScroll()">📜 受付嬢を召喚（巻物＋カードをコピー）</button>
+      <button class="gen ghost" onclick="downloadScroll()">⬇ 巻物を .txt 保存</button>
+    </div>
+  </div>
   <div class="hint" id="fb" style="min-height:18px;color:#e8ddc0"></div>
   <div class="hint">巻物をあなたのAI（ChatGPT / Claude など）に貼ると、受付嬢が現れます。カード発行後に召喚すると、カード持参で入口の儀式が始まります。対話の最後に出る【受付記録】は、ギルドの書庫（Discord）に納めてください。</div>
 </div>
@@ -390,6 +402,7 @@ const EV_C={lo:'#8a7a63',mid:'#3d2b1a',hi:'#6b4a1f',god:'#8b1a1a'};
 const PILLARS={L:{name:'慈悲'},C:{name:'均衡'},R:{name:'峻厳'}};
 const WORLDS={T:{name:'天'},M:{name:'人'},B:{name:'地'}};
 const DOM_KEYS=['太陽','月','水星','金星','火星','木星','土星','天王星','海王星','冥王星'];
+const PLANET_SLOT={'太陽':'taiyou','月':'tsuki','水星':'suisei','金星':'kinsei','火星':'kasei','木星':'moksei','土星':'dosei','天王星':'tennosei','海王星':'kaiousei','冥王星':'meiousei'};
 function buildDomForm(){
   document.getElementById('f-dom').innerHTML=DOM_KEYS.map(k=>`<label>${k}<input class="dom-input" id="f-d-${k}" type="number" inputmode="numeric" min="0" max="99" value=""></label>`).join('');
 }
@@ -428,9 +441,8 @@ function compute(inp){
     const wor={T:(d.冥王星+d.海王星+d.天王星),M:(d.木星+d.火星+d.太陽),B:(d.金星+d.水星+d.月)};
     const worComp={T:[d.冥王星,d.海王星,d.天王星],M:[d.木星,d.火星,d.太陽],B:[d.金星,d.水星,d.月]};
     const worldKeys=pickWinners(wor,worComp,['T','M','B']);
-    const fmax=domMap[fieldKeys[0]];
-    const fieldChar=(fmax>=1&&fmax<=33)?CHARS[fmax]:null;
-    natal={pillarKeys,worldKeys,fieldKeys,fmax,fieldChar};
+    const fieldList=fieldKeys.map(k=>{const n=v[PLANET_SLOT[k]];return{planet:k,num:n,char:CHARS[n]};});
+    natal={pillarKeys,worldKeys,fieldKeys,fieldList};
   }
   return {taiyou,soul,elem,stats,zeros,sums,roleKeys,char:CHARS[taiyou],cdesc:CHAR_DESC[taiyou],traits:TRAITS[taiyou]||[],soulType:SOUL_TYPES[soul],story:NUMEROLOGY_STORY[soul===0?1:soul],
     tsuki:v.tsuki,tsukiChar:CHARS[v.tsuki],asc:v.ascNum,ascChar:CHARS[v.ascNum],natal};
@@ -445,7 +457,7 @@ function render(){
   if(D.natal){
     const pNames=D.natal.pillarKeys.map(k=>PILLARS[k].name).join('／');
     const wNames=D.natal.worldKeys.map(k=>WORLDS[k].name).join('／');
-    const fList=D.natal.fieldKeys.map(k=>D.natal.fieldChar?`${k}${D.natal.fmax}.${D.natal.fieldChar}`:`${k}${D.natal.fmax}`).join('／');
+    const fList=D.natal.fieldList.map(f=>`${f.planet}${f.num}.${f.char}`).join('／');
     midEl.innerHTML=`柱 ${pNames}　界 ${wNames}　舞台 <b>${fList}</b>`;
     midEl.classList.add('has-natal');
   }else{
@@ -619,7 +631,7 @@ function buildCardBlock(){
   if(D.natal){
     const pNames=D.natal.pillarKeys.map(k=>PILLARS[k].name).join('／');
     const wNames=D.natal.worldKeys.map(k=>WORLDS[k].name).join('／');
-    const fList=D.natal.fieldKeys.map(k=>D.natal.fieldChar?`${k}${D.natal.fmax}.${D.natal.fieldChar}`:`${k}${D.natal.fmax}`).join('／');
+    const fList=D.natal.fieldList.map(f=>`${f.planet}${f.num}.${f.char}`).join('／');
     block+=`\n\n【ENGINE 2：ネイタル・ドミナントから（任意・ソフト）】
 - 柱：${pNames}／界：${wNames}／舞台：${fList}`;
   }
@@ -751,7 +763,7 @@ D. 相談・考え事　　　　　　　　　　　　　　　　　　　�
 ■ 五行：木（出来事・変化）火（登場人物・主役）土（土台作り）金（使い手）水（普及・広め役）
 ■ 9ステータス：意志・調整・表現・安定・自由・奉仕・分析・統率・包容
 ■ 太陽・月・ASC：超数秘術は名前から33個の値を出すが、そのうち中核をなす3つが太陽（本体・表の顔）・月（内なる感情・本音）・ASC（他者から見える第一印象・入口）。3つとも33キャラクターの型で表される。
-■ ネイタル・ドミナント（柱・界・舞台）：生年月日のホロスコープ（10惑星の強さ）を入力した人だけに出る、任意の追加情報。ハードではなくソフト（今の現実の動き）。柱＝峻厳・均衡・慈悲（力の使い方の傾き）、界＝天・人・地（意識の置き場）、舞台＝最も強い惑星とその点数（活躍しやすい領域）。舞台の点数は1〜33の範囲なら33キャラクターとしても読み、太陽・月・ASCと同じ型で示す（例：火星25.獣使い）。入力していない人には存在しない情報として扱い、聞かれても補完しない。
+■ ネイタル・ドミナント（柱・界・舞台）：生年月日のホロスコープ（10惑星の強さ）を入力した人だけに出る、任意の追加情報。ハードではなくソフト（今の現実の動き）。柱＝峻厳・均衡・慈悲（力の使い方の傾き）、界＝天・人・地（意識の置き場）、舞台＝ホロスコープで最も強い惑星（活躍しやすい領域）。舞台のキャラクターは、その惑星の点数ではなく、超数秘術の生命の樹でその惑星に対応する位置の値（名前由来・ハード）をCHARSで読んだもの。太陽・月・ASCと同じ生命の樹の型で示す（例：火星の位置の値が25なら「火星25.獣使い」）。入力していない人には存在しない情報として扱い、聞かれても補完しない。
 ■ ギルドの地図：ギルドカード＝カードを作る（拡張）／集会所＝人と話す場／
 　ドッペルゲンガー＝一人と深く向き合う（収束）／セッション＝ギルドマスターと会う（天井）／書庫＝記憶。
 ■ キャラの詳細な特徴は、本人のカードに書かれているものを正とする。カードにないことは補完しない。
